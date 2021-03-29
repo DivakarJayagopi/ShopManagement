@@ -39,7 +39,7 @@ namespace ShopManagement.Controllers
                     var imageBytes = Convert.FromBase64String(Image);
 
                     System.IO.File.WriteAllBytes(imgPath, imageBytes);
-                    Image = Globals.Default_ProfileImagePath + imageName;
+                    Image = Globals.Default_ProfileImagePath + "/" + imageName;
                 }
                 else
                 {
@@ -93,7 +93,7 @@ namespace ShopManagement.Controllers
                     var imageBytes = Convert.FromBase64String(Image);
 
                     System.IO.File.WriteAllBytes(imgPath, imageBytes);
-                    Image = Globals.Default_ProfileImagePath + imageName;
+                    Image = Globals.Default_ProfileImagePath + "/" + imageName;
                 }
                 Result = _userData.Update(Id, Name, EmailId, Password, Image, Status, Area, Notes, MobileNumber, IsAdmin);
                 if (Result == true)
@@ -210,6 +210,32 @@ namespace ShopManagement.Controllers
             try
             {
                 bool Result = false;
+                if (!string.IsNullOrEmpty(Image))
+                {
+                    string path = Server.MapPath("~" + Globals.Default_ShopImagePath); //Path
+
+                    //Check if directory exist
+                    if (!System.IO.Directory.Exists(path))
+                    {
+                        System.IO.Directory.CreateDirectory(path); //Create directory if it doesn't exist
+                    }
+
+                    string imageName = Guid.NewGuid().ToString() + ".jpg";
+
+                    //set the image path
+                    string imgPath = Path.Combine(path, imageName);
+                    var splitedValue = Image.Split(',');
+                    var ReplaceValue = splitedValue[0] + ',';
+                    Image = Image.Replace(ReplaceValue, "");
+                    var imageBytes = Convert.FromBase64String(Image);
+
+                    System.IO.File.WriteAllBytes(imgPath, imageBytes);
+                    Image = Globals.Default_ShopImagePath + "/" + imageName;
+                }
+                else
+                {
+                    Image = Globals.Default_shopImage;
+                }
                 Result = _shopData.Add(Name, ShopArea, UserId, Image, Notes, Status, MobileNumber, MaxOrderCount);
                 if (Result == true)
                 {
@@ -226,15 +252,45 @@ namespace ShopManagement.Controllers
             }
             return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult UpdateShopInfo(string Id, string Name, string ShopArea, string EmployeeName, string Image, string Notes, string Status, string MobileNumber, int MaxOrderCount)
+        public ActionResult UpdateShopInfo(string Id, string Name, string ShopArea, string UserId, string Image, string Notes, string Status, string MobileNumber, int MaxOrderCount)
         {
             Dictionary<string, object> returnObject = new Dictionary<string, object>();
             try
             {
                 bool Result = false;
-                Result = _shopData.Update(Id, Name, ShopArea, EmployeeName, Image, Notes, Status, MobileNumber, MaxOrderCount);
+                Utilities.Shop shopUtility = new Utilities.Shop();
+                var ShopInfo = shopUtility.GetShopById(Id);
+                if (string.IsNullOrEmpty(Image))
+                {
+                    Image = ShopInfo.Image;
+                }
+                else
+                {
+                    string path = Server.MapPath("~" + Globals.Default_ProfileImagePath); //Path
+
+                    //Check if directory exist
+                    if (!System.IO.Directory.Exists(path))
+                    {
+                        System.IO.Directory.CreateDirectory(path); //Create directory if it doesn't exist
+                    }
+
+                    string imageName = Guid.NewGuid().ToString() + ".jpg";
+
+                    //set the image path
+                    string imgPath = Path.Combine(path, imageName);
+                    var splitedValue = Image.Split(',');
+                    var ReplaceValue = splitedValue[0] + ',';
+                    Image = Image.Replace(ReplaceValue, "");
+                    var imageBytes = Convert.FromBase64String(Image);
+
+                    System.IO.File.WriteAllBytes(imgPath, imageBytes);
+                    Image = Globals.Default_ProfileImagePath + "\"" + imageName;
+                }
+                Result = _shopData.Update(Id, Name, ShopArea, UserId, Image, Notes, Status, MobileNumber, MaxOrderCount);
+                ShopInfo = shopUtility.GetShopById(Id);
                 if (Result == true)
                 {
+                    returnObject.Add("ShopInfo", ShopInfo);
                     returnObject.Add("status", "success");
                 }
                 else
@@ -279,7 +335,9 @@ namespace ShopManagement.Controllers
                 shopInfo = _shopData.GetShopById(Id);
                 if (shopInfo != null && !string.IsNullOrEmpty(shopInfo.Id))
                 {
-                    returnObject.Add("shop", shopInfo);
+                    var usersList = _userData.GetAllUsersByStatus(true);
+                    returnObject.Add("shopInfo", shopInfo);
+                    returnObject.Add("usersList", usersList);
                     returnObject.Add("status", "success");
                 }
                 else

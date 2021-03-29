@@ -5,6 +5,8 @@
 }
 <!-- CSS Libraries -->
 <link rel="stylesheet" href="../../assets/modules/chocolat/dist/css/chocolat.css">
+<!-- CSS Libraries -->
+<link rel="stylesheet" href="../../assets/modules/izitoast/css/iziToast.min.css">
 <style>
     .ShopList {
         border-radius: 20px;
@@ -15,6 +17,7 @@
         width: 30px;
         border-radius: 100px;
     }
+
     .selectgroup-input:focus + .selectgroup-button, .selectgroup-input:checked + .selectgroup-button.active {
         background-color: #62f923;
     }
@@ -33,13 +36,13 @@
         @*<a href="@Url.Action("AddShop", "Shop")" style="float:right;" class="btn btn-info">Add New Shop</a>*@
     </div>
     <div class="section-body">
-        <div class="row">
+        <div class="row AllShopsList">
             @if (Model.Count <= 0)
             {
                 <div class="col-md-12">
                     <div class="card card-warning">
                         <div class="card-header">
-                            <h4>No Data Found !</h4>                            
+                            <h4>No Data Found !</h4>
                         </div>
                         <div class="card-body" style="text-align:center;">
                             <p>Add Shops to see the list here.. <i><b><a href="@Url.Action("AddShop", "Shop")">Add Shop</a></b></i></p>
@@ -51,33 +54,33 @@
             {
                 foreach (var item in Model)
                 {
-                    <div class="col-12 col-md-6 col-lg-4">
+                    <div class="col-12 col-md-6 col-lg-4 ">
                         <div class="card-body">
-                            <div data-id="@item.Id" class="card @item.Status ShopList">
+                            <div data-id="@item.Id" class="card @item.Status ShopList ShopListCardStatus">
                                 <div class="card-header">
-                                    <h4><a href="javascript:void(0)" class="ShopEdit">Best Shop</a></h4>
+                                    <h4><span class="ShopName" data-id="@item.Id">@item.Name</span></h4>
                                     <div class="card-header-action">
                                         <div class="btn-group">
                                             <a href="javascript:void(0)" data-id="@item.Id" class="ShopEdit"><i class="fas fa-edit"></i></a>
-                                            <a href="javascript:void(0)" data-id="@item.Id" class="DeleteShop"><i class="fas fa-trash-alt"></i></a>
+                                            <a href="javascript:void(0)" data-id="@item.Id" data-shopName="@item.Name" class="DeleteShop"><i class="fas fa-trash-alt"></i></a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card-body">
                                     <div class="ShopImage">
                                         <div class="chocolat-parent">
-                                            <a href="@item.Image" data-id="@item.Id" class="chocolat-image" title="Just an example">
+                                            <a href="@item.Image" data-id="@item.Id" class="chocolat-image ShopImageExpand" title="Just an example">
                                                 <div>
-                                                    <img alt="image" src="@item.Image" data-id="@item.Id" class="img-fluid">
+                                                    <img alt="image" src="@item.Image" data-id="@item.Id" class="img-fluid ShopImageExpand">
                                                 </div>
                                             </a>
                                         </div>
                                     </div>
                                     <br />
                                     <div>
-                                        <b>Area : <span class="ShopArea">@item.ShopArea</span></b><br />
-                                        <b>Mobile : <span class="ShopMobileNumber">@item.MobileNumber</span></b><br />
-                                        <b>Orders : <span class="MaxOrderCountForShop">@item.MaxOrderCount</span></b><br />
+                                        <b>Area : <span data-id="@item.Id" class="ShopArea">@item.ShopArea</span></b><br />
+                                        <b>Mobile : <span data-id="@item.Id" class="ShopMobileNumber">@item.MobileNumber</span></b><br />
+                                        <b>Orders : <span data-id="@item.Id" class="MaxOrderCountForShop">@item.MaxOrderCount</span></b><br />
                                         <span class="row" style="padding-left:14px;">
                                             <b>
                                                 Manager :
@@ -108,68 +111,66 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Edit Shop - </h5>
+                <h5 class="modal-title">Edit Shop - <strong class="text-info SelectedShopNameModelTitle"></strong> </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="ShopEditForm">
+                    <input type="hidden" class="SelectedShopId" />
                     <div class="form-group">
                         <label>Name</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control SelectedShopName">
                     </div>
                     <div class="form-group">
                         <label>Area</label>
                         <div class="input-group">
-                            <input type="password" class="form-control pwstrength" data-indicator="pwindicator">
+                            <input type="text" class="form-control SelectedShopArea">
                         </div>
                     </div>
                     <div class="form-group">
+                        <label>Mobile Number</label>
+                        <input type="number" class="form-control SelectedShopMobileNumber">
+                    </div>
+                    <div class="form-group">
+                        <label>Maximum Orders</label> <small>\per day</small>
+                        <input type="number" class="form-control SelectedMaxOrderCountForShop">
+                    </div>
+                    <div class="form-group">
                         <label>Choose User</label>
-                        <select class="form-control select2">
-                            <option>Option 1</option>
-                            <option>Option 2</option>
-                            <option>Option 3</option>
+                        <select class="form-control select2 SelectedShopManager">
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Image</label>
-                        <input type="file" class="form-control invoice-input" style="padding:.375rem .75rem;">
-                    </div>
-                    <div class="form-group">
-                        <label>Notes</label>
-                        <textarea class="form-control datemask"></textarea>
+                        <input type="file" class="form-control invoice-input SelectedShopImage" id="ShopImage" style="padding:.375rem .75rem;">
                     </div>
                     <div class="form-group">
                         <label>Status</label>
                         <div class="form-group">
                             <div class="selectgroup w-100">
                                 <label class="selectgroup-item">
-                                    <input type="radio" name="value" value="active" class="selectgroup-input" checked="">
+                                    <input type="radio" name="value" value="active" class="selectgroup-input SelectedShopStatus" checked="">
                                     <span class="selectgroup-button active">Active</span>
                                 </label>
                                 <label class="selectgroup-item">
-                                    <input type="radio" name="value" value="inactive" class="selectgroup-input">
+                                    <input type="radio" name="value" value="inactive" class="selectgroup-input SelectedShopStatus">
                                     <span class="selectgroup-button inactive">Inactive</span>
                                 </label>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Mobile Number</label>
-                        <input type="tel" class="form-control">
+                        <label>Notes</label>
+                        <textarea class="form-control SelectedShopNotes"></textarea>
                     </div>
-                    <div class="form-group">
-                        <label>Maximum Orders</label> <small>\per day</small>
-                        <input type="tel" class="form-control">
-                    </div>
-                    <button class="btn btn-block btn-info" type="button">Submit</button>
+                    <span class="text-danger customErrorMessageAddShop"></span>
                 </div>
             </div>
             <div class="modal-footer bg-whitesmoke br">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Update changes</button>
+                <button type="button" class="btn btn-primary UpdateShopFromSubmit">Update changes</button>
             </div>
         </div>
     </div>
@@ -215,8 +216,11 @@
         </div>
     </div>
 </div>
+
 <!-- General JS Scripts -->
 <script src="../../assets/modules/jquery.min.js"></script>
+<!-- JS Libraies -->
+<script src="../../assets/modules/izitoast/js/iziToast.min.js"></script>
 <!-- JS Libraies -->
 <script src="../../assets/modules/chocolat/dist/js/jquery.chocolat.min.js"></script>
 

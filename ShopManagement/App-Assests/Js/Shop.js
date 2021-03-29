@@ -3,7 +3,7 @@
 });
 
 var GlobalShopStatus = "";
-$(".ShopStatus").change(function () {
+$(".ShopStatus,.SelectedShopStatus").change(function () {
     GlobalShopStatus = $(this).val();
 });
 
@@ -71,19 +71,139 @@ function CallBackAddShopInfo(responseData) {
     $(".AddShopFromSubmit").removeClass("btn-progress");
 }
 
-$(".ShopView").click(function () {
-    $("#ShopInfo").modal("show");
+$(".ShopEdit").click(function () {
+    var ShopId = $(this).attr("data-id");
+    var data = '{Id:"' + ShopId + '"}';
+    handleAjaxRequest(null, true, "/Method/GetShopInfoById", data, "CallBackGetShopInfoById");    
 });
 
-$(".ShopEdit").click(function () {
-    $("#EditShop").modal("show");
+function CallBackGetShopInfoById(responseData) {
+    if (responseData.message.status == "success") {
+        var ShopInfo = responseData.message.shopInfo;
+        var UsersList = responseData.message.usersList;
+        if (UsersList != null && UsersList.length > 0) {
+            var OptionHTML = "";
+            $.each(UsersList, function (key, val) {
+                OptionHTML += "<option value='"+val.Id+"'>" + val.Name + "</option>";
+            });
+            $(".SelectedShopManager").html(OptionHTML)
+        }
+        $(".SelectedShopId").val(ShopInfo.Id);
+        $(".SelectedShopName").val(ShopInfo.Name);
+        $(".SelectedShopArea").val(ShopInfo.ShopArea);
+        $(".SelectedShopMobileNumber").val(ShopInfo.MobileNumber);
+        $(".SelectedMaxOrderCountForShop").val(ShopInfo.MaxOrderCount);
+        $(".SelectedShopNotes").val(ShopInfo.Notes);
+        $(".SelectedShopNameModelTitle").text(ShopInfo.Name);
+        if (ShopInfo.Status == "active") {
+            $(".SelectedShopStatus[value=\"active\"]").trigger("click");
+        } else {
+            $(".SelectedShopStatus[value=\"inactive\"").trigger("click");
+        }
+        $("#EditShop").modal("show");
+    }
+}
+
+$(".UpdateShopFromSubmit").click(function () {
+    UpdateShopInfo($(this));
 });
+
+function UpdateShopInfo(target) {
+    var ShopId = $(".SelectedShopId").val();
+    var ShopName = $(".SelectedShopName").val().trim();
+    var ShopArea = $(".SelectedShopArea").val().trim();
+    var ShopManager = $(".SelectedShopManager").val();
+    var ShopNotes = $(".SelectedShopNotes").val().trim();
+    var ShopMobileNumber = $(".SelectedShopMobileNumber").val().trim();
+    var MaxOrderCountForShop = $(".SelectedMaxOrderCountForShop").val().trim();
+    var ShopStatus = GlobalShopStatus;
+
+    if (ShopName == "" || ShopArea == "" || ShopMobileNumber == "" || MaxOrderCountForShop == "") {
+
+        if (ShopName == "") $(".SelectedShopName").addClass("form-error");
+        else $(".SelectedShopName").removeClass("form-error");
+
+        if (ShopArea == "") $(".SelectedShopArea").addClass("form-error");
+        else $(".SelectedShopArea").removeClass("form-error");
+
+        if (ShopMobileNumber == "") $(".SelectedShopMobileNumber").addClass("form-error");
+        else $(".SelectedShopMobileNumber").removeClass("form-error");
+
+        if (MaxOrderCountForShop == "") $(".SelectedMaxOrderCountForShop").addClass("form-error");
+        else $(".SelectedMaxOrderCountForShop").removeClass("form-error");
+
+        $(".customErrorMessageAddShop").text("Validation Failed, recheck the form !");
+    } else {
+        $("input[type=\"text\"]").removeClass("form-error");
+        $("input[type=\"number\"]").removeClass("form-error");
+        $(".customErrorMessageAddShop").text("");
+        var IsSuccess = true;
+
+        if (ShopMobileNumber.length != 10) {
+            $(".SelectedShopMobileNumber").addClass("form-error");
+            $(".customErrorMessageAddShop").text("Please enter valid mobile number");
+            IsSuccess = false;
+        } else {
+            $(".SelectedShopMobileNumber").removeClass("form-error");
+            IsSuccess = true;
+        }
+
+        if (IsSuccess) {
+            $(".UpdateShopFromSubmit").addClass("btn-progress");
+
+            if (ShopStatus == "") {
+                ShopStatus = "active";
+            }
+
+            var data = '{Id:"' + ShopId + '", Name:"' + ShopName + '", ShopArea:"' + ShopArea + '",UserId:"' + ShopManager + '",Image:"' + GlobalShopImage + '",Notes:"' + ShopNotes + '",Status:"' + ShopStatus + '",MobileNumber:"' + ShopMobileNumber + '",MaxOrderCount:"' + MaxOrderCountForShop + '"}';
+            handleAjaxRequest(null, true, "/Method/UpdateShopInfo", data, "CallBackUpdateShopInfo");
+        }
+    }
+}
+
+function CallBackUpdateShopInfo(responseData) {
+    $(".UpdateShopFromSubmit").removeClass("btn-progress");
+    if (responseData.message.status == "success") {
+        $("#EditShop").modal("hide");
+        var ShopInfo = responseData.message.ShopInfo;
+        var ShopId = ShopInfo.Id;
+
+        $(".ShopImageExpand[data-id='" + ShopId + "']").attr("src", ShopInfo.Image);
+
+        $(".ShopName[data-id='" + ShopId + "']").text(ShopInfo.Name);
+        $(".ShopArea[data-id='" + ShopId + "']").text(ShopInfo.ShopArea);
+        $(".ShopMobileNumber[data-id='" + ShopId + "']").text(ShopInfo.MobileNumber);
+        $(".MaxOrderCountForShop[data-id='" + ShopId + "']").text(ShopInfo.MaxOrderCount);
+
+        $(".ShopListCardStatus[data-id='" + ShopId + "']").removeClass("card-danger");
+        $(".ShopListCardStatus[data-id='" + ShopId + "']").removeClass("card-success");
+        if (ShopInfo.Status == "active")
+            $(".ShopListCardStatus[data-id='" + ShopId + "']").addClass("card-success");
+        else
+            $(".ShopListCardStatus[data-id='" + ShopId + "']").addClass("card-danger");
+
+        iziToast.success({
+            title: 'success',
+            message: 'Shop Informatino Updated Successfully',
+            position: 'topCenter'
+        });
+
+        
+    } else {
+        $(".customErrorMessageAddShop").text("Error on updating Shop info");
+    }
+}
 
 $(".ViewOwnerInfo").click(function () {
     $("#ViewOwnerInfo").modal("show");
 });
 
 $(".DeleteShop").click(function () {
+    var ShopId = $(this).attr("data-id");
+    var ShopName = $(this).attr("data-UserName");
+    var ShopInfo = [];
+    ShopInfo.push(ShopId);
+    ShopInfo.push(ShopName);
     swal({
         title: 'Are you sure?',
         text: 'Once deleted, you will not be able to recover this Shop Details!',
@@ -92,14 +212,31 @@ $(".DeleteShop").click(function () {
         dangerMode: true,
     }).then((willDelete) => {
         if (willDelete) {
-            swal('Poof! Your Shop has been deleted!', {
-                icon: 'success',
-            });
-        } else {
-            swal('Your Shop is safe!');
+            var data = '{Id:"' + ShopId + '"}';
+            handleAjaxRequest(null, true, "/Method/DeleteShopById", data, "CallBackDeleteShopById", ShopInfo);            
         }
     });
 });
+
+function CallBackDeleteShopById(responseData, ShopInfo) {
+    if (responseData.message.status == "success") {
+        var ShopId = ShopInfo[0];
+
+        iziToast.success({
+            title: 'Poof! ',
+            message: ShopInfo[1] + ' has been deleted!',
+            position: 'topCenter'
+        });
+
+        $(".ShopList[data-id='" + ShopId + "']").remove();
+
+        var ShopsCardList = $(".ShopListCardStatus").length;
+        if (ShopsCardList <= 0) {
+            var NoData = '<div class="col-md-12"><div class="card card-warning"><div class="card-header"><h4>No Data Found !</h4></div><div class="card-body" style="text-align:center;"><p>Add Shops to see the list here.. <i><b><a href="@Url.Action("AddShop", "Shop")">Add Shop</a></b></i></p></div></div></div>';
+            $(".AllShopsList").html(NoData);
+        }
+    }
+}
 
 var GlobalShopImage = "";
 

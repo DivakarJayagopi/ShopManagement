@@ -26,8 +26,6 @@ $(".DeleteUser").click(function () {
         if (willDelete) {
             var data = '{Id:"' + UserId + '"}';
             handleAjaxRequest(null, true, "/Method/DeleteUserById", data, "CallBackDeleteUser", UserInfo);            
-        } else {
-            swal('Your ' + UserName + ' is safe!');
         }
     });
 });
@@ -35,8 +33,11 @@ $(".DeleteUser").click(function () {
 function CallBackDeleteUser(responseData, UserInfo) {
     if (responseData.message.status == "success") {
         var UserId = UserInfo[0];
-        swal('Poof! ' + UserInfo[1] + ' has been deleted!', {
-            icon: 'success',
+
+        iziToast.success({
+            title: 'Poof! ',
+            message: UserInfo[1] + ' has been deleted!',
+            position: 'topCenter'
         });
         $(".UserInfo[data-id='" + UserId + "']").remove();
     }
@@ -46,7 +47,7 @@ $(".AddUserFromSubmit").click(function () {
     AddNewUser($(this));
 });
 
-var UserStatus = "";
+var UserStatus = "active";
 $(".UserStatus").change(function () {
     UserStatus = $(this).val();
 });
