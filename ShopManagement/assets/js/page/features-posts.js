@@ -4,7 +4,7 @@ $("[data-checkboxes]").each(function() {
   var me = $(this),
     group = me.data('checkboxes'),
     role = me.data('checkbox-role');
- var test = "";
+
   me.change(function() {
     var all = $('[data-checkboxes="' + group + '"]:not([data-checkbox-role="dad"])'),
       checked = $('[data-checkboxes="' + group + '"]:not([data-checkbox-role="dad"]):checked'),

@@ -43,7 +43,7 @@ namespace ShopManagement.Utilities
                 Result = _shopData.Update(Id, Name, ShopArea, Image, Notes, Status, MobileNumber, MaxOrderCount);
                 if (Result)
                 {
-                    Result = DeleteUserConnectorByShopId(Id);
+                    DeleteUserConnectorByShopId(Id);
                     if (Result)
                     {
                         Result = AddUserConnector(Id, UserId);
@@ -62,15 +62,9 @@ namespace ShopManagement.Utilities
             bool Result = false;
             try
             {
-                Result = DeleteUserConnectorByShopId(Id);
-                if (Result)
-                {
-                    Result = _orderData.DeleteOrderByShopId(Id);
-                    if (Result)
-                    {
-                        Result = _shopData.Delete(Id);
-                    }
-                }
+                DeleteUserConnectorByShopId(Id);
+                _orderData.DeleteOrderByShopId(Id);
+                Result = _shopData.Delete(Id);
             }
             catch (Exception)
             {

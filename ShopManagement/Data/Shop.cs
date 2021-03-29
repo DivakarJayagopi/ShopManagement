@@ -63,6 +63,7 @@ namespace ShopManagement.Data
                 cmd.Parameters.AddWithValue("@ModifiedDate", System.DateTime.Now);
                 cmd.Parameters.AddWithValue("@MobileNumber", MobileNumber);
                 cmd.Parameters.AddWithValue("@MaxOrderCount", MaxOrderCount);
+                con.Open();
                 cmd.Connection = con;
                 int i = cmd.ExecuteNonQuery();
                 con.Close();
@@ -71,7 +72,7 @@ namespace ShopManagement.Data
                     Result = true;
                 }
             }
-            catch (Exception)
+            catch (Exception exe)
             {
             }
             finally
