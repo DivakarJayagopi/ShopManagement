@@ -1,0 +1,341 @@
+﻿@{
+    ViewBag.Title = "OrdersManagement";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- CSS Libraries -->
+<link rel="stylesheet" href="../../assets/modules/chocolat/dist/css/chocolat.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap.datepicker/0.1/css/datepicker.css">
+<style>
+    .ShopInfo {
+        border-radius: 15px;
+    }
+</style>
+<section class="section">
+    <div class="section-header">
+        <h1>Oders Manager</h1>
+    </div>
+
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Choose Shop and Month to see the orders</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label>Choose Shop</label>
+                                    <select class="form-control select2">
+                                        <option>Option 1</option>
+                                        <option>Option 2</option>
+                                        <option>Option 3</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label>Choose Month</label>
+                                    <div class="input-group">
+                                        <input type="text" readonly class="form-control pwstrength" id="datepickerNew">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label> </label>
+                                    <div class="input-group">
+                                        <button type="button" class="btn btn-info btn-block" style="margin-top: 7px;">Submit</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 ">
+                            <div class="card card-success ShopInfo card-statistic-2">
+                                <div class="card-stats">
+                                    <div class="card-stats-title">
+                                        Shop Statistics for <b><i>January</i></b> Month
+                                    </div>
+                                    <div class="card-stats-items">
+                                        <div class="card-stats-item">
+                                            <div class="card-stats-item-count">24</div>
+                                            <div class="card-stats-item-label">Pending</div>
+                                        </div>
+                                        <div class="card-stats-item">
+                                            <div class="card-stats-item-count">12</div>
+                                            <div class="card-stats-item-label">In Progress</div>
+                                        </div>
+                                        <div class="card-stats-item">
+                                            <div class="card-stats-item-count">23</div>
+                                            <div class="card-stats-item-label">Completed</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="card-icon shadow-primary bg-primary">
+                                            <i class="fas fa-archive"></i>
+                                        </div>
+                                        <div class="card-wrap">
+                                            <div class="card-header">
+                                                <h4>Total Orders</h4>
+                                            </div>
+                                            <div class="card-body">
+                                                59
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card-icon shadow-primary bg-primary">
+                                            <i class="fas fa-archive"></i>
+                                        </div>
+                                        <div class="card-wrap">
+                                            <div class="card-header">
+                                                <h4>Total Amount</h4>
+                                            </div>
+                                            <div class="card-body">
+                                                59
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card-icon shadow-primary bg-primary">
+                                            <i class="fas fa-archive"></i>
+                                        </div>
+                                        <div class="card-wrap">
+                                            <div class="card-header">
+                                                <h4>Received Amount</h4>
+                                            </div>
+                                            <div class="card-body">
+                                                59
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-striped table-responsive-lg">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Customer Name</th>
+                                    <th scope="col">Satus</th>
+                                    <th scope="col">Customer Mobile Number</th>
+                                    <th scope="col">Remaining Days</th>
+                                    <th scope="col">Shop Name</th>
+                                    <th scope="col">Shop Area</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>Divakar</td>
+                                    <td>In Progress</td>
+                                    <td>8148563820</td>
+                                    <td>5</td>
+                                    <td>Best Shop</td>
+                                    <td>Anna Nagar</td>
+                                    <td>
+                                        <a href="javascript:void"><i class="fas fa-eye ViewOrderInfo"></i></a>
+                                        <a href="javascript:void"><i class="fas fa-edit EditOrderInfo"></i></a>
+                                        <a href="javascript:void"><i class="fas fa-trash DeleteOrder"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>Divakar</td>
+                                    <td>In Progress</td>
+                                    <td>8148563820</td>
+                                    <td>5</td>
+                                    <td>New Shop</td>
+                                    <td>Anna Nagar</td>
+                                    <td>
+                                        <a href="javascript:void"><i class="fas fa-eye ViewOrderInfo"></i></a>
+                                        <a href="javascript:void"><i class="fas fa-edit EditOrderInfo"></i></a>
+                                        <a href="javascript:void"><i class="fas fa-trash DeleteOrder"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>Divakar</td>
+                                    <td>In Progress</td>
+                                    <td>8148563820</td>
+                                    <td>5</td>
+                                    <td>Shop Name</td>
+                                    <td>Anna Nagar</td>
+                                    <td>
+                                        <a href="javascript:void"><i class="fas fa-eye ViewOrderInfo"></i></a>
+                                        <a href="javascript:void"><i class="fas fa-edit EditOrderInfo"></i></a>
+                                        <a href="javascript:void"><i class="fas fa-trash DeleteOrder"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h2 class="section-title">Single Shop</h2>
+                        <p class="section-lead">
+                            View Order and amount staticts for <a href="javascript:void(0);"><i class="SelectedShopName"><b>Best Shop</b></i></a> for <i><b>Month</b></i>.
+                        </p>
+                        <div class="row BySingleShop">
+                            <div class="col-12 col-md-6 col-lg-6">
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h4>Orders Status</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="myChart3"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-6">
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h4>Amount Status</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="myChart4"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h2 class="section-title">All Shop</h2>
+                        <p class="section-lead">
+                            View Order and amount staticts for All shop for <i><b>Month</b></i>.
+                        </p>
+                        <div class="row ByAllShopShop">
+                            <div class="col-12 col-md-6 col-lg-6">
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h4>Orders Status</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="myChart5"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-6">
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h4>Amount Status</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="myChart6"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="OrderInfo">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Shop Info - </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer bg-whitesmoke br">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="EditOrder">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Shop - </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer bg-whitesmoke br">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="ViewShopInfo">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Shop -<span class="ShopName">ShopName</span> Info</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <img alt="image" src="../../assets/img/example-image.jpg" class="img-fluid">
+                </div>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Name</td>
+                            <td class="ShopOwnerName">Best Shop</td>
+                        </tr>
+                        <tr>
+                            <td>Mobile Number</td>
+                            <td class="UserMobileNumber">8148563820</td>
+                        </tr>
+                        <tr>
+                            <td>Area</td>
+                            <td class="UserArea">Anna Nagar</td>
+                        </tr>
+                        <tr>
+                            <td>Orders</td>
+                            <td class="UserArea">10 / 10</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer bg-whitesmoke br">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- General JS Scripts -->
+<script src="../../assets/modules/jquery.min.js"></script>
+<script src="../../assets/js/stisla.js"></script>
+<!-- JS Libraies -->
+<script src="../../assets/modules/chart.min.js"></script>
+
+<!-- Page Specific JS File -->
+<script src="../../assets/js/page/modules-chartjs.js"></script>
+
+<!-- General JS Scripts -->
+<script src="~/App-Assests/Js/Order.js"></script>
+<!-- JS Libraies -->
+<script src="../../assets/modules/chocolat/dist/js/jquery.chocolat.min.js"></script>
+<script src="https://cdn.jsdelivr.net/bootstrap.datepicker/0.1/js/bootstrap-datepicker.js"></script>
+<!-- Template JS File -->
+<script src="../../assets/js/scripts.js"></script>
+<script src="../../assets/js/custom.js"></script>
+<script src="~/App-Assests/Js/Order.js"></script>
+
+<script>
+    $("#datepickerNew").datepicker({
+        format: "mm-yyyy",
+        viewMode: "months",
+        minViewMode: "months"
+    });
+</script>

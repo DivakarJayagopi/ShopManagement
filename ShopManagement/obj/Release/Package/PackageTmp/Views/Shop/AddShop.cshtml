@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewBag.Title = "AddShop";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .selectgroup-input:focus + .selectgroup-button, .selectgroup-input:checked + .selectgroup-button.active {
+        background-color: #62f923;
+    }
+
+    .selectgroup-input:focus + .selectgroup-button, .selectgroup-input:checked + .selectgroup-button.inactive {
+        background-color: #f34e00;
+    }
+
+    .CustomPointer {
+        cursor: pointer;
+    }
+</style>
+<section class="section">
+    <div class="section-header">
+        <h1>Add Shop</h1>
+        <a href="@Url.Action("viewAllShops", "Shop")" style="float:right;" class="btn btn-info">View All Shops</a>
+    </div>
+
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12 col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Shop Info</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Area</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control pwstrength" data-indicator="pwindicator">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Choose User</label>
+                            <select class="form-control select2">
+                                <option>Option 1</option>
+                                <option>Option 2</option>
+                                <option>Option 3</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Image</label>
+                            <input type="file" class="form-control invoice-input" style="padding:.375rem .75rem;">
+                        </div>
+                        <div class="form-group">
+                            <label>Notes</label>
+                            <textarea class="form-control datemask"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <div class="form-group">
+                                <div class="selectgroup w-100">
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="value" value="active" class="selectgroup-input" checked="">
+                                        <span class="selectgroup-button active">Active</span>
+                                    </label>
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="value" value="inactive" class="selectgroup-input">
+                                        <span class="selectgroup-button inactive">Inactive</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Mobile Number</label>
+                            <input type="tel" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Maximum Orders</label> <small>\per day</small>
+                            <input type="tel" class="form-control">
+                        </div>
+                        <button class="btn btn-block btn-info" type="button">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

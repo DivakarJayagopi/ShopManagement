@@ -1,0 +1,119 @@
+﻿
+@{
+    ViewBag.Title = "AddUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .selectgroup-input:focus + .selectgroup-button, .selectgroup-input:checked + .selectgroup-button.active {
+        background-color: #62f923;
+    }
+
+    .selectgroup-input:focus + .selectgroup-button, .selectgroup-input:checked + .selectgroup-button.inactive {
+        background-color: #f34e00;
+    }
+
+    .CustomPointer {
+        cursor: pointer;
+    }
+</style>
+
+<section class="section">
+    <div class="section-header">
+        <h1>Add User</h1>
+        @*<a href="@Url.Action("viewAllUser", "User")" style="float:right;" class="btn btn-info">View All User</a>*@
+    </div>
+
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12 col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>User Info</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="AddNewUserForm">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" class="form-control UserName">
+                            </div>
+                            <div class="form-group">
+                                <label>Email Id</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="fas fa-mail-bulk"></i>
+                                        </div>
+                                    </div>
+                                    <input type="email" class="form-control UserEmailId">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Mobile Number</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="fas fa-phone"></i>
+                                        </div>
+                                    </div>
+                                    <input type="number" class="form-control UserMobileNumber">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="fas fa-lock"></i>
+                                        </div>
+                                    </div>
+                                    <input type="password" class="form-control UserPassword">
+                                    <div class="input-group-append CustomPointer" id="UserPassword">
+                                        <div class="input-group-text">
+                                            <i class="fas fa-eye"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Area</label>
+                                <input type="text" class="form-control invoice-input UserArea">
+                            </div>
+                            <div class="form-group">
+                                <label>Status</label>
+                                <div class="form-group">
+                                    <div class="selectgroup w-100">
+                                        <label class="selectgroup-item">
+                                            <input type="radio" name="UserStatus" value="active" class="selectgroup-input UserStatus" id="active" checked="">
+                                            <span class="selectgroup-button active">Active</span>
+                                        </label>
+                                        <label class="selectgroup-item">
+                                            <input type="radio" name="UserStatus" value="inactive" class="selectgroup-input UserStatus" id="inactive">
+                                            <span class="selectgroup-button inactive">Inactive</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Image</label>
+                                <input type="file" class="form-control invoice-input UserSelectedImage" id="UserImage" accept="image/x-png,image/gif,image/jpeg" style="padding:.375rem .75rem;">
+                            </div>
+                            <div class="form-group">
+                                <label>Notes</label>
+                                <textarea class="form-control datemask User_Notes"></textarea>
+                            </div>
+                            <span class="text-danger customErrorMessageAddUser"></span>
+                            <button type="button" class="btn btn-block btn-info AddUserFromSubmit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- General JS Scripts -->
+<script src="../../assets/modules/jquery.min.js"></script>
+<!-- JS Libraies -->
+<script src="../../assets/modules/chocolat/dist/js/jquery.chocolat.min.js"></script>
+<script src="~/App-Assests/Js/User.js"></script>

@@ -1,0 +1,249 @@
+﻿
+@{
+    ViewBag.Title = "ViewAllShops";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- CSS Libraries -->
+<link rel="stylesheet" href="../../assets/modules/chocolat/dist/css/chocolat.css">
+<style>
+    .ShopList {
+        border-radius: 20px;
+    }
+
+    .UserImage {
+        height: 30px;
+        width: 30px;
+        border-radius: 100px;
+    }
+    .selectgroup-input:focus + .selectgroup-button, .selectgroup-input:checked + .selectgroup-button.active {
+        background-color: #62f923;
+    }
+
+    .selectgroup-input:focus + .selectgroup-button, .selectgroup-input:checked + .selectgroup-button.inactive {
+        background-color: #f34e00;
+    }
+
+    .CustomPointer {
+        cursor: pointer;
+    }
+</style>
+<section class="section">
+    <div class="section-header">
+        <h1>All Shops</h1>
+        <a href="@Url.Action("AddShop", "Shop")" style="float:right;" class="btn btn-info">Add New Shop</a>
+    </div>
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card-body">
+                    <div class="card card-success ShopList">
+                        <div class="card-header">
+                            <h4><a href="javascript:void(0)" class="ShopEdit">New Shop</a></h4>
+                            <div class="card-header-action">
+                                <div class="btn-group">
+                                    <a href="javascript:void(0)" class="ShopEdit"><i class="fas fa-edit"></i></a>
+                                    <a href="javascript:void(0)" class="DeleteShop"><i class="fas fa-trash-alt"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="ShopImage">
+                                <div class="chocolat-parent">
+                                    <a href="../../assets/img/example-image.jpg" class="chocolat-image" title="Just an example">
+                                        <div>
+                                            <img alt="image" src="../../assets/img/example-image.jpg" class="img-fluid">
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <br />
+                            <div>
+                                <b>Area : Redhills</b><br />
+                                <b>Mobile : 8148563820</b><br />
+                                <b>Orders : 10 / 10</b><br />
+                                <span class="row" style="padding-left:14px;">
+                                    <b>
+                                        Manager :
+                                        <span class="chocolat-parent">
+                                            <a href="../../assets/img/example-image.jpg" class="chocolat-image" title="Just an example">
+                                                <span>
+                                                    <img alt="image" src="../../assets/img/example-image.jpg" class="img-fluid UserImage">
+                                                </span>
+                                            </a>
+                                        </span>
+                                        <a href="javascript:void(0);" class="ViewOwnerInfo">Divakar Jayagopi</a>
+                                    </b>&nbsp;
+
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card-body">
+                    <div class="card card-danger ShopList">
+                        <div class="card-header">
+                            <h4><a href="javascript:void(0)" class="ShopEdit">Best Shop</a></h4>
+                            <div class="card-header-action">
+                                <div class="btn-group">
+                                    <a href="javascript:void(0)" class="ShopEdit"><i class="fas fa-edit"></i></a>
+                                    <a href="javascript:void(0)" class="DeleteShop"><i class="fas fa-trash-alt"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="ShopImage">
+                                <div class="chocolat-parent">
+                                    <a href="../../assets/img/example-image.jpg" class="chocolat-image" title="Just an example">
+                                        <div>
+                                            <img alt="image" src="../../assets/img/example-image.jpg" class="img-fluid">
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <br />
+                            <div>
+                                <b>Area : Redhills</b><br />
+                                <b>Mobile : 8148563820</b><br />
+                                <b>Orders : 10 / 10</b><br />
+                                <span class="row" style="padding-left:14px;">
+                                    <b>
+                                        Manager :
+                                        <span class="chocolat-parent">
+                                            <a href="../../assets/img/example-image.jpg" class="chocolat-image" title="Just an example">
+                                                <span>
+                                                    <img alt="image" src="../../assets/img/example-image.jpg" class="img-fluid UserImage">
+                                                </span>
+                                            </a>
+                                        </span>
+                                        <a href="javascript:void(0);" class="ViewOwnerInfo">Nisar Tester</a>
+                                    </b>&nbsp;
+
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="EditShop">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Shop - </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="ShopEditForm">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Area</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control pwstrength" data-indicator="pwindicator">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Choose User</label>
+                        <select class="form-control select2">
+                            <option>Option 1</option>
+                            <option>Option 2</option>
+                            <option>Option 3</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Image</label>
+                        <input type="file" class="form-control invoice-input" style="padding:.375rem .75rem;">
+                    </div>
+                    <div class="form-group">
+                        <label>Notes</label>
+                        <textarea class="form-control datemask"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <div class="form-group">
+                            <div class="selectgroup w-100">
+                                <label class="selectgroup-item">
+                                    <input type="radio" name="value" value="active" class="selectgroup-input" checked="">
+                                    <span class="selectgroup-button active">Active</span>
+                                </label>
+                                <label class="selectgroup-item">
+                                    <input type="radio" name="value" value="inactive" class="selectgroup-input">
+                                    <span class="selectgroup-button inactive">Inactive</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Mobile Number</label>
+                        <input type="tel" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Maximum Orders</label> <small>\per day</small>
+                        <input type="tel" class="form-control">
+                    </div>
+                    <button class="btn btn-block btn-info" type="button">Submit</button>
+                </div>
+            </div>
+            <div class="modal-footer bg-whitesmoke br">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Update changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="ViewOwnerInfo">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><span class="ShopOwnerName">UserName</span> - Info</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <img alt="image" src="../../assets/img/example-image.jpg" class="img-fluid">
+                </div>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Name</td>
+                            <td class="ShopOwnerName">Divakar Jayagopi</td>
+                        </tr>
+                        <tr>
+                            <td>EmailId</td>
+                            <td class="UserEmailId">divakarjayagopi@gmail.com</td>
+                        </tr>
+                        <tr>
+                            <td>Mobile Number</td>
+                            <td class="UserMobileNumber">8148563820</td>
+                        </tr>
+                        <tr>
+                            <td>Area</td>
+                            <td class="UserArea">Redhills</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer bg-whitesmoke br">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- General JS Scripts -->
+<script src="../../assets/modules/jquery.min.js"></script>
+<!-- JS Libraies -->
+<script src="../../assets/modules/chocolat/dist/js/jquery.chocolat.min.js"></script>
+
+<script src="~/App-Assests/Js/Shop.js"></script>

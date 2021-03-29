@@ -1,0 +1,214 @@
+﻿
+@{
+    ViewBag.Title = "viewAllUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .UserInfo {
+        border-radius: 20px;
+    }
+
+    .UserImage {
+        width: 100px;
+        border-radius: 50% !important;
+    }
+    .selectgroup-input:focus + .selectgroup-button, .selectgroup-input:checked + .selectgroup-button.active {
+        background-color: #62f923;
+    }
+
+    .selectgroup-input:focus + .selectgroup-button, .selectgroup-input:checked + .selectgroup-button.inactive {
+        background-color: #f34e00;
+    }
+</style>
+<!-- CSS Libraries -->
+<link rel="stylesheet" href="../../assets/modules/chocolat/dist/css/chocolat.css">
+<!-- CSS Libraries -->
+<link rel="stylesheet" href="../../assets/modules/izitoast/css/iziToast.min.css">
+<section class="section">
+    <div class="section-header">
+        <h1>All Users</h1>
+        @*<a href="@Url.Action("AddUser", "User")" style="float:right;" class="btn btn-info">Add New User</a>*@
+    </div>
+
+    <div class="section-body">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-12 col-sm-12 col-lg-6">
+                    <div data-id="@item.Id" class="card author-box @item.Status UserInfo UserStatusCard">
+                        <div class="card-body">
+                            <div class="author-box-left">
+                                <div class="chocolat-parent">
+                                    <a href="@item.Image" data-id="@item.Id" class="chocolat-image SelectedUserImageExpand" title="Just an example">
+                                        <div>
+                                            <img alt="image" src="@item.Image" data-id="@item.Id" class="img-fluid UserImage SelectedUserImage">
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="author-box-details">
+                                <div class="author-box-name">
+                                    <h1><span class="SelectedUserName" data-id="@item.Id" data>@item.Name</span></h1>
+                                </div>
+                                <div class="author-box-job"><b style="font-size:14px;"><a href="javascript:void(0)" class="ViewShopInfo">Best Shop</a></b> / <small>Anna Nagar</small></div>
+                                <div class="author-box-description">
+                                    <p><i class="fas fa-mail-bulk"></i> <span class="SelectedUserEmail" data-id="@item.Id">@item.EmailId</span></p>
+                                    <p><i class="fas fa-phone"></i> +91 <span class="SelectedUserMobile" data-id="@item.Id">@item.MobileNumber</span></p>
+                                </div>
+                                <div>
+                                    <div class="btn-group">
+                                        <a href="javascript:void(0)" class="EditUserInfo" data-id="@item.Id"><i class="fas fa-edit"></i></a>
+                                        <a href="javascript:void(0)" class="DeleteUser" data-id="@item.Id" data-UserName="@item.Name"><i class="fas fa-trash-alt"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="EditUserInfo">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit User - <strong class="SelectedUserName"></strong> </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="EditUser">
+                    <form id="EditUserForm">
+                        <input type="hidden" class="SelectedUserId" />
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" class="form-control UserName">
+                        </div>
+                        <div class="form-group">
+                            <label>Email Id</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-mail-bulk"></i>
+                                    </div>
+                                </div>
+                                <input type="email" class="form-control UserEmailId">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Mobile Number</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-phone"></i>
+                                    </div>
+                                </div>
+                                <input type="number" class="form-control UserMobileNumber">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-lock"></i>
+                                    </div>
+                                </div>
+                                <input type="password" class="form-control UserPassword">
+                                <div class="input-group-append CustomPointer" id="UserPassword">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-eye"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Area</label>
+                            <input type="text" class="form-control invoice-input UserArea">
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <div class="form-group">
+                                <div class="selectgroup w-100">
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="UserStatus" value="active" class="selectgroup-input UserStatus" id="active" checked="">
+                                        <span class="selectgroup-button active">Active</span>
+                                    </label>
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="UserStatus" value="inactive" class="selectgroup-input UserStatus" id="inactive">
+                                        <span class="selectgroup-button inactive">Inactive</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Image</label>
+                            <input type="file" class="form-control invoice-input UserSelectedImage" id="UserImage" accept="image/x-png,image/gif,image/jpeg" style="padding:.375rem .75rem;">
+                        </div>
+                        <div class="form-group">
+                            <label>Notes</label>
+                            <textarea class="form-control datemask User_Notes"></textarea>
+                        </div>
+                        <span class="text-danger customErrorMessageAddUser"></span>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer bg-whitesmoke br">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary EditUserFromSubmit">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="ViewShopInfo">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Shop -<span class="ShopName">ShopName</span> Info</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <img alt="image" src="../../assets/img/example-image.jpg" class="img-fluid">
+                </div>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Name</td>
+                            <td class="ShopOwnerName">Best Shop</td>
+                        </tr>
+                        <tr>
+                            <td>Mobile Number</td>
+                            <td class="UserMobileNumber">8148563820</td>
+                        </tr>
+                        <tr>
+                            <td>Area</td>
+                            <td class="UserArea">Anna Nagar</td>
+                        </tr>
+                        <tr>
+                            <td>Orders</td>
+                            <td class="UserArea">10 / 10</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer bg-whitesmoke br">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- General JS Scripts -->
+<script src="../../assets/modules/jquery.min.js"></script>
+<!-- JS Libraies -->
+<script src="../../assets/modules/izitoast/js/iziToast.min.js"></script>
+<!-- JS Libraies -->
+<script src="../../assets/modules/chocolat/dist/js/jquery.chocolat.min.js"></script>
+<script src="~/App-Assests/Js/User.js"></script>

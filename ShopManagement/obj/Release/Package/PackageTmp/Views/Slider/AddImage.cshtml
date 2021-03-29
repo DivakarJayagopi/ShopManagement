@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewBag.Title = "AddImage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- CSS Libraries -->
+<link rel="stylesheet" href="../../assets/modules/dropzonejs/dropzone.css">
+
+<!-- Template CSS -->
+<link rel="stylesheet" href="../../assets/css/style.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<section class="section">
+    <div class="section-header">
+        <h1>Add Files</h1>
+        <div class="section-header-breadcrumb">
+            <a href="@Url.Action("Gallery", "Slider")" class="btn btn-info">View Gallery</a>
+        </div>
+    </div>
+
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Choose Images To Upload</h4>
+                    </div>
+                    <div class="card-body">
+                        <form action="#" class="dropzone" id="mydropzone">
+                            <div class="fallback">
+                                <input name="file" type="file" multiple />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- General JS Scripts -->
+<script src="../../assets/modules/jquery.min.js"></script>
+
+<!-- JS Libraies -->
+<script src="../../assets/modules/dropzonejs/min/dropzone.min.js"></script>
+
+<!-- Page Specific JS File -->
+<script src="../../assets/js/page/components-multiple-upload.js"></script>
