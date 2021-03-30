@@ -285,7 +285,7 @@ namespace ShopManagement.Data
         {
             try
             {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM ShopsInfo WHERE Status=@Status");
+                SqlCommand cmd = new SqlCommand("SELECT shp.* FROM UserConnector uc JOIN ShopsInfo shp ON shp.Id = uc.ShopId WHERE uc.UserId = @UserId");
                 cmd.Parameters.AddWithValue("@UserId", UserId);
                 con.Open();
                 cmd.Connection = con;

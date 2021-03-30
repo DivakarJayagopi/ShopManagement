@@ -81,6 +81,7 @@ function CallBackGetShopInfoById(responseData) {
     if (responseData.message.status == "success") {
         var ShopInfo = responseData.message.shopInfo;
         var UsersList = responseData.message.usersList;
+        var ShopConnecteduserId = responseData.message.ShopConnecteduserId;
         if (UsersList != null && UsersList.length > 0) {
             var OptionHTML = "";
             $.each(UsersList, function (key, val) {
@@ -94,6 +95,9 @@ function CallBackGetShopInfoById(responseData) {
         $(".SelectedShopMobileNumber").val(ShopInfo.MobileNumber);
         $(".SelectedMaxOrderCountForShop").val(ShopInfo.MaxOrderCount);
         $(".SelectedShopNotes").val(ShopInfo.Notes);
+
+        $(".SelectedShopManager").val(ShopConnecteduserId);
+
         $(".SelectedShopNameModelTitle").text(ShopInfo.Name);
         if (ShopInfo.Status == "active") {
             $(".SelectedShopStatus[value=\"active\"]").trigger("click");
@@ -168,6 +172,7 @@ function CallBackUpdateShopInfo(responseData) {
         var ShopInfo = responseData.message.ShopInfo;
         var ShopId = ShopInfo.Id;
 
+        var ShopConnected_UserInfo = responseData.message.ShopConnectedUserInfo;
         $(".ShopImageExpand[data-id='" + ShopId + "']").attr("src", ShopInfo.Image);
 
         $(".ShopName[data-id='" + ShopId + "']").text(ShopInfo.Name);
@@ -182,6 +187,11 @@ function CallBackUpdateShopInfo(responseData) {
         else
             $(".ShopListCardStatus[data-id='" + ShopId + "']").addClass("card-danger");
 
+        $(".ShopManagerImageExpand[data-id='" + ShopId + "']").attr("href", ShopConnected_UserInfo.Image);
+        $(".ShopManagerImage[data-id='" + ShopId + "']").attr("src", ShopConnected_UserInfo.Image);
+
+        $(".ShopManagerName[data-shopId='" + ShopId + "']").text(ShopConnected_UserInfo.Name);
+
         iziToast.success({
             title: 'success',
             message: 'Shop Informatino Updated Successfully',
@@ -194,9 +204,25 @@ function CallBackUpdateShopInfo(responseData) {
     }
 }
 
-$(".ViewOwnerInfo").click(function () {
-    $("#ViewOwnerInfo").modal("show");
+$(".ShopManagerName").click(function () {
+    var UserId = $(this).attr("data-id");
+    var data = '{Id:"' + UserId + '"}';
+    handleAjaxRequest(null, true, "/Method/GetUserById", data, "CallBackGetUserInfoByIdInShopsList");   
 });
+
+function CallBackGetUserInfoByIdInShopsList(responseData) {
+    if (responseData.message.status == "success") {
+        var UserInfo = responseData.message.userInfo;
+        $(".ShopOwnerName").text(UserInfo.Name);
+        $(".UserEmailId").text(UserInfo.EmailId);
+        $(".UserMobileNumber").text(UserInfo.MobileNumber);
+        $(".UserArea").text(UserInfo.Area);
+
+        $(".ShopManagerImageInModel").attr("src", UserInfo.Image);
+
+        $("#ViewOwnerInfo").modal("show");
+    }
+}
 
 $(".DeleteShop").click(function () {
     var ShopId = $(this).attr("data-id");

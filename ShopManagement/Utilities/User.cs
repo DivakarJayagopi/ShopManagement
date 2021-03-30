@@ -151,5 +151,23 @@ namespace ShopManagement.Utilities
             }
             return Result;
         }
+
+        public Models.User GetShopConnectedUserInfo(string ShopId)
+        {
+            Models.User user = new Models.User();
+            try
+            {
+                dt = _userData.GetShopConnectedUserInfo(ShopId);
+                foreach (DataRow record in dt.Rows)
+                {
+                    user = BuildUserData(record);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return user;
+        }
     }
 }

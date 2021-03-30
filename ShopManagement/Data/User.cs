@@ -207,5 +207,28 @@ namespace ShopManagement.Data
             }
             return Result;
         }
+
+        public DataTable GetShopConnectedUserInfo(string ShopId)
+        {
+            try
+            {
+                dt = new DataTable();
+                SqlCommand cmd = new SqlCommand("SELECT usr.* FROM UserConnector uc JOIN Users usr ON usr.Id = uc.UserId WHERE uc.ShopId = @ShopId");
+                cmd.Parameters.AddWithValue("@ShopId", ShopId);
+                con.Open();
+                cmd.Connection = con;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+                con.Close();
+            }
+            return dt;
+        }
     }
 }
