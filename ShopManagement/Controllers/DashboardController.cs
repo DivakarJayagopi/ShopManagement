@@ -11,6 +11,8 @@ namespace ShopManagement.Controllers
         // GET: Dashboard
         public ActionResult Dashboard()
         {
+            if (Session["UserId"] == null)
+                return RedirectToAction("Login", "Account");
             return View();
         }
     }

@@ -80,7 +80,7 @@ function AddNewUser(target) {
     var UserArea = $(".UserArea").val().trim();
     var User_Notes = $(".User_Notes").val().trim();
     var Status = UserStatus;
-
+    var IsAdmin = $(".IsMediatorUser").val();
     if (UserName == "" || UserEmailId == "" || UserMobileNumber == "" || UserPassword == "" || UserArea == "") {
 
         if (UserName == "") $(".UserName").addClass("form-error");
@@ -115,11 +115,33 @@ function AddNewUser(target) {
             IsSuccess = true;
         }
 
+        var regex = /^(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])+$/;
+        var isMail = regex.test(UserEmailId);
+        if (IsSuccess)
+            if (!isMail) {
+                $(".UserEmailId").addClass("form-error");
+                $(".customErrorMessageAddUser").text("Please enter valid EMail Id");
+                IsSuccess = false;
+            } else {
+                $(".UserEmailId").removeClass("form-error");
+                IsSuccess = true;
+            }
+
+        if (IsSuccess)
+            if (UserPassword.length <= 8) {
+                $(".UserPassword").addClass("form-error");
+                $(".customErrorMessageAddUser").text("Password length should be more than 8 characters");
+                IsSuccess = false;
+            } else {
+                $(".UserPassword").removeClass("form-error");
+                IsSuccess = true;
+            }
+
         if (IsSuccess) {
 
             $(".AddUserFromSubmit").addClass("btn-progress");
 
-            var data = '{Name:"' + UserName + '",EmailId:"' + UserEmailId + '",Password:"' + UserPassword + '",Image:"' + UserImage + '",Status:"' + Status + '",Area:"' + UserArea + '",Notes:"' + User_Notes + '",MobileNumber:"' + UserMobileNumber + '",IsAdmin:"' + 0 + '"}';
+            var data = '{Name:"' + UserName + '",EmailId:"' + UserEmailId + '",Password:"' + UserPassword + '",Image:"' + UserImage + '",Status:"' + Status + '",Area:"' + UserArea + '",Notes:"' + User_Notes + '",MobileNumber:"' + UserMobileNumber + '",IsAdmin:"' + IsAdmin + '"}';
             handleAjaxRequest(null, true, "/Method/AddUserInfo", data, "CallBackAddNewUser");
         }
         
@@ -157,12 +179,18 @@ function CallBackGetUserInfoById(responseData) {
         $(".UserArea").val(UserInfo.Area);
         $(".User_Notes").val(UserInfo.Notes);
         $(".SelectedUserId").val(UserInfo.Id);
+        $(".IsMediatorUser").val(UserInfo.IsAdmin);
         $(".SelectedUserNameModelTitle").text(UserInfo.Name);
         UserStatus = UserInfo.Status;
         if (UserStatus == "active") {
             $(".UserStatus[value=\"active\"]").trigger("click");
         } else {
             $(".UserStatus[value=\"inactive\"]").trigger("click");
+        }
+        if (UserInfo.IsAdmin == "1") {
+            $(".UserStatusField").hide();
+        } else {
+            $(".UserStatusField").show();
         }
         $("#EditUserInfo").modal("show");
     }
@@ -214,6 +242,28 @@ function UpdateUserInfo(target) {
             $(".UserMobileNumber").removeClass("form-error");
             IsSuccess = true;
         }
+
+        var regex = /^(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])+$/;
+        var isMail = regex.test(UserEmailId);
+        if (IsSuccess)
+            if (!isMail) {
+                $(".UserEmailId").addClass("form-error");
+                $(".customErrorMessageAddUser").text("Please enter valid EMail Id");
+                IsSuccess = false;
+            } else {
+                $(".UserEmailId").removeClass("form-error");
+                IsSuccess = true;
+            }
+
+        if (IsSuccess)
+            if (UserPassword.length <= 8) {
+                $(".UserPassword").addClass("form-error");
+                $(".customErrorMessageAddUser").text("Password length should be more than 8 characters");
+                IsSuccess = false;
+            } else {
+                $(".UserPassword").removeClass("form-error");
+                IsSuccess = true;
+            }
 
         if (IsSuccess) {
 
@@ -272,6 +322,17 @@ $("#UserPassword").on('click', function () {
         console.log(e);
     }
 });
+
+function ValidateIsUserInfoExists(UserName, MobileNumber, EMailId) {
+    var data = '{UserName:"' + UserName + '", MobileNumber:"' + MobileNumber + '",EMailId:"' + EMailId + '"}';
+    handleAjaxRequest(null, true, "/Method/GetUserInfoForExistsProperty", data, "CallBacValidateIsUserInfoExists");
+}
+
+function CallBacValidateIsUserInfoExists(responseData) {
+    if (responseData.message.status == "success") {
+        var IsUserInfoExist = responseData.message.IsUserInfoExist;
+    }
+}
 
 function readFile() {    
     if (this.files && this.files[0]) {

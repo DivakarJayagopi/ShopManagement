@@ -11,21 +11,35 @@ namespace ShopManagement.Controllers
         // GET: Account
         public ActionResult Login()
         {
+            try
+            {
+                Session.Abandon();
+            }
+            catch (Exception)
+            {
+
+            }
             return View();
         }
 
         public ActionResult UserProfile()
         {
+            if (Session["UserId"] == null)
+                return RedirectToAction("Login", "Account");
             return View();
         }
 
         public ActionResult ChangePassword()
         {
+            if (Session["UserId"] == null)
+                return RedirectToAction("Login", "Account");
             return View();
         }
 
         public ActionResult ResetPassword()
         {
+            if (Session["UserId"] == null)
+                return RedirectToAction("Login", "Account");
             return View();
         }
     }

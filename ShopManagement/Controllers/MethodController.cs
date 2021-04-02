@@ -11,6 +11,34 @@ namespace ShopManagement.Controllers
         Utilities.Shop _shopData = new Utilities.Shop();
         Utilities.Order _orderUtility = new Utilities.Order();
         Utilities.Slider _sliderUtility = new Utilities.Slider();
+
+        public ActionResult ValidateUserLogin(string MobileNumber, string Password)
+        {
+            Dictionary<string, object> returnObject = new Dictionary<string, object>();
+            try
+            {
+                var UserInfo = _userData.ValidateUserLogin(MobileNumber, Password);                
+                if (UserInfo != null && !string.IsNullOrEmpty(UserInfo.Id))
+                {
+                    Session["UserId"] = UserInfo.Id;
+                    Session["IsAdmin"] = UserInfo.IsAdmin;
+                    Session["Name"] = UserInfo.Name;
+                    Session["UserImage"] = UserInfo.Image;
+                    returnObject.Add("userInfo", UserInfo);
+                    returnObject.Add("status", "success");
+                }
+                else
+                {
+                    returnObject.Add("status", "fail");
+                }
+            }
+            catch (Exception exe)
+            {
+
+            }
+            return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
+        }
+
         // GET: Method
         public ActionResult AddUserInfo(string Name, string EmailId, string Password, string Image, string Status, string Area, string Notes, string MobileNumber, int IsAdmin)
         {
@@ -158,6 +186,31 @@ namespace ShopManagement.Controllers
             }
             return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult GetUserInfoForExistsProperty(string UserName, string MobileNumber, string EMailId)
+        {
+            Dictionary<string, object> returnObject = new Dictionary<string, object>();
+            try
+            {
+                
+                bool IsUserInfoExist = _userData.GetUserInfoForExistsProperty(UserName, MobileNumber, EMailId);
+                if (IsUserInfoExist)
+                {
+                    returnObject.Add("IsUserInfoExist", IsUserInfoExist);
+                    returnObject.Add("status", "success");
+                }
+                else
+                {
+                    returnObject.Add("status", "fail");
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult GetAllUsers()
         {
             Dictionary<string, object> returnObject = new Dictionary<string, object>();

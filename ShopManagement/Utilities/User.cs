@@ -11,6 +11,23 @@ namespace ShopManagement.Utilities
         Data.User _userData = new Data.User();
         DataTable dt = new DataTable();
 
+        public Models.User ValidateUserLogin(string MobileNumber, string Password)
+        {
+            Models.User UserInfo = new Models.User();
+            try
+            {
+                dt = _userData.ValidateUserLogin(MobileNumber, Password);
+                foreach (DataRow record in dt.Rows)
+                {
+                    UserInfo = BuildUserData(record);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return UserInfo;
+        }
         public bool Add(string Name, string EmailId, string Password, string Image, string Status, string Area, string Notes, string MobileNumber, int IsAdmin)
         {
             bool Result = false;
@@ -168,6 +185,24 @@ namespace ShopManagement.Utilities
 
             }
             return user;
+        }
+
+        public bool GetUserInfoForExistsProperty(string UserName, string MobileNumber, string EMailId)
+        {
+            bool IsUserExists = false;
+            try
+            {
+                dt = _userData.GetUserInfoForExistsProperty(UserName, MobileNumber, EMailId);
+                if(dt.Rows.Count > 0)
+                {
+                    IsUserExists = true;
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return IsUserExists;
         }
     }
 }

@@ -151,6 +151,7 @@
     <Content Include="App-Assests\Js\Login.js" />
     <Content Include="App-Assests\Js\Order.js" />
     <Content Include="App-Assests\Js\Shop.js" />
+    <Content Include="App-Assests\Js\Slider.js" />
     <Content Include="App-Assests\Js\User.js" />
     <Content Include="assets\css\components.css" />
     <Content Include="assets\css\style.css" />
@@ -875,6 +876,7 @@
     <Content Include="assets\modules\weather-icon\font\weathericons-regular-webfont.woff" />
     <Content Include="assets\modules\weather-icon\font\weathericons-regular-webfont.woff2" />
     <Content Include="assets\modules\weather-icon\font\weathericons-regular-webfontd41d.eot" />
+    <Content Include="ImageStorage\UserImage\User.png" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -890,6 +892,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="ImageStorage\ShopImage\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

@@ -11,16 +11,22 @@ namespace ShopManagement.Controllers
         // GET: Slider
         public ActionResult SliderSettings()
         {
+            if (Session["UserId"] == null)
+                return RedirectToAction("Login", "Account");
             return View();
         }
 
         public ActionResult AddImage()
         {
+            if (Session["UserId"] == null)
+                return RedirectToAction("Login", "Account");
             return View();
         }
 
         public ActionResult Gallery()
         {
+            if (Session["UserId"] == null)
+                return RedirectToAction("Login", "Account");
             return View();
         }
     }
