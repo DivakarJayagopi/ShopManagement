@@ -12,7 +12,7 @@
         border-radius: 20px;
     }
 
-    .UserImage {
+    .ShopManagerImage {
         height: 30px;
         width: 30px;
         border-radius: 100px;
@@ -84,14 +84,22 @@
                                         <span class="row" style="padding-left:14px;">
                                             <b>
                                                 Manager :
-                                                <span class="chocolat-parent">
-                                                    <a href="../../assets/img/example-image.jpg" class="chocolat-image" title="Just an example">
-                                                        <span>
-                                                            <img alt="image" src="../../assets/img/example-image.jpg" class="img-fluid UserImage">
-                                                        </span>
-                                                    </a>
-                                                </span>
-                                                <a href="javascript:void(0);" class="ViewOwnerInfo">Nisar Tester</a>
+                                                @if (item.UserInfo != null && item.UserInfo.Id != null)
+                                                {
+                                                    <span class="chocolat-parent">
+                                                        <a href="@item.UserInfo.Image" data-id="@item.Id" class="chocolat-image ShopManagerImageExpand" title="Just an example">
+                                                            <span>
+                                                                <img alt="image" src="@item.UserInfo.Image" data-id="@item.Id" class="img-fluid ShopManagerImage">
+                                                            </span>
+                                                        </a>
+                                                    </span>
+                                                    <a href="javascript:void(0);" class="ShopManagerName" data-shopId="@item.Id" data-id="@item.UserInfo.Id">@item.UserInfo.Name</a>
+                                                }
+                                                else
+                                                {
+                                                    <span href="javascript:void(0)" class="text-warning"><i><b>No UserInfo Info Found !</b></i></span>
+                                                }
+
                                             </b>&nbsp;
 
                                         </span>
@@ -187,7 +195,7 @@
             </div>
             <div class="modal-body">
                 <div>
-                    <img alt="image" src="../../assets/img/example-image.jpg" class="img-fluid">
+                    <img alt="image" src="../../assets/img/example-image.jpg" class="img-fluid ShopManagerImageInModel">
                 </div>
                 <table>
                     <tbody>

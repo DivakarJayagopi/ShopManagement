@@ -288,9 +288,12 @@ namespace ShopManagement.Controllers
                 }
                 Result = _shopData.Update(Id, Name, ShopArea, UserId, Image, Notes, Status, MobileNumber, MaxOrderCount);
                 ShopInfo = shopUtility.GetShopById(Id);
+                Utilities.User userUtility = new Utilities.User();
+                var ShopConnectedUserInfo = userUtility.GetShopConnectedUserInfo(ShopInfo.Id);
                 if (Result == true)
                 {
                     returnObject.Add("ShopInfo", ShopInfo);
+                    returnObject.Add("ShopConnectedUserInfo", ShopConnectedUserInfo);
                     returnObject.Add("status", "success");
                 }
                 else
@@ -333,10 +336,13 @@ namespace ShopManagement.Controllers
             {
                 Models.Shop shopInfo = new Models.Shop();
                 shopInfo = _shopData.GetShopById(Id);
+                Utilities.User userUtility = new Utilities.User();
+                var UserInfo = userUtility.GetShopConnectedUserInfo(shopInfo.Id);
                 if (shopInfo != null && !string.IsNullOrEmpty(shopInfo.Id))
                 {
                     var usersList = _userData.GetAllUsersByStatus(true);
                     returnObject.Add("shopInfo", shopInfo);
+                    returnObject.Add("ShopConnecteduserId", UserInfo.Id);
                     returnObject.Add("usersList", usersList);
                     returnObject.Add("status", "success");
                 }

@@ -12,6 +12,7 @@
         width: 100px;
         border-radius: 50% !important;
     }
+
     .selectgroup-input:focus + .selectgroup-button, .selectgroup-input:checked + .selectgroup-button.active {
         background-color: #62f923;
     }
@@ -50,7 +51,17 @@
                                 <div class="author-box-name">
                                     <h1><span class="SelectedUserName" data-id="@item.Id" data>@item.Name</span></h1>
                                 </div>
-                                <div class="author-box-job"><b style="font-size:14px;"><a href="javascript:void(0)" class="ViewShopInfo">Best Shop</a></b> / <small>Anna Nagar</small></div>
+                                <div class="author-box-job">
+                                    @if (item.ShopInfo != null)
+                                    {
+                                        <a href="javascript:void(0)" data-id="@item.ShopInfo.Id" class="ViewShopInfo">@item.ShopInfo.Name</a>  <small>@item.ShopInfo.ShopArea</small>
+                                    }
+                                    else
+                                    {
+                                        <span href="javascript:void(0)" class="text-warning"><i><b>No Shop Info Found !</b></i></span>
+                                    }
+
+                                </div>
                                 <div class="author-box-description">
                                     <p><i class="fas fa-mail-bulk"></i> <span class="SelectedUserEmail" data-id="@item.Id">@item.EmailId</span></p>
                                     <p><i class="fas fa-phone"></i> +91 <span class="SelectedUserMobile" data-id="@item.Id">@item.MobileNumber</span></p>
@@ -168,32 +179,32 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Shop -<span class="ShopName">ShopName</span> Info</h5>
+                <h5 class="modal-title">Shop -<span class="ShopName text-success">ShopName</span></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div>
-                    <img alt="image" src="../../assets/img/example-image.jpg" class="img-fluid">
+                    <img alt="image" src="../../assets/img/example-image.jpg" id="ShopImage" class="img-fluid">
                 </div>
                 <table>
                     <tbody>
                         <tr>
                             <td>Name</td>
-                            <td class="ShopOwnerName">Best Shop</td>
+                            <td class="ShopName">Best Shop</td>
                         </tr>
                         <tr>
                             <td>Mobile Number</td>
-                            <td class="UserMobileNumber">8148563820</td>
+                            <td class="ShopMobileNumber">8148563820</td>
                         </tr>
                         <tr>
                             <td>Area</td>
-                            <td class="UserArea">Anna Nagar</td>
+                            <td class="ShopArea">Anna Nagar</td>
                         </tr>
                         <tr>
                             <td>Orders</td>
-                            <td class="UserArea">10 / 10</td>
+                            <td class="MaxOrderCountForShop">10 / 10</td>
                         </tr>
                     </tbody>
                 </table>

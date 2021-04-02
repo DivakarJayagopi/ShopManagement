@@ -7,8 +7,27 @@ $(".ViewUserInfo").click(function () {
 });
 
 $(".ViewShopInfo").click(function () {
-    $("#ViewShopInfo").modal("show");
+    var ShopId = $(this).attr("data-id");
+    var data = '{Id:"' + ShopId + '"}';
+    handleAjaxRequest(null, true, "/Method/GetShopInfoById", data, "CallBackGetShopInfoByIdInUsersList");
+    
 });
+
+function CallBackGetShopInfoByIdInUsersList(responseData) {
+    if (responseData.message.status == "success") {
+        var ShopInfo = responseData.message.shopInfo;
+
+        $(".ShopName").text(ShopInfo.Name);
+        $(".ShopMobileNumber").text(ShopInfo.MobileNumber);
+        $(".ShopArea").text(ShopInfo.ShopArea);
+        $(".MaxOrderCountForShop").text(ShopInfo.MaxOrderCount);
+
+        $("#ShopImage").attr("src", ShopInfo.Image);
+
+        $("#ViewShopInfo").modal("show");
+    }
+}
+
 
 $(".DeleteUser").click(function () {
     var UserId = $(this).attr("data-id");
