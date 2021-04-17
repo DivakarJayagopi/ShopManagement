@@ -66,12 +66,13 @@ namespace ShopManagement.Utilities
             return Result;
         }
 
-        public bool AddImages(string Id, string Image, string ShopId)
+        public bool AddImages(string Image, string QualityType)
         {
             bool Result = false;
             try
             {
-                Result = _sliderData.AddImages(Id, Image, ShopId);
+                string Id = Guid.NewGuid().ToString();
+                Result = _sliderData.AddImages(Id, Image, QualityType);
             }
             catch (Exception)
             {
@@ -101,19 +102,19 @@ namespace ShopManagement.Utilities
             return Result;
         }
 
-        public List<string> GetAllImages()
+        public List<Models.ImageInfo> GetAllImages()
         {
-            List<string> ImagesList = new List<string>();
+            List<Models.ImageInfo> ImagesList = new List<Models.ImageInfo>();
             try
             {
                 dt = _sliderData.GetAllImages();
                 foreach (DataRow record in dt.Rows)
                 {
-                    string Image = record["Image"].ToString();
-                    if (!string.IsNullOrEmpty(Image))
-                    {
-                        ImagesList.Add(Image);
-                    }
+                    Models.ImageInfo image = new Models.ImageInfo();
+                    image.Id = record["Id"].ToString();
+                    image.Image = record["Image"].ToString();
+                    image.Type = record["QualityType"].ToString();
+                    ImagesList.Add(image);
                 }
             }
             catch (Exception)
@@ -123,19 +124,19 @@ namespace ShopManagement.Utilities
             return ImagesList;
         }
 
-        public List<string> GetAllImagesByShopId(string ShopId)
+        public List<Models.ImageInfo> GetAllImagesByShopId(string ShopId)
         {
-            List<string> ImagesList = new List<string>();
+            List<Models.ImageInfo> ImagesList = new List<Models.ImageInfo>();
             try
             {
                 dt = _sliderData.GetAllImagesByShopId(ShopId);
                 foreach (DataRow record in dt.Rows)
                 {
-                    string Image = record["Image"].ToString();
-                    if (!string.IsNullOrEmpty(Image))
-                    {
-                        ImagesList.Add(Image);
-                    }
+                    Models.ImageInfo image = new Models.ImageInfo();
+                    image.Id = record["Id"].ToString();
+                    image.Image = record["Image"].ToString();
+                    image.Type = record["QualityType"].ToString();
+                    ImagesList.Add(image);
                 }
             }
             catch (Exception)

@@ -180,6 +180,7 @@ function CallBackGetUserInfoById(responseData) {
         $(".User_Notes").val(UserInfo.Notes);
         $(".SelectedUserId").val(UserInfo.Id);
         $(".IsMediatorUser").val(UserInfo.IsAdmin);
+        $(".SelectedUserIsAdminStatus").val(UserInfo.IsAdmin);
         $(".SelectedUserNameModelTitle").text(UserInfo.Name);
         UserStatus = UserInfo.Status;
         if (UserStatus == "active") {
@@ -189,8 +190,10 @@ function CallBackGetUserInfoById(responseData) {
         }
         if (UserInfo.IsAdmin == "1") {
             $(".UserStatusField").hide();
+            $(".SpecialUserStautus").hide();
         } else {
             $(".UserStatusField").show();
+            $(".SpecialUserStautus").show();
         }
         $("#EditUserInfo").modal("show");
     }
@@ -209,7 +212,14 @@ function UpdateUserInfo(target) {
     var UserArea = $(".UserArea").val().trim();
     var User_Notes = $(".User_Notes").val().trim();
     var Status = UserStatus;
-
+    var IsAdmin = "0";
+    var SelectedUserIsAdminStatus = $(".SelectedUserIsAdminStatus").val();
+    if (typeof (SelectedUserIsAdminStatus) != "undefined" && SelectedUserIsAdminStatus != null && SelectedUserIsAdminStatus != "" && SelectedUserIsAdminStatus == "1") {
+        IsAdmin = "1";
+    }
+    else {
+        IsAdmin = $(".IsMediatorUser").val();
+    }
     if (UserName == "" || UserEmailId == "" || UserMobileNumber == "" || UserPassword == "" || UserArea == "") {
 
         if (UserName == "") $(".UserName").addClass("form-error");
@@ -269,7 +279,7 @@ function UpdateUserInfo(target) {
 
             $(".EditUserFromSubmit").addClass("btn-progress");
 
-            var data = '{Id:"' + UserId +'", Name:"' + UserName + '",EmailId:"' + UserEmailId + '",Password:"' + UserPassword + '",Image:"' + UserImage + '",Status:"' + Status + '",Area:"' + UserArea + '",Notes:"' + User_Notes + '",MobileNumber:"' + UserMobileNumber + '",IsAdmin:"' + 0 + '"}';
+            var data = '{Id:"' + UserId +'", Name:"' + UserName + '",EmailId:"' + UserEmailId + '",Password:"' + UserPassword + '",Image:"' + UserImage + '",Status:"' + Status + '",Area:"' + UserArea + '",Notes:"' + User_Notes + '",MobileNumber:"' + UserMobileNumber + '",IsAdmin:"' + IsAdmin + '"}';
             handleAjaxRequest(null, true, "/Method/UpdateUserInfo", data, "CallBackUpdateUserInfo");
         }
 

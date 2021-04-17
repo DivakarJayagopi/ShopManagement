@@ -96,15 +96,15 @@ namespace ShopManagement.Data
             return Result;
         }
 
-        public bool AddImages(string Id, string Image, string ShopId)
+        public bool AddImages(string Id, string Image, string QualityType)
         {
             bool Result = false;
             try
             {
-                SqlCommand cmd = new SqlCommand("INSERT INTO Images VALUES(@Id,@Image,@ShopId,@CreatedDate,@ModifiedDate)");
+                SqlCommand cmd = new SqlCommand("INSERT INTO Images VALUES(@Id,@Image,@QualityType,@CreatedDate,@ModifiedDate)");
                 cmd.Parameters.AddWithValue("@Id", Id);
                 cmd.Parameters.AddWithValue("@Image", Image);
-                cmd.Parameters.AddWithValue("@ShopId", ShopId);
+                cmd.Parameters.AddWithValue("@QualityType ", QualityType);
                 cmd.Parameters.AddWithValue("@CreatedDate", System.DateTime.Now);
                 cmd.Parameters.AddWithValue("@ModifiedDate", System.DateTime.Now);
                 con.Open();
@@ -115,7 +115,7 @@ namespace ShopManagement.Data
                     Result = true;
                 }
             }
-            catch (Exception)
+            catch (Exception exe)
             {
 
             }

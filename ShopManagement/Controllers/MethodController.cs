@@ -725,13 +725,45 @@ namespace ShopManagement.Controllers
             }
             return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult AddImage(string Id, string Image, string ShopId)
+        public ActionResult AddImage(string Images, string QualityType)
         {
             Dictionary<string, object> returnObject = new Dictionary<string, object>();
             try
             {
                 bool Result = false;
-                Result = _sliderUtility.AddImages(Id, Image, ShopId);
+
+                string path = string.Empty;
+                switch (QualityType.ToLower())
+                {
+                    case "high":
+                        path = Server.MapPath("~" + Globals.Default_GalleryPath_High); //Path
+                        break;
+                    case "low":
+                        path = Server.MapPath("~" + Globals.Default_GalleryPath_Low); //Path
+                        break;
+                    case "medium":
+                        path = Server.MapPath("~" + Globals.Default_GalleryPath_Medium); //Path
+                        break;
+                }
+                //Check if directory exist
+                if (!System.IO.Directory.Exists(path))
+                {
+                    System.IO.Directory.CreateDirectory(path); //Create directory if it doesn't exist
+                }
+
+
+                string imageName = Guid.NewGuid().ToString() + ".jpg";
+                string _image = Images;
+                //set the image path
+                string imgPath = Path.Combine(path, imageName);
+                var splitedValue = _image.Split(',');
+                var ReplaceValue = splitedValue[0] + ',';
+                _image = _image.Replace(ReplaceValue, "");
+                var imageBytes = Convert.FromBase64String(_image);
+
+                System.IO.File.WriteAllBytes(imgPath, imageBytes);
+                _image = Globals.Default_GalleryPath_High + "/" + imageName;
+                Result = _sliderUtility.AddImages(_image,QualityType);
                 if (Result == true)
                 {
                     returnObject.Add("status", "success");

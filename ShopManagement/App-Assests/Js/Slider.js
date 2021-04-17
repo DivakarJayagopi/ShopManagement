@@ -3,7 +3,7 @@
 var dropzone = new Dropzone("#mydropzone", {
     url: "#"
 });
-var self = this;
+var self;
 var minSteps = 6,
     maxSteps = 60,
     timeBetweenSteps = 100,
@@ -34,6 +34,7 @@ dropzone.uploadFiles = function (files) {
                         self.emit("success", file, 'success', null);
                         self.emit("complete", file);
                         self.processQueue();
+                        $(".SubmitUploadedImages").show();
                     }
                 };
             }(file, totalSteps, step), duration);
@@ -41,15 +42,47 @@ dropzone.uploadFiles = function (files) {
     }
 }
 
-$(".SubmitUploadedImages").click(function () {
-    var _FilesInfo = self;
-    var FilesList = []
-    if (typeof (_FilesInfo) != "undefined" && _FilesInfo != null && _FilesInfo.files.length > 0) {
-        var Status = $("ImageStatus").val();
-        for (var i = 0; i < _FilesInfo.files.length; i++) {
-            FilesList.push(_FilesInfo.files[i].dataURL);
-        }
-        var _filesList = JSON.stringify(FilesList)
-    }
 
-})
+
+$(".SubmitUploadedImages").click(function () {
+    $(".SubmitUploadedImages").addClass("btn-progress");
+    var _FilesInfo = self;
+    var QualityType = $(".ImageStatus").val();
+    if (typeof (_FilesInfo) != "undefined" && _FilesInfo != null && _FilesInfo.files.length > 0) {
+
+        for (var i = 0; i < _FilesInfo.files.length; i++) {
+            var SelectedImage = _FilesInfo.files[i].dataURL;
+            var data = '{Images:"' + SelectedImage + '",QualityType:"' + QualityType + '"}';
+            handleAjaxRequest(null, true, "/Method/AddImage", data, "CallBackAddImage");
+        }
+    } else {
+        $(".SubmitUploadedImages").removeClass("btn-progress");
+    }
+      
+    
+});
+
+function CallBackAddImage(responseData) {
+    $(".SubmitUploadedImages").removeClass("btn-progress");
+    var _FilesInfo = self;
+    if (typeof (_FilesInfo) != "undefined" && _FilesInfo != null && _FilesInfo.files.length > 0) {
+        for (var i = 0; i < _FilesInfo.files.length; i++) {
+            dropzone.removeFile(_FilesInfo.files[i]);
+        }        
+    }
+    $(".SubmitUploadedImages").hide();
+    if (responseData.message.status == "success") {
+        $("input[type=\"file\"]").val('');
+        iziToast.success({
+            title: 'success',
+            message: 'Images Uploaded Successfully',
+            position: 'topCenter'
+        });
+    } else {
+        iziToast.success({
+            title: 'danger',
+            message: 'Error on uploading Images',
+            position: 'topCenter'
+        });
+    }
+}

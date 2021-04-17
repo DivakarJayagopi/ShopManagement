@@ -64,7 +64,7 @@ function CallBackAddShopInfo(responseData) {
         $("input[type=\"text\"]").val('');
         $("input[type=\"number\"]").val('');
         $("input[type=\"file\"]").val('');
-        swal('User Added Successfully');
+        swal('Shop Added Successfully');
     } else {
         swal('Error on Adding shop');
     }
