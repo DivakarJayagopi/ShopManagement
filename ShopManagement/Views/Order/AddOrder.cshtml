@@ -10,91 +10,109 @@
     </div>
 
     <div class="section-body">
-        <div class="row">
-            <div class="col-12 col-md-12 col-lg-12">
-                <div class="card">
+        @if (Model.Count <= 0)
+        {
+            <div class="col-md-12">
+                <div class="card card-warning">
                     <div class="card-header">
-                        <h4>Order Info</h4>
+                        <h4>No Shops Found !</h4>
                     </div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label>Customer Name</label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>Mobile Number</label>
-                            <input type="number" class="form-control invoice-input">
-                        </div>
-                        <div class="form-group">
-                            <label>Choose shop</label>
-                            <select class="form-control select2">
-                                <option>Option 1</option>
-                                <option>Option 2</option>
-                                <option>Option 3</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Amount</label>
-                            <input type="number" class="form-control invoice-input">
-                        </div>
-                        <div class="form-group">
-                            <label>Image</label>
-                            <input type="file" class="form-control invoice-input" style="padding:.375rem .75rem;">
-                        </div>
-                        <div class="form-group">
-                            <label>Notes</label>
-                            <textarea class="form-control datemask"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Status</label>
-                            <div class="form-group">
-                                <div class="selectgroup w-100">
-                                    <label class="selectgroup-item">
-                                        <input type="radio" name="value" value="active" class="selectgroup-input" checked="">
-                                        <span class="selectgroup-button active">Awaiting</span>
-                                    </label>
-                                    <label class="selectgroup-item">
-                                        <input type="radio" name="value" value="inactive" class="selectgroup-input">
-                                        <span class="selectgroup-button inactive">InProgress</span>
-                                    </label>
-                                    <label class="selectgroup-item">
-                                        <input type="radio" name="value" value="inactive" class="selectgroup-input">
-                                        <span class="selectgroup-button inactive">Completed</span>
-                                    </label>
-                                    <label class="selectgroup-item">
-                                        <input type="radio" name="value" value="inactive" class="selectgroup-input">
-                                        <span class="selectgroup-button inactive">Dropped</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Start Date</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">
-                                        <i class="fas fa-calendar"></i>
-                                    </div>
-                                </div>
-                                <input type="date" class="form-control datepicker">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>End Date</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">
-                                        <i class="fas fa-calendar"></i>
-                                    </div>
-                                </div>
-                                <input type="date" class="form-control datepicker">
-                            </div>
-                        </div>
-                        <button class="btn btn-block btn-info" type="button">Submit</button>
+                    <div class="card-body" style="text-align:center;">
+                        <p>Add Shops Before Adding Orders.. <i><b><a href="@Url.Action("AddShop", "Shop")">Add Shop</a></b></i></p>
                     </div>
                 </div>
             </div>
-        </div>
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-12 col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Order Info</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Customer Name</label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Mobile Number</label>
+                                <input type="number" class="form-control invoice-input">
+                            </div>
+                            <div class="form-group">
+                                <label>Choose shop</label>
+                                <select class="form-control select2">
+                                    @foreach (var item in Model)
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Amount</label>
+                                <input type="number" class="form-control invoice-input">
+                            </div>
+                            <div class="form-group">
+                                <label>Image</label>
+                                <input type="file" class="form-control invoice-input" style="padding:.375rem .75rem;">
+                            </div>
+                            <div class="form-group">
+                                <label>Notes</label>
+                                <textarea class="form-control datemask"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Status</label>
+                                <div class="form-group">
+                                    <div class="selectgroup w-100">
+                                        <label class="selectgroup-item">
+                                            <input type="radio" name="value" value="active" class="selectgroup-input" checked="">
+                                            <span class="selectgroup-button active">Awaiting</span>
+                                        </label>
+                                        <label class="selectgroup-item">
+                                            <input type="radio" name="value" value="inactive" class="selectgroup-input">
+                                            <span class="selectgroup-button inactive">InProgress</span>
+                                        </label>
+                                        <label class="selectgroup-item">
+                                            <input type="radio" name="value" value="inactive" class="selectgroup-input">
+                                            <span class="selectgroup-button inactive">Completed</span>
+                                        </label>
+                                        <label class="selectgroup-item">
+                                            <input type="radio" name="value" value="inactive" class="selectgroup-input">
+                                            <span class="selectgroup-button inactive">Dropped</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Start Date</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="fas fa-calendar"></i>
+                                        </div>
+                                    </div>
+                                    <input type="date" class="form-control datepicker">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>End Date</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="fas fa-calendar"></i>
+                                        </div>
+                                    </div>
+                                    <input type="date" class="form-control datepicker">
+                                </div>
+                            </div>
+                            <button class="btn btn-block btn-info" type="button">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
     </div>
 </section>
 

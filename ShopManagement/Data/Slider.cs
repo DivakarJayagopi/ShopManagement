@@ -11,7 +11,6 @@ namespace ShopManagement.Data
     public class Slider
     {
         public SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["connString"].ConnectionString);
-        DataTable dt = new DataTable();
         public bool Add(string Id, string Name, string ShopId)
         {
             bool Result = false;
@@ -126,21 +125,12 @@ namespace ShopManagement.Data
             return Result;
         }
 
-        public bool DeleteImages(List<string> Id, string ShopId)
+        public bool DeleteImages(string[] Id)
         {
             bool Result = false;
             try
             {
-                string appendQuery = "";
-                if (Id != null)
-                    if (Id.Count > 0)
-                    {
-                        appendQuery = " WHERE Id IN('" + string.Join("','", Id) + "')";
-                    }
-
-                SqlCommand cmd = new SqlCommand("DELETE FROM Images ShopId=@ShopId " + appendQuery);
-                cmd.Parameters.AddWithValue("@Id", Id);
-                cmd.Parameters.AddWithValue("@ShopId", ShopId);
+                SqlCommand cmd = new SqlCommand("DELETE FROM Images WHERE Id IN('" + string.Join("','", Id) + "')");
                 cmd.Parameters.AddWithValue("@ModifiedDate", System.DateTime.Now);
                 con.Open();
                 cmd.Connection = con;
@@ -163,6 +153,7 @@ namespace ShopManagement.Data
 
         public DataTable GetAllImages()
         {
+            DataTable dt = new DataTable();
             try
             {
                 SqlCommand cmd = new SqlCommand("SELECT * FROM Images");
@@ -184,6 +175,7 @@ namespace ShopManagement.Data
 
         public DataTable GetAllImagesByShopId(string ShopId)
         {
+            DataTable dt = new DataTable();
             try
             {
                 SqlCommand cmd = new SqlCommand("SELECT * FROM Images WHERE ShopId=@ShopId");
@@ -204,12 +196,59 @@ namespace ShopManagement.Data
             return dt;
         }
 
-        public DataTable GetSliderInfoByShopId(string ShopId)
+        public DataTable GetAllImagesBySliderId(string SliderId)
         {
+            DataTable dt = new DataTable();
             try
             {
-                SqlCommand cmd = new SqlCommand("SELECT sld.Id as Id, sld.Name as Name, sld.ShopId as ShopId, img.Image as Image FROM SliderConnector sc JOIN Images img ON sc.ImageId = img.Id JOIN Slider sld ON sld.Id = sc.SliderId WHERE ShopId=@ShopId");
+                SqlCommand cmd = new SqlCommand("SELECT * FROM SliderConnector WHERE SliderId=@SliderId");
+                cmd.Parameters.AddWithValue("@SliderId", SliderId);
+                con.Open();
+                cmd.Connection = con;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+                con.Close();
+            }
+            return dt;
+        }
+
+        public DataTable GetSliderInfoByShopId(string ShopId)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Slider WHERE ShopId=@ShopId");
                 cmd.Parameters.AddWithValue("@ShopId", ShopId);
+                con.Open();
+                cmd.Connection = con;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+                con.Close();
+            }
+            return dt;
+        }
+
+        public DataTable GetImageById(string ImageId)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                SqlCommand cmd = new SqlCommand("SELECT Image FROM Images WHERE Id=@Id");
+                cmd.Parameters.AddWithValue("@Id", ImageId);
                 con.Open();
                 cmd.Connection = con;
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
@@ -228,6 +267,7 @@ namespace ShopManagement.Data
 
         public bool AddSliderConnectorForSlider(string SliderId, string ImageId)
         {
+            DataTable dt = new DataTable();
             bool Result = false;
             try
             {

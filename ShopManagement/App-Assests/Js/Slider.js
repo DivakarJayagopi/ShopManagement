@@ -1,7 +1,8 @@
 ﻿"use strict";
 
 var dropzone = new Dropzone("#mydropzone", {
-    url: "#"
+    url: "#",
+    acceptedFiles: ".jpeg,.jpg,.png,.gif"
 });
 var self;
 var minSteps = 6,
@@ -58,8 +59,6 @@ $(".SubmitUploadedImages").click(function () {
     } else {
         $(".SubmitUploadedImages").removeClass("btn-progress");
     }
-      
-    
 });
 
 function CallBackAddImage(responseData) {

@@ -13,7 +13,14 @@ namespace ShopManagement.Controllers
         {
             if (Session["UserId"] == null)
                 return RedirectToAction("Login", "Account");
-            return View();
+            string ShopId = "";
+            if(Session["IsAdmin"].ToString() != "1")
+            {
+
+            }
+            Utilities.Slider _sliderUtility = new Utilities.Slider();
+            List<Models.Slider> sliderslist = _sliderUtility.GetSliderInfoByShopId(ShopId);
+            return View(sliderslist);
         }
     }
 }

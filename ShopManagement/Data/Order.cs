@@ -11,7 +11,6 @@ namespace ShopManagement.Data
     public class Order
     {
         public SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["connString"].ConnectionString);
-        DataTable dt = new DataTable();
 
         public bool Add(string Id, string CustomerName, string Image, string ShopId, int Amount, int CustomerMobileNumber,string Status, string Notes, DateTime StartDate, DateTime EndDate)
         {
@@ -140,6 +139,7 @@ namespace ShopManagement.Data
 
         public DataTable GetOrderById(string Id)
         {
+            DataTable dt = new DataTable();
             try
             {
                 SqlCommand cmd = new SqlCommand("SELECT * FROM OrderInfo WHERE Id=@Id");
@@ -159,6 +159,7 @@ namespace ShopManagement.Data
 
         public DataTable GetAllOrders()
         {
+            DataTable dt = new DataTable();
             try
             {
                 SqlCommand cmd = new SqlCommand("SELECT * FROM OrderInfo");
@@ -180,6 +181,7 @@ namespace ShopManagement.Data
 
         public DataTable GetAllOrdersByShopId(string ShopId)
         {
+            DataTable dt = new DataTable();
             try
             {
                 SqlCommand cmd = new SqlCommand("SELECT * FROM OrderInfo WHERE ShopId=@ShopId");
@@ -202,6 +204,7 @@ namespace ShopManagement.Data
 
         public DataTable GetAllOrdersByStatus(string Status)
         {
+            DataTable dt = new DataTable();
             try
             {
                 SqlCommand cmd = new SqlCommand("SELECT * FROM OrderInfo WHERE Status=@Status");
@@ -224,6 +227,7 @@ namespace ShopManagement.Data
 
         public DataTable GetAllOrdersDates(string ShopId, string FilterDate)
         {
+            DataTable dt = new DataTable();
             try
             {
                 SqlCommand cmd;

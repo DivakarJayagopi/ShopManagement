@@ -13,21 +13,37 @@ namespace ShopManagement.Controllers
         {
             if (Session["UserId"] == null)
                 return RedirectToAction("Login", "Account");
-            return View();
+            Utilities.Shop _ShopUtility = new Utilities.Shop();
+            List<Models.Shop> Shopslist = new List<Models.Shop>();
+            Shopslist = _ShopUtility.GetAllShops();
+            return View(Shopslist);
         }
 
         public ActionResult ViewOrders()
         {
             if (Session["UserId"] == null)
                 return RedirectToAction("Login", "Account");
-            return View();
+            Utilities.Order _orderUtility = new Utilities.Order();
+            List<Models.Order> OrdersList = new List<Models.Order>();
+            if(Session["IsAdmin"].ToString() == "1")
+            {
+                OrdersList = _orderUtility.GetAllOrders();
+            }
+            else
+            {
+                OrdersList = _orderUtility.GetAllOrdersByShopId("");
+            }
+            return View(OrdersList);
         }
 
         public ActionResult OrdersManagement()
         {
             if (Session["UserId"] == null)
                 return RedirectToAction("Login", "Account");
-            return View();
+            Utilities.Shop _ShopUtility = new Utilities.Shop();
+            List<Models.Shop> Shopslist = new List<Models.Shop>();
+            Shopslist = _ShopUtility.GetAllShops();
+            return View(Shopslist);
         }
     }
 }

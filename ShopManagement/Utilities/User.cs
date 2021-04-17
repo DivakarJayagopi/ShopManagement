@@ -9,10 +9,9 @@ namespace ShopManagement.Utilities
     public class User
     {
         Data.User _userData = new Data.User();
-        DataTable dt = new DataTable();
-
         public Models.User ValidateUserLogin(string MobileNumber, string Password)
         {
+            DataTable dt = new DataTable();
             Models.User UserInfo = new Models.User();
             try
             {
@@ -74,6 +73,7 @@ namespace ShopManagement.Utilities
 
         public Models.User GetUserById(string Id)
         {
+            DataTable dt = new DataTable();
             Models.User user = new Models.User();
             try
             {
@@ -92,6 +92,7 @@ namespace ShopManagement.Utilities
 
         public List<Models.User> GetAllUsers()
         {
+            DataTable dt = new DataTable();
             List<Models.User> usersList = new List<Models.User>();
             try
             {
@@ -112,6 +113,7 @@ namespace ShopManagement.Utilities
 
         public List<Models.User> GetAllUsersByStatus(bool IsActive)
         {
+            DataTable dt = new DataTable();
             List<Models.User> usersList = new List<Models.User>();
             try
             {
@@ -139,7 +141,7 @@ namespace ShopManagement.Utilities
                 user.Name = record["Name"].ToString();
                 user.EmailId = record["EmailId"].ToString();
                 user.Password = record["Password"].ToString();
-                user.Image = record["Image"].ToString() == "" ? Globals.Default_ProfileImage : record["Image"].ToString();
+                user.Image = record["Image"].ToString() == "" ? Globals.Default_shopImage : record["Image"].ToString();
                 user.Status = record["Status"].ToString();
                 user.Area = record["Area"].ToString();
                 user.Notes = record["Notes"].ToString();
@@ -171,6 +173,7 @@ namespace ShopManagement.Utilities
 
         public Models.User GetShopConnectedUserInfo(string ShopId)
         {
+            DataTable dt = new DataTable();
             Models.User user = new Models.User();
             try
             {
@@ -189,6 +192,7 @@ namespace ShopManagement.Utilities
 
         public bool GetUserInfoForExistsProperty(string UserName, string MobileNumber, string EMailId)
         {
+            DataTable dt = new DataTable();
             bool IsUserExists = false;
             try
             {

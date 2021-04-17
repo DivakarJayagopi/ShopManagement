@@ -11,7 +11,6 @@ namespace ShopManagement.Data
     public class Shop
     {
         public SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["connString"].ConnectionString);
-        DataTable dt = new DataTable();
 
         public bool Add(string Id, string Name, string ShopArea, string Image, string Notes, string Status, string MobileNumber, int MaxOrderCount)
         {
@@ -110,6 +109,7 @@ namespace ShopManagement.Data
 
         public DataTable GetAllShops()
         {
+            DataTable dt = new DataTable();
             try
             {
                 SqlCommand cmd = new SqlCommand("SELECT * FROM ShopsInfo");
@@ -131,6 +131,7 @@ namespace ShopManagement.Data
 
         public DataTable GetAllShopsByStaus(bool IsActive)
         {
+            DataTable dt = new DataTable();
             try
             {
                 string Status = "active";
@@ -156,6 +157,7 @@ namespace ShopManagement.Data
 
         public DataTable GetShopById(string Id)
         {
+            DataTable dt = new DataTable();
             try
             {
                 SqlCommand cmd = new SqlCommand("SELECT * FROM ShopsInfo WHERE Id=@Id");
@@ -178,6 +180,7 @@ namespace ShopManagement.Data
 
         public DataTable GetShopCount()
         {
+            DataTable dt = new DataTable();
             try
             {
                 SqlCommand cmd = new SqlCommand("SELECT * FROM ShopsInfo");
@@ -199,6 +202,7 @@ namespace ShopManagement.Data
 
         public DataTable GetShopCountByStaus(bool IsActive)
         {
+            DataTable dt = new DataTable();
             try
             {
                 string Status = "active";
@@ -224,6 +228,7 @@ namespace ShopManagement.Data
 
         public bool AddUserConnector(string ShopId, string UserId)
         {
+            DataTable dt = new DataTable();
             bool Result = false;
             try
             {
@@ -255,6 +260,7 @@ namespace ShopManagement.Data
 
         public bool DeleteUserConnectorByShopId(string ShopId)
         {
+            DataTable dt = new DataTable();
             bool Result = false;
             try
             {
@@ -283,6 +289,7 @@ namespace ShopManagement.Data
 
         public DataTable GetUserConnectedShopInfo(string UserId)
         {
+            DataTable dt = new DataTable();
             try
             {
                 SqlCommand cmd = new SqlCommand("SELECT shp.* FROM UserConnector uc JOIN ShopsInfo shp ON shp.Id = uc.ShopId WHERE uc.UserId = @UserId");

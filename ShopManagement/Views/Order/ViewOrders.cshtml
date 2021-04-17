@@ -18,56 +18,71 @@
                         <h4>Orders</h4>
                     </div>
                     <div class="card-body">
-                        <table class="table table-striped table-responsive-lg">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Customer Name</th>
-                                    <th scope="col">Satus</th>
-                                    <th scope="col">Customer Mobile Number</th>
-                                    <th scope="col">Remaining Days</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Divakar</td>
-                                    <td>In Progress</td>
-                                    <td>8148563820</td>
-                                    <td>5</td>
-                                    <td>
-                                        <a href="javascript:void"><i class="fas fa-eye ViewOrderInfo"></i></a>
-                                        <a href="javascript:void"><i class="fas fa-edit EditOrderInfo"></i></a>
-                                        <a href="javascript:void"><i class="fas fa-trash DeleteOrder"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Divakar</td>
-                                    <td>In Progress</td>
-                                    <td>8148563820</td>
-                                    <td>5</td>
-                                    <td>
-                                        <a href="javascript:void"><i class="fas fa-eye ViewOrderInfo"></i></a>
-                                        <a href="javascript:void"><i class="fas fa-edit EditOrderInfo"></i></a>
-                                        <a href="javascript:void"><i class="fas fa-trash DeleteOrder"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Divakar</td>
-                                    <td>In Progress</td>
-                                    <td>8148563820</td>
-                                    <td>5</td>
-                                    <td>
-                                        <a href="javascript:void"><i class="fas fa-eye ViewOrderInfo"></i></a>
-                                        <a href="javascript:void"><i class="fas fa-edit EditOrderInfo"></i></a>
-                                        <a href="javascript:void"><i class="fas fa-trash DeleteOrder"></i></a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        @*@if (Model.Count <= 0)
+                        {
+                            <div class="col-md-12">
+                                <div class="card card-warning">
+                                    <div class="card-header">
+                                        <h4>No Orders Found !</h4>
+                                    </div>
+                                    <div class="card-body" style="text-align:center;">
+                                        <p>Add Orders to see the list here.. <i><b><a href="@Url.Action("AddOrder", "Order")">Add Order</a></b></i></p>
+                                    </div>
+                                </div>
+                            </div>
+                        }else*@
+                        @{
+                            <table class="table table-striped table-responsive-lg">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Customer Name</th>
+                                        <th scope="col">Satus</th>
+                                        <th scope="col">Customer Mobile Number</th>
+                                        <th scope="col">Remaining Days</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>Divakar</td>
+                                        <td>In Progress</td>
+                                        <td>8148563820</td>
+                                        <td>5</td>
+                                        <td>
+                                            <a href="javascript:void"><i class="fas fa-eye ViewOrderInfo"></i></a>
+                                            <a href="javascript:void"><i class="fas fa-edit EditOrderInfo"></i></a>
+                                            <a href="javascript:void"><i class="fas fa-trash DeleteOrder"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>Divakar</td>
+                                        <td>In Progress</td>
+                                        <td>8148563820</td>
+                                        <td>5</td>
+                                        <td>
+                                            <a href="javascript:void"><i class="fas fa-eye ViewOrderInfo"></i></a>
+                                            <a href="javascript:void"><i class="fas fa-edit EditOrderInfo"></i></a>
+                                            <a href="javascript:void"><i class="fas fa-trash DeleteOrder"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>Divakar</td>
+                                        <td>In Progress</td>
+                                        <td>8148563820</td>
+                                        <td>5</td>
+                                        <td>
+                                            <a href="javascript:void"><i class="fas fa-eye ViewOrderInfo"></i></a>
+                                            <a href="javascript:void"><i class="fas fa-edit EditOrderInfo"></i></a>
+                                            <a href="javascript:void"><i class="fas fa-trash DeleteOrder"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }
                     </div>
                 </div>
             </div>

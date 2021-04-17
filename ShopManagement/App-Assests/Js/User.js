@@ -291,7 +291,7 @@ function CallBackUpdateUserInfo(responseData) {
     if (responseData.message.status == "success") {        
         var UserInfo = responseData.message.userInfo;
         var UserId = UserInfo.Id;
-        $(".SelectedUserImageExpand[data-id='" + UserId + "']").attr("src", UserInfo.Image);
+        $(".SelectedUserImageExpand[data-id='" + UserId + "']").attr("href", UserInfo.Image);
         $(".SelectedUserImage[data-id='" + UserId + "']").attr("src", UserInfo.Image);
         $(".SelectedUserName[data-id='" + UserId + "']").text(UserInfo.Name);
         $(".SelectedUserEmail[data-id='" + UserId + "']").text(UserInfo.EmailId);

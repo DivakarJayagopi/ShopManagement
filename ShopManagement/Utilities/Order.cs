@@ -9,7 +9,6 @@ namespace ShopManagement.Utilities
     public class Order
     {
         Data.Order _orderData = new Data.Order();
-        DataTable dt = new DataTable();
 
         public bool Add(string CustomerName, string Image, string ShopId, int Amount, int CustomerMobileNumber, string Status, string Notes, DateTime StartDate, DateTime EndDate)
         {
@@ -70,6 +69,7 @@ namespace ShopManagement.Utilities
 
         public Models.Order GetOrderInfoById(string Id)
         {
+            DataTable dt = new DataTable();
             Models.Order OrderInfo = new Models.Order();
             try
             {
@@ -88,6 +88,7 @@ namespace ShopManagement.Utilities
 
         public List<Models.Order> GetAllOrders()
         {
+            DataTable dt = new DataTable();
             List<Models.Order> OrdersList = new List<Models.Order>();
             try
             {
@@ -108,6 +109,7 @@ namespace ShopManagement.Utilities
 
         public List<Models.Order> GetAllOrdersByShopId(string ShopId)
         {
+            DataTable dt = new DataTable();
             List<Models.Order> OrdersList = new List<Models.Order>();
             try
             {
@@ -128,6 +130,7 @@ namespace ShopManagement.Utilities
 
         public List<Models.Order> GetAllOrdersByStatus(string Status)
         {
+            DataTable dt = new DataTable();
             List<Models.Order> OrdersList = new List<Models.Order>();
             try
             {
@@ -148,6 +151,7 @@ namespace ShopManagement.Utilities
         
         public List<Models.Order> GetAllOrdersDates(string ShopId, string FilterDate)
         {
+            DataTable dt = new DataTable();
             List<Models.Order> OrdersList = new List<Models.Order>();
             try
             {

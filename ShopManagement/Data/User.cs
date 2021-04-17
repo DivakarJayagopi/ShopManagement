@@ -11,10 +11,9 @@ namespace ShopManagement.Data
     public class User
     {
         public SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["connString"].ConnectionString);
-        DataTable dt = new DataTable();
-
         public DataTable ValidateUserLogin(string MobileNumber, string Password)
         {
+            DataTable dt = new DataTable();
             try
             {
                 SqlCommand cmd = new SqlCommand("SELECT * FROM Users WHERE MobileNumber=@MobileNumber AND Password=@Password");
@@ -136,6 +135,7 @@ namespace ShopManagement.Data
 
         public DataTable GetAllUsers()
         {
+            DataTable dt = new DataTable();
             try
             {
                 SqlCommand cmd = new SqlCommand("SELECT * FROM Users");
@@ -157,6 +157,7 @@ namespace ShopManagement.Data
 
         public DataTable GetAllUsersByStatus(bool IsActive)
         {
+            DataTable dt = new DataTable();
             try
             {
                 string Status = "active";
@@ -182,6 +183,7 @@ namespace ShopManagement.Data
 
         public DataTable GetUserById(string Id)
         {
+            DataTable dt = new DataTable();
             try
             {
                 SqlCommand cmd = new SqlCommand("SELECT * FROM Users WHERE Id=@Id");
@@ -232,6 +234,7 @@ namespace ShopManagement.Data
 
         public DataTable GetShopConnectedUserInfo(string ShopId)
         {
+            DataTable dt = new DataTable();
             try
             {
                 dt = new DataTable();
@@ -255,6 +258,7 @@ namespace ShopManagement.Data
 
         public DataTable GetUserInfoForExistsProperty(string UserName, string MobileNumber, string EMailId)
         {
+            DataTable dt = new DataTable();
             try
             {
                 string AppendQuery = "";

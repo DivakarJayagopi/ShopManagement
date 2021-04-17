@@ -319,7 +319,7 @@ namespace ShopManagement.Controllers
                 }
                 else
                 {
-                    string path = Server.MapPath("~" + Globals.Default_ProfileImagePath); //Path
+                    string path = Server.MapPath("~" + Globals.Default_ShopImagePath); //Path
 
                     //Check if directory exist
                     if (!System.IO.Directory.Exists(path))
@@ -337,7 +337,7 @@ namespace ShopManagement.Controllers
                     var imageBytes = Convert.FromBase64String(Image);
 
                     System.IO.File.WriteAllBytes(imgPath, imageBytes);
-                    Image = Globals.Default_ProfileImagePath + "\"" + imageName;
+                    Image = Globals.Default_ShopImagePath + "/" + imageName;
                 }
                 Result = _shopData.Update(Id, Name, ShopArea, UserId, Image, Notes, Status, MobileNumber, MaxOrderCount);
                 ShopInfo = shopUtility.GetShopById(Id);
@@ -442,7 +442,7 @@ namespace ShopManagement.Controllers
                 shopsList = _shopData.GetAllShopsByStaus(IsActive);
                 if (shopsList != null)
                 {
-                    returnObject.Add("usersList", shopsList);
+                    returnObject.Add("ShopsList", shopsList);
                     returnObject.Add("status", "success");
                 }
                 else
@@ -464,7 +464,7 @@ namespace ShopManagement.Controllers
                 string Count = _shopData.GetShopsCount();
                 if (!string.IsNullOrEmpty(Count))
                 {
-                    returnObject.Add("usersList", Count);
+                    returnObject.Add("ShopsList", Count);
                     returnObject.Add("status", "success");
                 }
                 else
@@ -703,13 +703,13 @@ namespace ShopManagement.Controllers
             }
             return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult UpdateSliderInfo(string Id, string Name, List<string> ImageIds)
+        public ActionResult UpdateSliderInfo(string Id, List<string> ImageIds)
         {
             Dictionary<string, object> returnObject = new Dictionary<string, object>();
             try
             {
-                bool Result = false;
-                Result = _sliderUtility.Update(Id, Name, ImageIds);
+                bool Result = false;                
+                Result = _sliderUtility.Update(Id, ImageIds);
                 if (Result == true)
                 {
                     returnObject.Add("status", "success");
@@ -763,6 +763,18 @@ namespace ShopManagement.Controllers
 
                 System.IO.File.WriteAllBytes(imgPath, imageBytes);
                 _image = Globals.Default_GalleryPath_High + "/" + imageName;
+                switch (QualityType.ToLower())
+                {
+                    case "high":
+                        _image = Globals.Default_GalleryPath_High + "/" + imageName; //Path
+                        break;
+                    case "low":
+                        _image = Globals.Default_GalleryPath_Low + "/" + imageName; //Path
+                        break;
+                    case "medium":
+                        _image = Globals.Default_GalleryPath_Medium + "/" + imageName; //Path
+                        break;
+                }
                 Result = _sliderUtility.AddImages(_image,QualityType);
                 if (Result == true)
                 {
@@ -779,13 +791,14 @@ namespace ShopManagement.Controllers
             }
             return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult DeleteImages(List<string> ImageIds, string ShopId)
+        public ActionResult DeleteImages(string ImageIds)
         {
             Dictionary<string, object> returnObject = new Dictionary<string, object>();
             try
             {
                 bool Result = false;
-                Result = _sliderUtility.DeleteImages(ImageIds, ShopId);
+                var ids = ImageIds.Split(',');
+                Result = _sliderUtility.DeleteImages(ids);
                 if (Result == true)
                 {
                     returnObject.Add("status", "success");
@@ -810,6 +823,7 @@ namespace ShopManagement.Controllers
                 if (Images != null)
                 {
                     returnObject.Add("Images", Images);
+                    returnObject.Add("status", "success");
                 }
                 else
                 {
@@ -831,6 +845,7 @@ namespace ShopManagement.Controllers
                 if (Images != null)
                 {
                     returnObject.Add("Images", Images);
+                    returnObject.Add("status", "success");
                 }
                 else
                 {
@@ -848,10 +863,11 @@ namespace ShopManagement.Controllers
             Dictionary<string, object> returnObject = new Dictionary<string, object>();
             try
             {
-                var Images = _sliderUtility.GetSliderInfoByShopId(ShopId);
-                if (Images != null)
+                var sliderslist = _sliderUtility.GetSliderInfoByShopId(ShopId);
+                if (sliderslist != null)
                 {
-                    returnObject.Add("Images", Images);
+                    returnObject.Add("sliderslist", sliderslist);
+                    returnObject.Add("status", "success");
                 }
                 else
                 {
