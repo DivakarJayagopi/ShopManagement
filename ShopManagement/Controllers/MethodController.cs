@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Web;
 using System.Web.Mvc;
 
 namespace ShopManagement.Controllers
@@ -12,7 +14,7 @@ namespace ShopManagement.Controllers
         Utilities.Order _orderUtility = new Utilities.Order();
         Utilities.Slider _sliderUtility = new Utilities.Slider();
 
-        public ActionResult ValidateUserLogin(string MobileNumber, string Password)
+        public ActionResult ValidateUserLogin(string MobileNumber, string Password, bool IsRemember)
         {
             Dictionary<string, object> returnObject = new Dictionary<string, object>();
             try
@@ -26,6 +28,16 @@ namespace ShopManagement.Controllers
                     Session["UserImage"] = UserInfo.Image;
                     returnObject.Add("userInfo", UserInfo);
                     returnObject.Add("status", "success");
+
+                    if (IsRemember)
+                    {
+                        HttpCookie cookie = new HttpCookie("Login");
+                        cookie.Values.Add("MobileNumber", UserInfo.MobileNumber);
+                        cookie.Values.Add("PWD", UserInfo.Password);
+                        cookie.HttpOnly = true;
+                        cookie.Expires = DateTime.Now.AddDays(30);
+                        Response.Cookies.Add(cookie); 
+                    }
                 }
                 else
                 {
@@ -33,6 +45,22 @@ namespace ShopManagement.Controllers
                 }
             }
             catch (Exception exe)
+            {
+
+            }
+            return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult LogOut()
+        {
+            Dictionary<string, object> returnObject = new Dictionary<string, object>();
+            try
+            {
+                Response.Cookies["MobileNumber"].Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies["Pwd"].Expires = DateTime.Now.AddDays(-1);
+                returnObject.Add("status", "success");
+            }
+            catch (Exception)
             {
 
             }
@@ -500,15 +528,44 @@ namespace ShopManagement.Controllers
             }
             return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult AddOrderInfo(string CustomerName, string Image, string ShopId, int Amount, int CustomerMobileNumber, string Status, string Notes, DateTime StartDate, DateTime EndDate)
+        public ActionResult AddOrderInfo(string CustomerName, string Image, string ShopId, int Amount, string CustomerMobileNumber, string Status, string Notes, string StartDate, string EndDate, Models.SafariInfo safariInfo, Models.PantInfo pantInfo, Models.ShirtInfo shirtInfo)
         {
             Dictionary<string, object> returnObject = new Dictionary<string, object>();
             try
             {
                 bool Result = false;
-                Result = _orderUtility.Add(CustomerName, Image, ShopId, Amount, CustomerMobileNumber, Status, Notes, StartDate, EndDate);
+                DateTime StartDateVal = DateTime.Parse(StartDate);
+                DateTime EndDateVal = DateTime.Parse(EndDate);
+                if (string.IsNullOrEmpty(Image))
+                {
+                    Image = Globals.Default_orderImage;
+                }
+                else
+                {
+                    string path = Server.MapPath("~" + Globals.Default_OrderImagePath); //Path
+
+                    //Check if directory exist
+                    if (!System.IO.Directory.Exists(path))
+                    {
+                        System.IO.Directory.CreateDirectory(path); //Create directory if it doesn't exist
+                    }
+
+                    string imageName = Guid.NewGuid().ToString() + ".jpg";
+
+                    //set the image path
+                    string imgPath = Path.Combine(path, imageName);
+                    var splitedValue = Image.Split(',');
+                    var ReplaceValue = splitedValue[0] + ',';
+                    Image = Image.Replace(ReplaceValue, "");
+                    var imageBytes = Convert.FromBase64String(Image);
+
+                    System.IO.File.WriteAllBytes(imgPath, imageBytes);
+                    Image = Globals.Default_OrderImagePath + "/" + imageName;
+                }
+                Result = _orderUtility.Add(CustomerName, Image, ShopId, Amount, CustomerMobileNumber, Status, Notes, StartDateVal, EndDateVal, safariInfo, pantInfo, shirtInfo);
                 if (Result == true)
                 {
+
                     returnObject.Add("status", "success");
                 }
                 else
@@ -522,13 +579,15 @@ namespace ShopManagement.Controllers
             }
             return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult UpdateOrderInfo(string Id, string CustomerName, string Image, string ShopId, int Amount, int CustomerMobileNumber, string Status, string Notes, DateTime StartDate, DateTime EndDate)
+        public ActionResult UpdateOrderInfo(string Id, string CustomerName, string Image, string ShopId, int Amount, string CustomerMobileNumber, string Status, string Notes, string StartDate, string EndDate, Models.SafariInfo safariInfo, Models.PantInfo pantInfo, Models.ShirtInfo shirtInfo)
         {
             Dictionary<string, object> returnObject = new Dictionary<string, object>();
             try
             {
                 bool Result = false;
-                Result = _orderUtility.Update(Id, CustomerName, Image, ShopId, Amount, CustomerMobileNumber, Status, Notes, StartDate, EndDate);
+                DateTime StartDateVal = DateTime.Parse(StartDate);
+                DateTime EndDateVal = DateTime.Parse(EndDate);
+                Result = _orderUtility.Update(Id, CustomerName, Image, ShopId, Amount, CustomerMobileNumber, Status, Notes, StartDateVal, EndDateVal, safariInfo, pantInfo, shirtInfo);
                 if (Result == true)
                 {
                     returnObject.Add("status", "success");

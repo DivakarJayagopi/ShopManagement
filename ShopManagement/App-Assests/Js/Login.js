@@ -1,4 +1,4 @@
-﻿function ValidateLogin(MobileNumber, Password) {
+﻿function ValidateLogin(MobileNumber, Password, IsRemember) {
     if (MobileNumber == "" || Password == "") {
 
         if (MobileNumber == "") $(".MobileNumber").addClass("form-error");
@@ -27,7 +27,7 @@
 
             $("#LoginFormSubmit").addClass("btn-progress");
 
-            var data = '{MobileNumber:"' + MobileNumber + '",Password:"' + Password + '"}';
+            var data = '{MobileNumber:"' + MobileNumber + '",Password:"' + Password + '",IsRemember:' + IsRemember + '}';
             handleAjaxRequest(null, true, "/Method/ValidateUserLogin", data, "CallBackValidateLogin");
         }
 

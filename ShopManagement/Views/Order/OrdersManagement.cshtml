@@ -42,9 +42,10 @@
                                 <div class="form-group">
                                     <label>Choose Shop</label>
                                     <select class="form-control select2">
-                                        <option>Option 1</option>
-                                        <option>Option 2</option>
-                                        <option>Option 3</option>
+                                        @foreach (var item in Model)
+                                        {
+                                        <option value="@item.Id">@item.Name</option>
+                                        }
                                     </select>
                                 </div>
                             </div>
@@ -52,7 +53,7 @@
                                 <div class="form-group">
                                     <label>Choose Month</label>
                                     <div class="input-group">
-                                        <input type="text" readonly class="form-control pwstrength" id="datepickerNew">
+                                        <input type="text" readonly class="form-control SelectedMonth" id="datepickerNew">
                                     </div>
                                 </div>
                             </div>
@@ -60,186 +61,174 @@
                                 <div class="form-group">
                                     <label> </label>
                                     <div class="input-group">
-                                        <button type="button" class="btn btn-info btn-block" style="margin-top: 7px;">Submit</button>
+                                        <button type="button" class="btn btn-info btn-block SubmitVisualDataForm" style="margin-top: 7px;">Submit</button>
                                     </div>
                                 </div>
 
                             </div>
                         </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12 ">
-                            <div class="card card-success ShopInfo card-statistic-2">
-                                <div class="card-stats">
-                                    <div class="card-stats-title">
-                                        Shop Statistics for <b><i>January</i></b> Month
+
+                        <div class="VisualInfo" style="display:none;">
+                            <div class="col-lg-12 col-md-12 col-sm-12 ">
+                                <div class="card card-success ShopInfo card-statistic-2">
+                                    <div class="card-stats">
+                                        <div class="card-stats-title">
+                                            Shop Statistics for <b><i>January</i></b> Month
+                                        </div>
+                                        <div class="card-stats-items">
+                                            <div class="card-stats-item">
+                                                <div class="card-stats-item-count">24</div>
+                                                <div class="card-stats-item-label">Pending</div>
+                                            </div>
+                                            <div class="card-stats-item">
+                                                <div class="card-stats-item-count">12</div>
+                                                <div class="card-stats-item-label">In Progress</div>
+                                            </div>
+                                            <div class="card-stats-item">
+                                                <div class="card-stats-item-count">23</div>
+                                                <div class="card-stats-item-label">Completed</div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="card-stats-items">
-                                        <div class="card-stats-item">
-                                            <div class="card-stats-item-count">24</div>
-                                            <div class="card-stats-item-label">Pending</div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="card-icon shadow-primary bg-primary">
+                                                <i class="fas fa-archive"></i>
+                                            </div>
+                                            <div class="card-wrap">
+                                                <div class="card-header">
+                                                    <h4>Total Orders</h4>
+                                                </div>
+                                                <div class="card-body">
+                                                    59
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="card-stats-item">
-                                            <div class="card-stats-item-count">12</div>
-                                            <div class="card-stats-item-label">In Progress</div>
+                                        <div class="col-md-4">
+                                            <div class="card-icon shadow-primary bg-primary">
+                                                <i class="fas fa-archive"></i>
+                                            </div>
+                                            <div class="card-wrap">
+                                                <div class="card-header">
+                                                    <h4>Total Amount</h4>
+                                                </div>
+                                                <div class="card-body">
+                                                    59
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="card-stats-item">
-                                            <div class="card-stats-item-count">23</div>
-                                            <div class="card-stats-item-label">Completed</div>
+                                        <div class="col-md-4">
+                                            <div class="card-icon shadow-primary bg-primary">
+                                                <i class="fas fa-archive"></i>
+                                            </div>
+                                            <div class="card-wrap">
+                                                <div class="card-header">
+                                                    <h4>Received Amount</h4>
+                                                </div>
+                                                <div class="card-body">
+                                                    59
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="card-icon shadow-primary bg-primary">
-                                            <i class="fas fa-archive"></i>
+                            </div>
+                            <table class="table table-striped table-responsive-lg">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Customer Name</th>
+                                        <th scope="col">Satus</th>
+                                        <th scope="col">Customer Mobile Number</th>
+                                        <th scope="col">Remaining Days</th>
+                                        <th scope="col">Shop Name</th>
+                                        <th scope="col">Shop Area</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>Divakar</td>
+                                        <td>In Progress</td>
+                                        <td>8148563820</td>
+                                        <td>5</td>
+                                        <td>Best Shop</td>
+                                        <td>Anna Nagar</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>Divakar</td>
+                                        <td>In Progress</td>
+                                        <td>8148563820</td>
+                                        <td>5</td>
+                                        <td>New Shop</td>
+                                        <td>Anna Nagar</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>Divakar</td>
+                                        <td>In Progress</td>
+                                        <td>8148563820</td>
+                                        <td>5</td>
+                                        <td>Shop Name</td>
+                                        <td>Anna Nagar</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h2 class="section-title">Single Shop</h2>
+                            <p class="section-lead">
+                                View Order and amount staticts for <a href="javascript:void(0);"><i class="SelectedShopName"><b>Best Shop</b></i></a> for <i><b>Month</b></i>.
+                            </p>
+                            <div class="row BySingleShop">
+                                <div class="col-12 col-md-6 col-lg-6">
+                                    <div class="card card-primary">
+                                        <div class="card-header">
+                                            <h4>Orders Status</h4>
                                         </div>
-                                        <div class="card-wrap">
-                                            <div class="card-header">
-                                                <h4>Total Orders</h4>
-                                            </div>
-                                            <div class="card-body">
-                                                59
-                                            </div>
+                                        <div class="card-body">
+                                            <canvas id="myChart3"></canvas>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="card-icon shadow-primary bg-primary">
-                                            <i class="fas fa-archive"></i>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-6">
+                                    <div class="card card-primary">
+                                        <div class="card-header">
+                                            <h4>Amount Status</h4>
                                         </div>
-                                        <div class="card-wrap">
-                                            <div class="card-header">
-                                                <h4>Total Amount</h4>
-                                            </div>
-                                            <div class="card-body">
-                                                59
-                                            </div>
+                                        <div class="card-body">
+                                            <canvas id="myChart4"></canvas>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="card-icon shadow-primary bg-primary">
-                                            <i class="fas fa-archive"></i>
+                                </div>
+                            </div>
+                            <h2 class="section-title">All Shop</h2>
+                            <p class="section-lead">
+                                View Order and amount staticts for All shop for <i><b>Month</b></i>.
+                            </p>
+                            <div class="row ByAllShopShop">
+                                <div class="col-12 col-md-6 col-lg-6">
+                                    <div class="card card-primary">
+                                        <div class="card-header">
+                                            <h4>Orders Status</h4>
                                         </div>
-                                        <div class="card-wrap">
-                                            <div class="card-header">
-                                                <h4>Received Amount</h4>
-                                            </div>
-                                            <div class="card-body">
-                                                59
-                                            </div>
+                                        <div class="card-body">
+                                            <canvas id="myChart5"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-6">
+                                    <div class="card card-primary">
+                                        <div class="card-header">
+                                            <h4>Amount Status</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <canvas id="myChart6"></canvas>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <table class="table table-striped table-responsive-lg">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Customer Name</th>
-                                    <th scope="col">Satus</th>
-                                    <th scope="col">Customer Mobile Number</th>
-                                    <th scope="col">Remaining Days</th>
-                                    <th scope="col">Shop Name</th>
-                                    <th scope="col">Shop Area</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Divakar</td>
-                                    <td>In Progress</td>
-                                    <td>8148563820</td>
-                                    <td>5</td>
-                                    <td>Best Shop</td>
-                                    <td>Anna Nagar</td>
-                                    <td>
-                                        <a href="javascript:void"><i class="fas fa-eye ViewOrderInfo"></i></a>
-                                        <a href="javascript:void"><i class="fas fa-edit EditOrderInfo"></i></a>
-                                        <a href="javascript:void"><i class="fas fa-trash DeleteOrder"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Divakar</td>
-                                    <td>In Progress</td>
-                                    <td>8148563820</td>
-                                    <td>5</td>
-                                    <td>New Shop</td>
-                                    <td>Anna Nagar</td>
-                                    <td>
-                                        <a href="javascript:void"><i class="fas fa-eye ViewOrderInfo"></i></a>
-                                        <a href="javascript:void"><i class="fas fa-edit EditOrderInfo"></i></a>
-                                        <a href="javascript:void"><i class="fas fa-trash DeleteOrder"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Divakar</td>
-                                    <td>In Progress</td>
-                                    <td>8148563820</td>
-                                    <td>5</td>
-                                    <td>Shop Name</td>
-                                    <td>Anna Nagar</td>
-                                    <td>
-                                        <a href="javascript:void"><i class="fas fa-eye ViewOrderInfo"></i></a>
-                                        <a href="javascript:void"><i class="fas fa-edit EditOrderInfo"></i></a>
-                                        <a href="javascript:void"><i class="fas fa-trash DeleteOrder"></i></a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <h2 class="section-title">Single Shop</h2>
-                        <p class="section-lead">
-                            View Order and amount staticts for <a href="javascript:void(0);"><i class="SelectedShopName"><b>Best Shop</b></i></a> for <i><b>Month</b></i>.
-                        </p>
-                        <div class="row BySingleShop">
-                            <div class="col-12 col-md-6 col-lg-6">
-                                <div class="card card-primary">
-                                    <div class="card-header">
-                                        <h4>Orders Status</h4>
-                                    </div>
-                                    <div class="card-body">
-                                        <canvas id="myChart3"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6 col-lg-6">
-                                <div class="card card-primary">
-                                    <div class="card-header">
-                                        <h4>Amount Status</h4>
-                                    </div>
-                                    <div class="card-body">
-                                        <canvas id="myChart4"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <h2 class="section-title">All Shop</h2>
-                        <p class="section-lead">
-                            View Order and amount staticts for All shop for <i><b>Month</b></i>.
-                        </p>
-                        <div class="row ByAllShopShop">
-                            <div class="col-12 col-md-6 col-lg-6">
-                                <div class="card card-primary">
-                                    <div class="card-header">
-                                        <h4>Orders Status</h4>
-                                    </div>
-                                    <div class="card-body">
-                                        <canvas id="myChart5"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6 col-lg-6">
-                                <div class="card card-primary">
-                                    <div class="card-header">
-                                        <h4>Amount Status</h4>
-                                    </div>
-                                    <div class="card-body">
-                                        <canvas id="myChart6"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -338,8 +327,6 @@
 <!-- Page Specific JS File -->
 <script src="../../assets/js/page/modules-chartjs.js"></script>
 
-<!-- General JS Scripts -->
-<script src="~/App-Assests/Js/Order.js"></script>
 <!-- JS Libraies -->
 <script src="../../assets/modules/chocolat/dist/js/jquery.chocolat.min.js"></script>
 <script src="https://cdn.jsdelivr.net/bootstrap.datepicker/0.1/js/bootstrap-datepicker.js"></script>

@@ -3,6 +3,11 @@
     ViewBag.Title = "AddOrder";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .btn btn-success btn-block disabled{
+        cursor:pointer;
+    }
+</style>
 <section class="section">
     <div class="section-header">
         <h1>Add Order</h1>
@@ -34,15 +39,15 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label>Customer Name</label>
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control" id="CustomerName">
                             </div>
                             <div class="form-group">
                                 <label>Mobile Number</label>
-                                <input type="number" class="form-control invoice-input">
+                                <input type="number" class="form-control" id="CustomerMobileNumber">
                             </div>
                             <div class="form-group">
                                 <label>Choose shop</label>
-                                <select class="form-control select2">
+                                <select class="form-control select2" id="SelctedShopId">
                                     @foreach (var item in Model)
                                     {
                                         <option value="@item.Id">@item.Name</option>
@@ -51,15 +56,15 @@
                             </div>
                             <div class="form-group">
                                 <label>Amount</label>
-                                <input type="number" class="form-control invoice-input">
+                                <input type="number" class="form-control" id="OrderAmount">
                             </div>
                             <div class="form-group">
                                 <label>Image</label>
-                                <input type="file" class="form-control invoice-input" style="padding:.375rem .75rem;">
+                                <input type="file" class="form-control" style="padding:.375rem .75rem;" id="OrderImage">
                             </div>
                             <div class="form-group">
                                 <label>Notes</label>
-                                <textarea class="form-control datemask"></textarea>
+                                <textarea class="form-control datemask" id="OrderNotes"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>Status</label>
@@ -67,19 +72,19 @@
                                     <div class="selectgroup w-100">
                                         <label class="selectgroup-item">
                                             <input type="radio" name="value" value="active" class="selectgroup-input" checked="">
-                                            <span class="selectgroup-button active">Awaiting</span>
+                                            <span class="selectgroup-button awaiting OrderStatus">Awaiting</span>
                                         </label>
                                         <label class="selectgroup-item">
                                             <input type="radio" name="value" value="inactive" class="selectgroup-input">
-                                            <span class="selectgroup-button inactive">InProgress</span>
+                                            <span class="selectgroup-button inprogress OrderStatus">InProgress</span>
                                         </label>
                                         <label class="selectgroup-item">
                                             <input type="radio" name="value" value="inactive" class="selectgroup-input">
-                                            <span class="selectgroup-button inactive">Completed</span>
+                                            <span class="selectgroup-button completed OrderStatus">Completed</span>
                                         </label>
                                         <label class="selectgroup-item">
                                             <input type="radio" name="value" value="inactive" class="selectgroup-input">
-                                            <span class="selectgroup-button inactive">Dropped</span>
+                                            <span class="selectgroup-button dropped OrderStatus">Dropped</span>
                                         </label>
                                     </div>
                                 </div>
@@ -92,7 +97,23 @@
                                             <i class="fas fa-calendar"></i>
                                         </div>
                                     </div>
-                                    <input type="date" class="form-control datepicker">
+                                    <input type="date" class="form-control datepicker" id="OrderStartDate">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Other Info</label>
+                                <div class="input-group">
+                                    <div class="col-md-12 row OrderOtherInfo">
+                                        <div class="col-md-4">
+                                            <button class="btn btn-warning btn-block disabled AddSafariInfoButton" data-toggle="modal" data-target="#SafariInfo"><i class="fas fa-plus"></i> &nbsp; &nbsp; &nbsp;Suit/Safari</button>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button class="btn btn-warning btn-block disabled AddPantInfoButton" data-toggle="modal" data-target="#PantInfo"><i class="fas fa-plus"></i> &nbsp; &nbsp; &nbsp;Pant</button>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button class="btn btn-warning btn-block disabled AddShirtInfoButton" data-toggle="modal" data-target="#ShirtInfo"><i class="fas fa-plus"></i> &nbsp; &nbsp; &nbsp;Shirt</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -103,18 +124,307 @@
                                             <i class="fas fa-calendar"></i>
                                         </div>
                                     </div>
-                                    <input type="date" class="form-control datepicker">
+                                    <input type="date" class="form-control datepicker" id="OrderEndDate">
                                 </div>
                             </div>
-                            <button class="btn btn-block btn-info" type="button">Submit</button>
+                            <span class="customErrorMessageAddOrder text-danger"></span>
+                            <button class="btn btn-block btn-info" id="OrderInfoFromSubmit" >Submit</button>
                         </div>
                     </div>
                 </div>
             </div>
         }
-
     </div>
 </section>
 
+<div class="modal fade" tabindex="-1" role="dialog" id="SafariInfo">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Safari Info</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="SafariInfoForm">
+                    <form>
+                        <div class="form-group">
+                            <label>Length</label>
+                            <input type="text" class="form-control" id="SafariLength">
+                        </div>
+                        <div class="form-group">
+                            <label>Shoulder</label>
+                            <input type="text" class="form-control" id="SafariShoulder">
+                        </div>
+                        <div class="form-group">
+                            <label>S_Length</label>
+                            <input type="text" class="form-control" id="SafariS_Length">
+                        </div>
+                        <div class="form-group">
+                            <label>S_Loose</label>
+                            <input type="text" class="form-control" id="SafariS_Loose">
+                        </div>
+                        <div class="form-group">
+                            <label>Chest</label>
+                            <input type="text" class="form-control" id="SafariChest">
+                        </div>
+                        <div class="form-group">
+                            <label>Waist</label>
+                            <input type="text" class="form-control" id="SafariWaist">
+                        </div>
+                        <div class="form-group">
+                            <label>Hip</label>
+                            <input type="text" class="form-control" id="SafariHip">
+                        </div>
+                        <div class="form-group">
+                            <label>Collar</label>
+                            <input type="text" class="form-control" id="SafariCollar">
+                        </div>
+                        <div class="form-group">
+                            <label>Collar_Style</label>
+                            <input type="text" class="form-control" id="SafariCollar_Style">
+                        </div>
+                        <div class="form-group">
+                            <label>Buttons</label>
+                            <input type="text" class="form-control" id="SafariButtons">
+                        </div>
+                        <div class="form-group">
+                            <label>Side_Vent</label>
+                            <input type="text" class="form-control" id="SafariSide_Vent">
+                        </div>
+                        <div class="form-group">
+                            <label>S_Breast</label>
+                            <input type="text" class="form-control" id="SafariS_Breast">
+                        </div>
+                        <div class="form-group">
+                            <label>D_Breast</label>
+                            <input type="text" class="form-control" id="SafariD_Breast">
+                        </div>
+                        <div class="form-group">
+                            <label>Breast</label>
+                            <input type="text" class="form-control" id="SafariBreast">
+                        </div>
+                        <div class="form-group">
+                            <label>Notes</label>
+                            <textarea class="form-control Safari_Notes" id="Safari_Notes"></textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer bg-whitesmoke br">
+                <span class="customErrorMessageAddSafariInfo text-danger" style="float:left;"></span>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button class="btn btn-info" id="SafariInfoFromSubmit">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="PantInfo">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pant Info</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="PantInfoForm">
+                    <form>
+                        <div class="form-group">
+                            <label>Length</label>
+                            <input type="text" class="form-control" id="PantInfoLength">
+                        </div>
+                        <div class="form-group">
+                            <label>Seat</label>
+                            <input type="text" class="form-control" id="PantInfoSeat">
+                        </div>
+                        <div class="form-group">
+                            <label>Hip</label>
+                            <input type="text" class="form-control" id="PantInfoHip">
+                        </div>
+                        <div class="form-group">
+                            <label>InSeen</label>
+                            <input type="text" class="form-control" id="PantInfoInSeen">
+                        </div>
+                        <div class="form-group">
+                            <label>Thigh</label>
+                            <input type="text" class="form-control" id="PantInfoThigh">
+                        </div>
+                        <div class="form-group">
+                            <label>Knee</label>
+                            <input type="text" class="form-control" id="PantInfoKnee">
+                        </div>
+                        <div class="form-group">
+                            <label>Bottom</label>
+                            <input type="text" class="form-control" id="PantInfoBottom">
+                        </div>
+                        <div class="form-group">
+                            <label>BackPocket</label>
+                            <input type="text" class="form-control" id="PantInfoBackPocket">
+                        </div>
+                        <div class="form-group">
+                            <label>WatchPocket</label>
+                            <input type="text" class="form-control" id="PantInfoWatchPocket">
+                        </div>
+                        <div class="form-group">
+                            <label>Iron</label>
+                            <input type="text" class="form-control" id="PantInfoIron">
+                        </div>
+                        <div class="form-group">
+                            <label>Emming</label>
+                            <input type="text" class="form-control" id="PantInfoEmming">
+                        </div>
+                        <div class="form-group">
+                            <label>BottomFold</label>
+                            <input type="text" class="form-control" id="PantInfoBottomFold">
+                        </div>
+                        <div class="form-group">
+                            <label>BuckleModel</label>
+                            <input type="text" class="form-control" id="PantInfoBuckleModel">
+                        </div>
+                        <div class="form-group">
+                            <label>HookButton</label>
+                            <input type="text" class="form-control" id="PantInfoHookButton">
+                        </div>
+                        <div class="form-group">
+                            <label>Button</label>
+                            <input type="text" class="form-control" id="PantInfoButton">
+                        </div>
+                        <div class="form-group">
+                            <label>Notes</label>
+                            <textarea class="form-control PantInfo_Notes" id="PantInfo_Notes"></textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer bg-whitesmoke br">
+                <span class="customErrorMessageAddPantInfo text-danger" style="float:left;"></span>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button class="btn btn-info" id="PantInfoFromSubmit">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="ShirtInfo">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Shirt Info</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="ShirtInfoForm">
+                    <form>
+                        <div class="form-group">
+                            <label>Length</label>
+                            <input type="text" class="form-control" id="ShirtInfoLength">
+                        </div>
+                        <div class="form-group">
+                            <label>Shoulder</label>
+                            <input type="text" class="form-control" id="ShirtInfoShoulder">
+                        </div>
+                        <div class="form-group">
+                            <label>S_Length</label>
+                            <input type="text" class="form-control" id="ShirtInfoS_Length">
+                        </div>
+                        <div class="form-group">
+                            <label>S_Loose</label>
+                            <input type="text" class="form-control" id="ShirtInfoS_Loose">
+                        </div>
+                        <div class="form-group">
+                            <label>Chest</label>
+                            <input type="text" class="form-control" id="ShirtInfoChest">
+                        </div>
+                        <div class="form-group">
+                            <label>Waist</label>
+                            <input type="text" class="form-control" id="ShirtInfoWaist">
+                        </div>
+                        <div class="form-group">
+                            <label>Hip</label>
+                            <input type="text" class="form-control" id="ShirtInfoHip">
+                        </div>
+                        <div class="form-group">
+                            <label>Collar</label>
+                            <input type="text" class="form-control" id="ShirtInfoCollar">
+                        </div>
+                        <div class="form-group">
+                            <label>Collar_Size</label>
+                            <input type="text" class="form-control" id="ShirtInfoCollar_Size">
+                        </div>
+                        <div class="form-group">
+                            <label>Collar_Style</label>
+                            <input type="text" class="form-control" id="ShirtInfoCollar_Style">
+                        </div>
+                        <div class="form-group">
+                            <label>Cuf_Size</label>
+                            <input type="text" class="form-control" id="ShirtInfoCuf_Size">
+                        </div>
+                        <div class="form-group">
+                            <label>Cuf_Style</label>
+                            <input type="text" class="form-control" id="ShirtInfoCuf_Style">
+                        </div>
+                        <div class="form-group">
+                            <label>Collar_Button</label>
+                            <input type="text" class="form-control" id="ShirtInfoCollar_Button">
+                        </div>
+                        <div class="form-group">
+                            <label>Patti</label>
+                            <input type="text" class="form-control" id="ShirtInfoPatti">
+                        </div>
+                        <div class="form-group">
+                            <label>Pocket</label>
+                            <input type="text" class="form-control" id="ShirtInfoPocket">
+                        </div>
+                        <div class="form-group">
+                            <label>InnerPocket</label>
+                            <input type="text" class="form-control" id="ShirtInfoInnerPocket">
+                        </div>
+                        <div class="form-group">
+                            <label>KneePatch</label>
+                            <input type="text" class="form-control" id="ShirtInfoKneePatch">
+                        </div>
+                        <div class="form-group">
+                            <label>Fit</label>
+                            <input type="text" class="form-control" id="ShirtInfoFit">
+                        </div>
+                        <div class="form-group">
+                            <label>Notes</label>
+                            <textarea class="form-control ShirtInfo_Notes" id="ShirtInfo_Notes"></textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer bg-whitesmoke br">
+                <span class="customErrorMessageAddShirtInfo text-danger" style="float:left;"></span>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button class="btn btn-info" id="ShirtInfoFromSubmit">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- General JS Scripts -->
 <script src="../../assets/modules/jquery.min.js"></script>
+<script src="~/App-Assests/Js/Order.js"></script>
+
+<script>
+    $(function () {
+        var dtToday = new Date();
+
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if (month < 10)
+            month = '0' + month.toString();
+        if (day < 10)
+            day = '0' + day.toString();
+        var maxDate = year + '-' + month + '-' + day;
+        $('#OrderStartDate, #OrderEndDate').attr('min', maxDate);
+    });
+</script>

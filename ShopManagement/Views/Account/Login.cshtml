@@ -52,7 +52,7 @@
                                 <form id="LoginForm">
                                     <div class="form-group">
                                         <label for="number">Mobile Number</label>
-                                        <input id="number" type="number" class="form-control MobileNumber" name="email" tabindex="1" autofocus placeholder="Enter Mobile Number">
+                                        <input id="number" type="number" class="form-control MobileNumber" value="" name="email" tabindex="1" autofocus placeholder="Enter Mobile Number">
                                     </div>
 
                                     <div class="form-group">
@@ -64,12 +64,12 @@
                                                 </a>
                                             </div>
                                         </div>
-                                        <input id="password" type="password" class="form-control Password" name="password" tabindex="2" placeholder="Enter Password">
+                                        <input id="password" type="password" class="form-control Password" value="" name="password" tabindex="2" placeholder="Enter Password">
                                     </div>
 
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me">
+                                            <input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me" checked>
                                             <label class="custom-control-label" for="remember-me">Remember Me</label>
                                         </div>
                                     </div>
@@ -93,26 +93,66 @@
     <script src="~/App-Assests/Js/Login.js"></script>
     <script src="~/App-Assests/Js/Custom.js"></script>
     <script>
+
+        $(document).ready(function () {
+            var MobileNumber = getCookie("MobileNumber");
+            var Password = getCookie("Pwd");
+            $(".MobileNumber").val(MobileNumber);
+            $(".Password").val(Password);
+            if (typeof (MobileNumber) != "undefined" && MobileNumber != null && MobileNumber != "")
+                ValidateLogin(MobileNumber, Password, false);
+        });
+
         $("#LoginFormSubmit").click(function () {
             var MobileNumber = $(".MobileNumber").val();
             var Password = $(".Password").val();
-            ValidateLogin(MobileNumber, Password);
+            $("#LoginFormSubmit").addClass("btn-progress");
+            ValidateLogin(MobileNumber, Password, false);
         });
 
         $("#LoginForm").submit(function () {
             var MobileNumber = $(".MobileNumber").val();
             var Password = $(".Password").val();
-            ValidateLogin(MobileNumber, Password);
+            $("#LoginFormSubmit").addClass("btn-progress");
+            ValidateLogin(MobileNumber, Password, false);
         });
 
-        function CallBackValidateLogin(responseData) {
-            $("#LoginFormSubmit").removeClass("btn-progress");
+        function CallBackValidateLogin(responseData) {            
             if (responseData.message.status == "success") {
+                var MobileNumber = $(".MobileNumber").val();
+                var Password = $(".Password").val();
+                setCookie("MobileNumber", MobileNumber, 1000);
+                setCookie("Pwd", Password, 1000);
                 window.location.href = "@Url.Action("Dashboard", "Dashboard")";
             }
             else {
+                $("#LoginFormSubmit").removeClass("btn-progress");
                 $(".customErrorMessageLogin").text("Invalid Login !");
             }
+        }
+
+        function getCookie(cname) {
+            var name = cname + "=";
+            var encodedCookie = encodeURIComponent(document.cookie);
+            var decodedCookie = decodeURIComponent(encodedCookie);
+            var ca = decodedCookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        function setCookie(cname, cvalue, exdays) {
+            var d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            var expires = "expires=" + d.toGMTString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
         }
 
     </script>
