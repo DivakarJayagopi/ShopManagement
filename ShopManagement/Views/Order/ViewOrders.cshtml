@@ -5,6 +5,11 @@
 }
 <link href="~/assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
 <link href="~/assets/modules/datatables/datatables.min.css" rel="stylesheet" />
+<style>
+    .SafariInfo, .PantInfo, .ShirtInfo {
+       
+    }
+</style>
 <section class="section">
     <div class="section-header">
         <h1>All Orders</h1>
@@ -37,7 +42,7 @@
                             <table class="table table-striped table-responsive-lg" id="OrdersTable">
                                 <thead>
                                     <tr>
-                                        <th scope="col">#</th>
+                                        <th scope="col">Image</th>
                                         <th scope="col">Customer Name</th>
                                         <th scope="col">Satus</th>
                                         <th scope="col">Customer Mobile Number</th>
@@ -50,16 +55,16 @@
                                     @foreach (var item in Model)
                                     {
                                         <tr>
-                                            <th scope="row">1</th>
+                                            <th scope="row"><img src="@item.Image" style="height:30px;width:30px" class="img img-responsive"/></th>
                                             <td>@item.CustomerName</td>
                                             <td>@item.Status</td>
                                             <td>@item.CustomerMobileNumber</td>
                                             <td>@item.DaysRemaining</td>
                                             <td>@item.ShopName</td>
                                             <td>
-                                                <a href="javascript:void" data-id="@item.Id"><i class="fas fa-eye ViewOrderInfo" data-id="@item.Id"></i></a>
-                                                <a href="javascript:void" data-id="@item.Id"><i class="fas fa-edit EditOrderInfo" data-id="@item.Id"></i></a>
-                                                <a href="javascript:void" data-id="@item.Id"><i class="fas fa-trash DeleteOrder" data-id="@item.Id"></i></a>
+                                                <a href="javascript:void(0);" data-id="@item.Id"><i class="fas fa-eye ViewOrderInfo" data-id="@item.Id"></i></a>
+                                                <a href="javascript:void(0);" data-id="@item.Id"><i class="fas fa-edit EditOrderInfo" data-id="@item.Id"></i></a>
+                                                <a href="javascript:void(0);" data-id="@item.Id"><i class="fas fa-trash DeleteOrder" data-id="@item.Id"></i></a>
                                             </td>
                                         </tr>
                                     }
@@ -77,13 +82,242 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Order Info - <strong class="CustomerName"></strong> </h5>
+                <span class="modal-title">Order Info - <strong class="CustomerName"></strong> </span>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Modal body text goes here.</p>
+                <div class="SafariInfo">
+                    <h3 class="text-success">Suit/Safari Data : </h3>
+                    <div class="SafariNoData">
+                        <p class="text-warning text-center">No Suit/Safari Data Found</p>
+                    </div>
+                    <div class="SafariData">
+                        <table class="table table-sm" style="width:100%">
+                            <tr class="form-group">
+                                <td>Length</td>
+                                <td id="SafariLength"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Shoulder</td>
+                                <td id="SafariShoulder"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>S_Length</td>
+                                <td id="SafariS_Length"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>S_Loose</td>
+                                <td id="SafariS_Loose"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Chest</td>
+                                <td id="SafariChest"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Waist</td>
+                                <td id="SafariWaist"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Hip</td>
+                                <td id="SafariHip"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Collar</td>
+                                <td id="SafariCollar"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Collar_Style</td>
+                                <td id="SafariCollar_Style"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Buttons</td>
+                                <td id="SafariButtons"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Side_Vent</td>
+                                <td id="SafariSide_Vent"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>S_Breast</td>
+                                <td id="SafariS_Breast"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>D_Breast</td>
+                                <td id="SafariD_Breast"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Breast</td>
+                                <td id="SafariBreast"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Notes</td>
+                                <td class="Safari_Notes" id="Safari_Notes"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="PantInfo">
+                    <h3 class="text-success">Pant Data : </h3>
+                    <div class="PantNoData">
+                        <p class="text-warning text-center">No Pant Data Found</p>
+                    </div>
+                    <div class="PantData">
+                        <table class="table table-sm" style="width:100%">
+                            <tr class="form-group">
+                                <td>Length</td>
+                                <td id="PantInfoLength"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Seat</td>
+                                <td id="PantInfoSeat"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Hip</td>
+                                <td id="PantInfoHip"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>InSeen</td>
+                                <td id="PantInfoInSeen"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Thigh</td>
+                                <td id="PantInfoThigh"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Knee</td>
+                                <td id="PantInfoKnee"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Bottom</td>
+                                <td id="PantInfoBottom"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>BackPocket</td>
+                                <td id="PantInfoBackPocket"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>WatchPocket</td>
+                                <td id="PantInfoWatchPocket"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Iron</td>
+                                <td id="PantInfoIron"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Emming</td>
+                                <td id="PantInfoEmming"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>BottomFold</td>
+                                <td id="PantInfoBottomFold"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>BuckleModel</td>
+                                <td id="PantInfoBuckleModel"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>HookButton</td>
+                                <td id="PantInfoHookButton"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Button</td>
+                                <td id="PantInfoButton"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Notes</td>
+                                <td class="PantInfo_Notes" id="PantInfo_Notes"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="ShirtInfo">
+                    <h3 class="text-success">Shirt Data : </h3>
+                    <div class="ShirtNoData">
+                        <p class="text-warning text-center">No Shirt Data Found</p>
+                    </div>
+                    <div class="ShirtData">
+                        <table class="table table-sm" style="width:100%">
+                            <tr class="form-group">
+                                <td>Length</td>
+                                <td id="ShirtInfoLength"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Shoulder</td>
+                                <td id="ShirtInfoShoulder"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>S_Length</td>
+                                <td id="ShirtInfoS_Length"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>S_Loose</td>
+                                <td id="ShirtInfoS_Loose"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Chest</td>
+                                <td id="ShirtInfoChest"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Waist</td>
+                                <td id="ShirtInfoWaist"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Hip</td>
+                                <td id="ShirtInfoHip"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Collar</td>
+                                <td id="ShirtInfoCollar"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Collar_Size</td>
+                                <td id="ShirtInfoCollar_Size"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Collar_Style</td>
+                                <td id="ShirtInfoCollar_Style"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Cuf_Size</td>
+                                <td id="ShirtInfoCuf_Size"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Cuf_Style</td>
+                                <td id="ShirtInfoCuf_Style"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Collar_Button</td>
+                                <td id="ShirtInfoCollar_Button"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Patti</td>
+                                <td id="ShirtInfoPatti"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Pocket</td>
+                                <td id="ShirtInfoPocket"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>InnerPocket</td>
+                                <td id="ShirtInfoInnerPocket"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>KneePatch</td>
+                                <td id="ShirtInfoKneePatch"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Fit</td>
+                                <td id="ShirtInfoFit"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Notes</td>
+                                <td class="ShirtInfo_Notes" id="ShirtInfo_Notes"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer bg-whitesmoke br">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

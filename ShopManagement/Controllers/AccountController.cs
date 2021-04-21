@@ -26,7 +26,10 @@ namespace ShopManagement.Controllers
         {
             if (Session["UserId"] == null)
                 return RedirectToAction("Login", "Account");
-            return View();
+            Utilities.User userUtility = new Utilities.User();
+            string UserId = Session["UserId"].ToString();
+            var UserInfo = userUtility.GetUserById(UserId);
+            return View(UserInfo);
         }
 
         public ActionResult ChangePassword()

@@ -169,6 +169,32 @@ namespace ShopManagement.Controllers
             }
             return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult UdpateUserProfileInfo(string Id, string Name, string EmailId, string Area, string Notes, string MobileNumber)
+        {
+            Dictionary<string, object> returnObject = new Dictionary<string, object>();
+            try
+            {
+                bool Result = false;
+                var UserInfo = _userData.GetUserById(Id);                
+                Result = _userData.Update(Id, Name, EmailId, UserInfo.Password, UserInfo.Image, UserInfo.Status, Area, Notes, MobileNumber, UserInfo.IsAdmin);
+                if (Result == true)
+                {
+                    UserInfo = _userData.GetUserById(Id);
+                    returnObject.Add("userInfo", UserInfo);
+                    returnObject.Add("status", "success");
+                }
+                else
+                {
+                    returnObject.Add("status", "fail");
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult DeleteUserById(string Id)
         {
             Dictionary<string, object> returnObject = new Dictionary<string, object>();
@@ -587,6 +613,33 @@ namespace ShopManagement.Controllers
                 bool Result = false;
                 DateTime StartDateVal = DateTime.Parse(StartDate);
                 DateTime EndDateVal = DateTime.Parse(EndDate);
+                var OrderInfo = _orderUtility.GetOrderInfoById(Id);
+                if (string.IsNullOrEmpty(Image))
+                {
+                    Image = OrderInfo.Image;
+                }
+                else
+                {
+                    string path = Server.MapPath("~" + Globals.Default_OrderImagePath); //Path
+
+                    //Check if directory exist
+                    if (!System.IO.Directory.Exists(path))
+                    {
+                        System.IO.Directory.CreateDirectory(path); //Create directory if it doesn't exist
+                    }
+
+                    string imageName = Guid.NewGuid().ToString() + ".jpg";
+
+                    //set the image path
+                    string imgPath = Path.Combine(path, imageName);
+                    var splitedValue = Image.Split(',');
+                    var ReplaceValue = splitedValue[0] + ',';
+                    Image = Image.Replace(ReplaceValue, "");
+                    var imageBytes = Convert.FromBase64String(Image);
+
+                    System.IO.File.WriteAllBytes(imgPath, imageBytes);
+                    Image = Globals.Default_OrderImagePath + "/" + imageName;
+                }
                 Result = _orderUtility.Update(Id, CustomerName, Image, ShopId, Amount, CustomerMobileNumber, Status, Notes, StartDateVal, EndDateVal, safariInfo, pantInfo, shirtInfo);
                 if (Result == true)
                 {

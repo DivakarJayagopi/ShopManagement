@@ -354,3 +354,76 @@ function readFile() {
     }
 }
 document.getElementById("UserImage").addEventListener("change", readFile);
+
+
+$(".UpdateUserProfileInfo").click(function () {
+    var Id = $(this).attr("data-UserId");
+    var UserName = $(".UserName").val().trim();
+    var UserEmailId = $(".EmailId").val().trim();
+    var UserMobileNumber = $(".UserMobileNumber").val().trim();
+    var UserArea = $(".UserArea").val().trim();
+    var User_Notes = $(".UserNotes").val().trim();
+    if (UserName == "" || UserEmailId == "" || UserMobileNumber == ""|| UserArea == "") {
+
+        if (UserName == "") $(".UserName").addClass("form-error");
+        else $(".UserName").removeClass("form-error");
+
+        if (UserEmailId == "") $(".EmailId").addClass("form-error");
+        else $(".EmailId").removeClass("form-error");
+
+        if (UserMobileNumber == "") $(".UserMobileNumber").addClass("form-error");
+        else $(".UserMobileNumber").removeClass("form-error");
+
+        if (UserArea == "") $(".UserArea").addClass("form-error");
+        else $(".UserArea").removeClass("form-error");
+
+        $(".customErrorMessageUdpateUserProfile").text("Validation Failed, recheck the form !");
+    }
+    else {
+        $("input[type=\"text\"]").removeClass("form-error");
+        $("input[type=\"number\"]").removeClass("form-error");
+        $("input[type=\"eamil\"]").removeClass("form-error");
+        $(".customErrorMessageUdpateUserProfile").text("");
+        var IsSuccess = true;
+
+        if (UserMobileNumber.length != 10) {
+            $(".UserMobileNumber").addClass("form-error");
+            $(".customErrorMessageUdpateUserProfile").text("Please enter valid mobile number");
+            IsSuccess = false;
+        } else {
+            $(".UserMobileNumber").removeClass("form-error");
+            IsSuccess = true;
+        }
+
+        var regex = /^(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])+$/;
+        var isMail = regex.test(UserEmailId);
+        if (IsSuccess)
+            if (!isMail) {
+                $(".EmailId").addClass("form-error");
+                $(".customErrorMessageAddUser").text("Please enter valid EMail Id");
+                IsSuccess = false;
+            } else {
+                $(".EmailId").removeClass("form-error");
+                IsSuccess = true;
+            }
+
+        if (IsSuccess) {
+
+            $(".UpdateUserProfileInfo").addClass("btn-progress");
+
+            var data = '{Id:"' + Id + '",Name:"' + UserName + '",EmailId:"' + UserEmailId + '",Area:"' + UserArea + '",Notes:"' + User_Notes + '",MobileNumber:"' + UserMobileNumber + '"}';
+            handleAjaxRequest(null, true, "/Method/UdpateUserProfileInfo", data, "CallBackUdpateUserProfileInfo");
+        }
+
+    }
+});
+
+function CallBackUdpateUserProfileInfo(responseData) {
+    if (responseData.message.status == "success") {
+        window.location.reload();
+    }
+}
+
+$(".UserProfileImage").click(function () {
+    $(".UserSelectedImage").trigger("click");
+});

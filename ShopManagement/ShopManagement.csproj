@@ -889,6 +889,7 @@
     <Content Include="ImageStorage\Icons\ViewAllShops.png" />
     <Content Include="ImageStorage\Icons\ViewAllUsers.png" />
     <Content Include="ImageStorage\Icons\ViewOrders.png" />
+    <Content Include="ImageStorage\OrderImage\product-2-50.png" />
     <Content Include="ImageStorage\ShopImage\Shop.png" />
     <Content Include="ImageStorage\UserImage\User.png" />
     <Content Include="Web.config" />
@@ -909,6 +910,7 @@
     <Folder Include="ImageStorage\Gallery\High\" />
     <Folder Include="ImageStorage\Gallery\Low\" />
     <Folder Include="ImageStorage\Gallery\Medium\" />
+    <Folder Include="ImageStorage\SliderImage\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

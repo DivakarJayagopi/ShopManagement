@@ -9,6 +9,102 @@ function CallBackViewOrderInfoById(responseData) {
         var OrderInfo = responseData.message.orderInfo;
         $(".CustomerName").text(OrderInfo.CustomerName);
 
+        var SafariInfo = OrderInfo.SafariInfo;
+        var PantInfo = OrderInfo.PantInfo;
+        var ShirtInfo = OrderInfo.ShirtInfo;
+
+        if (typeof (SafariInfo) != "undefined" && SafariInfo != null && typeof (SafariInfo.Id) != "undefined" && SafariInfo.Id != null) {
+            $(".SafariData").show();
+            $(".SafariNoData").hide();
+
+            $("#SafariLength").text(SafariInfo.Length);
+            $("#SafariShoulder").text(SafariInfo.Shoulder);
+            $("#SafariS_Length").text(SafariInfo.S_Length);
+            $("#SafariS_Loose").text(SafariInfo.S_Loose);
+            $("#SafariChest").text(SafariInfo.Chest);
+            $("#SafariWaist").text(SafariInfo.Waist);
+            $("#SafariHip").text(SafariInfo.Hip);
+            $("#SafariCollar").text(SafariInfo.Collar);
+            $("#SafariCollar_Style").text(SafariInfo.Collar_Style);
+            $("#SafariButtons").text(SafariInfo.Buttons);
+            $("#SafariSide_Vent").text(SafariInfo.Side_Vent);
+            $("#SafariS_Breast").text(SafariInfo.S_Breast);
+            $("#SafariD_Breast").text(SafariInfo.D_Breast);
+            $("#SafariBreast").text(SafariInfo.Breast);
+            $("#Safari_Notes").text(SafariInfo.Notes);
+
+            $(".AddSafariInfoButton").removeClass("disabled");
+            $(".AddSafariInfoButton").removeClass("btn-warning");
+            $(".AddSafariInfoButton").addClass("btn-success");
+        } else {
+            $(".SafariNoData").show();
+            $(".SafariData").hide();
+        }
+
+        if (typeof (PantInfo) != "undefined" && PantInfo != null && typeof (PantInfo.Id) != "undefined" && PantInfo.Id != null) {
+
+            $(".PantData").show();
+            $(".PantNoData").hide();
+
+            $("#PantInfoLength").text(PantInfo.Length);
+            $("#PantInfoSeat").text(PantInfo.Seat);
+            $("#PantInfoHip").text(PantInfo.Hip);
+            $("#PantInfoInSeen").text(PantInfo.InSeen);
+            $("#PantInfoThigh").text(PantInfo.Thigh);
+            $("#PantInfoKnee").text(PantInfo.Knee);
+            $("#PantInfoBottom").text(PantInfo.Bottom);
+            $("#PantInfoBackPocket").text(PantInfo.BackPocket);
+            $("#PantInfoWatchPocket").text(PantInfo.WatchPocket);
+            $("#PantInfoIron").text(PantInfo.Iron);
+            $("#PantInfoEmming").text(PantInfo.Emming);
+            $("#PantInfoBottomFold").text(PantInfo.BottomFold);
+            $("#PantInfoBuckleModel").text(PantInfo.BuckleModel);
+            $("#PantInfoHookButton").text(PantInfo.HookButton);
+            $("#PantInfoButton").text(PantInfo.Button);
+            $("#PantInfo_Notes").text(PantInfo.Notes);
+
+            $(".AddPantInfoButton").removeClass("disabled");
+            $(".AddPantInfoButton").removeClass("btn-warning");
+            $(".AddPantInfoButton").addClass("btn-success");
+        } else {
+            $(".PantNoData").show();
+            $(".PantData").hide();
+        }
+
+        if (typeof (ShirtInfo) != "undefined" && ShirtInfo != null && typeof (ShirtInfo.Id) != "undefined" && ShirtInfo.Id != null) {
+
+            $(".ShirtData").show();
+            $(".ShirtNoData").hide();
+
+            $("#ShirtInfoLength").text(ShirtInfo.Length);
+            $("#ShirtInfoShoulder").text(ShirtInfo.Shoulder);
+            $("#ShirtInfoS_Length").text(ShirtInfo.S_Length);
+            $("#ShirtInfoS_Loose").text(ShirtInfo.S_Loose);
+            $("#ShirtInfoChest").text(ShirtInfo.Chest);
+            $("#ShirtInfoWaist").text(ShirtInfo.Waist);
+            $("#ShirtInfoHip").text(ShirtInfo.Hip);
+            $("#ShirtInfoCollar").text(ShirtInfo.Collar);
+            $("#ShirtInfoCollar_Size").text(ShirtInfo.Collar_Size);
+            $("#ShirtInfoCollar_Style").text(ShirtInfo.Collar_Style);
+            $("#ShirtInfoCuf_Size").text(ShirtInfo.Cuf_Size);
+            $("#ShirtInfoCuf_Style").text(ShirtInfo.Cuf_Style);
+            $("#ShirtInfoCollar_Button").text(ShirtInfo.Collar_Button);
+            $("#ShirtInfoPatti").text(ShirtInfo.Patti);
+            $("#ShirtInfoPocket").text(ShirtInfo.Pocket);
+            $("#ShirtInfoInnerPocket").text(ShirtInfo.InnerPocket);
+            $("#ShirtInfoKneePatch").text(ShirtInfo.KneePatch);
+            $("#ShirtInfoFit").text(ShirtInfo.Fit);
+            $("#ShirtInfo_Notes").text(ShirtInfo.Notes);
+
+            $(".AddShirtInfoButton").removeClass("disabled");
+            $(".AddShirtInfoButton").removeClass("btn-warning");
+            $(".AddShirtInfoButton").addClass("btn-success");
+        } else {
+            $(".ShirtNoData").show();
+            $(".ShirtData").hide();
+        }
+
+        $("#OrderInfo").modal("show");
     }
 }
 
