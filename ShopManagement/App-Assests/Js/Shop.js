@@ -16,7 +16,7 @@ function AddShop(target) {
     var MaxOrderCountForShop = $(".MaxOrderCountForShop").val().trim();
     var ShopStatus = GlobalShopStatus;
 
-    if (ShopName == "" || ShopArea == "" || ShopMobileNumber == "" || MaxOrderCountForShop == "") {
+    if (ShopName == "" || ShopArea == "" || ShopMobileNumber == "" || MaxOrderCountForShop == "" || ShopManager == "") {
 
         if (ShopName == "") $(".ShopName").addClass("form-error");
         else $(".ShopName").removeClass("form-error");
@@ -29,6 +29,9 @@ function AddShop(target) {
 
         if (MaxOrderCountForShop == "") $(".MaxOrderCountForShop").addClass("form-error");
         else $(".MaxOrderCountForShop").removeClass("form-error");
+
+        if (ShopManager == "") $(".ShopManager").addClass("form-error");
+        else $(".ShopManager").removeClass("form-error");
 
         $(".customErrorMessageAddShop").text("Validation Failed, recheck the form !");
     } else {

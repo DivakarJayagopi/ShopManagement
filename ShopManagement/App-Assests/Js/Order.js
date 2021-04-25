@@ -122,6 +122,7 @@ function CallBackGetOrderInfoById(responseData) {
         var OrderInfo = responseData.message.orderInfo;
         $(".CustomerName").text(OrderInfo.CustomerName);
         $(".OrderId").val(OrderInfo.Id);
+        $(".BillNumber").val(OrderInfo.BillNumber);
         $("#CustomerName").val(OrderInfo.CustomerName);
         $("#CustomerMobileNumber").val(OrderInfo.CustomerMobileNumber);
         $("#SelctedShopId").val(OrderInfo.ShopId);
@@ -230,6 +231,7 @@ function CallBackGetOrderInfoById(responseData) {
 
 $("#UpdateOrderFromSubmit").click(function () {
     var OrderId = $(".OrderId").val();
+    var BillNumber = $(".BillNumber").val();
 
     var CustomerName = $("#CustomerName").val();
     var Image = Global_OrderImage;
@@ -292,7 +294,7 @@ $("#UpdateOrderFromSubmit").click(function () {
                 Global_ShirtInfo = null;
             }
 
-            var data = '{Id:"' + OrderId + '", CustomerName:"' + CustomerName + '",Image:"' + Image + '",ShopId:"' + ShopId + '",Amount:' + Amount + ',CustomerMobileNumber:"' + CustomerMobileNumber + '",Status:"' + Status + '",Notes:"' + Notes + '",StartDate:"' + StartDate + '",EndDate:"' + EndDate + '",safariInfo:' + Global_SafariInfo + ',pantInfo:' + Global_PantInfo + ',shirtInfo:' + Global_ShirtInfo + '}';
+            var data = '{Id:"' + OrderId + '",BillNumber:"' + BillNumber + '" , CustomerName:"' + CustomerName + '",Image:"' + Image + '",ShopId:"' + ShopId + '",Amount:' + Amount + ',CustomerMobileNumber:"' + CustomerMobileNumber + '",Status:"' + Status + '",Notes:"' + Notes + '",StartDate:"' + StartDate + '",EndDate:"' + EndDate + '",safariInfo:' + Global_SafariInfo + ',pantInfo:' + Global_PantInfo + ',shirtInfo:' + Global_ShirtInfo + '}';
             handleAjaxRequest(null, true, "/Method/UpdateOrderInfo", data, "CallBackUpdateOrderInfo");
         }
     }
@@ -303,10 +305,6 @@ function CallBackUpdateOrderInfo(responseData) {
         window.location.reload();
     }
 }
-
-$(".SelectedShopName").click(function () {
-    $("#ViewShopInfo").modal("show");
-});
 
 $(".DeleteOrder").click(function () {
     var OrderId = $(this).attr("data-id");
@@ -352,7 +350,13 @@ $(".dropped.OrderStatus").click(function () {
     Global_OrderStatus = "dropped";
 });
 
+$("#OrderStartDate").change(function () {
+    var maxDate = $(this).val();
+    $('#OrderEndDate').attr('min', maxDate);
+});
+
 $("#OrderInfoFromSubmit").click(function () {
+    var BillNumber = $("#BillNumber").val();
     var CustomerName = $("#CustomerName").val();
     var Image = Global_OrderImage;
     var ShopId = $("#SelctedShopId").val();
@@ -364,7 +368,11 @@ $("#OrderInfoFromSubmit").click(function () {
     var EndDate = $("#OrderEndDate").val();
 
 
-    if ((CustomerName == "" || CustomerMobileNumber == "" || Amount == "" || StartDate == "" || EndDate == "")) {
+    if ((BillNumber == "" || CustomerName == "" || CustomerMobileNumber == "" || Amount == "" || StartDate == "" || EndDate == "")) {
+
+        if (CustomerName == "") $("#BillNumber").addClass("form-error");
+        else $("#BillNumber").removeClass("form-error");
+
         if (CustomerName == "") $("#CustomerName").addClass("form-error");
         else $("#CustomerName").removeClass("form-error");
 
@@ -406,6 +414,17 @@ $("#OrderInfoFromSubmit").click(function () {
         }
 
         if (IsSuccess) {
+            var remainingOrderCount_ForShop = $('#SelctedShopId option:selected').attr("data-remainingCount");
+            var MaximunOrderCount_ForShop = $('#SelctedShopId option:selected').attr("data-maxCount");
+            parseInt(MaximunOrderCount_ForShop);
+            if (remainingOrderCount_ForShop <= 0) {
+                $("#SelctedShopId").addClass("form-error");
+                $(".customErrorMessageAddOrder").text("Maximin order fro the selected shopd is " + MaximunOrderCount_ForShop);
+                IsSuccess = false;
+            }
+        }
+
+        if (IsSuccess) {
 
             $("#OrderInfoFromSubmit").addClass("btn-progress");
 
@@ -421,7 +440,7 @@ $("#OrderInfoFromSubmit").click(function () {
                 Global_ShirtInfo = null;
             }
 
-            var data = '{CustomerName:"' + CustomerName + '",Image:"' + Image + '",ShopId:"' + ShopId + '",Amount:' + Amount + ',CustomerMobileNumber:"' + CustomerMobileNumber + '",Status:"' + Status + '",Notes:"' + Notes + '",StartDate:"' + StartDate + '",EndDate:"' + EndDate + '",safariInfo:' + Global_SafariInfo + ',pantInfo:' + Global_PantInfo + ',shirtInfo:' + Global_ShirtInfo + '}';
+            var data = '{BillNumber:"' + BillNumber + '", CustomerName:"' + CustomerName + '",Image:"' + Image + '",ShopId:"' + ShopId + '",Amount:' + Amount + ',CustomerMobileNumber:"' + CustomerMobileNumber + '",Status:"' + Status + '",Notes:"' + Notes + '",StartDate:"' + StartDate + '",EndDate:"' + EndDate + '",safariInfo:' + Global_SafariInfo + ',pantInfo:' + Global_PantInfo + ',shirtInfo:' + Global_ShirtInfo + '}';
             handleAjaxRequest(null, true, "/Method/AddOrderInfo", data, "CallBackAddOrderInfo");
         }
     }
@@ -432,7 +451,16 @@ function CallBackAddOrderInfo(responseData) {
         $("input[type=\"text\"]").val('');
         $("input[type=\"number\"]").val('');
         $("input[type=\"file\"]").val('');
+        $("input[type=\"date\"]").val('');
         swal('Order Added Successfully');
+        Global_SafariInfo = "";
+        Global_PantInfo = "";
+        Global_ShirtInfo = "";
+
+        $(".AddSafariInfoButton,.AddPantInfoButton,.AddShirtInfoButton").removeClass("btn-success");
+        $(".AddSafariInfoButton,.AddPantInfoButton,.AddShirtInfoButton").addClass("btn-warning");
+        $(".AddSafariInfoButton,.AddPantInfoButton,.AddShirtInfoButton").addClass("disabled");
+
     } else {
         swal('Error on Adding User');
     }
@@ -764,18 +792,316 @@ $("#ShirtInfoFromSubmit").click(function () {
 
 $(".SubmitVisualDataForm").click(function () {
     var Date = $("#datepickerNew").val();
+    var ShopId = $(".ShopId").val();
     if (Date == "") {
         $("#datepickerNew").addClass("form-error");
     } else {
         $("#datepickerNew").removeClass("form-error");
-        $(".VisualInfo").show();
-
-
+        AdditionalInfo = [];
+        AdditionalInfo.push($('.ShopId option:selected').attr("data-data-ShopName"));
+        AdditionalInfo.push(Date);
+        AdditionalInfo.push(ShopId);
+        Date += "-01";
+        var data = '{ShopId:"' + ShopId + '", FilterDate:"' + Date + '"}';
+        handleAjaxRequest(null, true, "/Method/GetAllOrdersDates", data, "CallBackGetAllOrdersDates", AdditionalInfo);
     }    
 });
 
+function CallBackGetAllOrdersDates(responseData, AdditionalInfo) {
+    if (responseData.message.status == "success") {
+        var OrderList = responseData.message.OrderList;
+        var DateFormate = new Date(AdditionalInfo[1]);
+        var MonthName = DateFormate.toLocaleString('default', { month: 'long' });
+        $(".SelectedMonth").text(MonthName);
+        if (typeof (OrderList) != "undefined" && OrderList != null && OrderList.length > 0) {
+            $(".VisualInfo").show();
+
+            $(".AwaitingOrdersCount").text(responseData.message.awaitingOrdersCount);
+            $(".InprogressOrdersCount").text(responseData.message.inprogressOrdersCount);
+            $(".CompletedOrdersCount").text(responseData.message.completedOrdersCount);
+            $(".DroppedOrdersCount").text(responseData.message.droppedOrdersCount);
 
 
+            $(".TotalOrdersCount").text(responseData.message.OrderList.length);
+            $(".TotalOrdersAmount").text(responseData.message.TotalAmout);
+            $(".TotalReceivedAmout").text(responseData.message.ReceivedAmout);
+
+            $(".SelectedShopName,.SelectedShopNameTitle").text(AdditionalInfo[0]);
+            $(".SelectedShopName").attr("id", AdditionalInfo[2]);
+
+            var OrdersListHTML = "";
+            $.each(OrderList, function (key, val) {
+                OrdersListHTML += "<tr>";
+                OrdersListHTML += '<td> <img src="' + val.Image + '" style="height:30px;width:30px" class="img img-responsive"/>  </td>';
+                OrdersListHTML += "<td>" + val.BillNumber + "</td>";
+                OrdersListHTML += "<td>" + val.CustomerName + "</td>";
+                OrdersListHTML += "<td>" + val.Status + "</td>";
+                OrdersListHTML += "<td>" + val.CustomerMobileNumber + "</td>";
+                OrdersListHTML += "<td>" + val.DaysRemaining + "</td>";
+                OrdersListHTML += "<td>" + val.Amount + "</td>";
+                OrdersListHTML += "</tr>";
+            });
+
+            $(".OrdersTableView").html(OrdersListHTML);
+
+            if (AdditionalInfo[2] != "") {
+                $(".BySingleShop").show();
+                $(".ByAllShopShop").hide();
+
+                var OrderData = [];
+                var AmountData = [];
+
+                OrderData.push(responseData.message.OrderList.length);
+                OrderData.push(responseData.message.awaitingOrdersCount);
+                OrderData.push(responseData.message.inprogressOrdersCount);
+                OrderData.push(responseData.message.completedOrdersCount);
+                OrderData.push(responseData.message.droppedOrdersCount);
+
+                AmountData.push(responseData.message.TotalAmount);
+                AmountData.push(responseData.message.ReceivedAmount);
+                AmountData.push(responseData.message.BalanceAmount);
+
+                BuildChart_SingleShop(OrderData, AmountData);
+            } else {
+                $(".BySingleShop").hide();
+                $(".ByAllShopShop").show();
+                var ShopInfoForChartsList = responseData.message.ShopInfoForChartsList
+                BuildChart_AllShop(ShopInfoForChartsList);
+            }
+
+            
+
+            $(".OrdersNoDateDiv").hide();
+        }
+        else {
+            $(".VisualInfo").hide();
+            $(".OrdersNoDateDiv").show();
+        }
+    }
+}
+
+function BuildChart_SingleShop(OrderData, AmountData) {
+    var SingleShopOrderStatus = document.getElementById("SingleShopOrderStatus").getContext('2d');
+    new Chart(SingleShopOrderStatus, {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data: [OrderData[0], OrderData[1], OrderData[2], OrderData[3], OrderData[4]],
+                backgroundColor: ['#191d21', 'orange', 'blue','green','red'],
+                label: 'Dataset 1'
+            }],
+            labels: ['Total','Awaiting','InProgress','Completed','Dropped'],
+        },
+        options: {
+            responsive: true,
+            legend: {
+                position: 'bottom',
+            },
+        }
+    });
+
+    var SingleShopAmountStatus = document.getElementById("SingleShopAmountStatus").getContext('2d');
+    new Chart(SingleShopAmountStatus, {
+        type: 'pie',
+        data: {
+            datasets: [{
+                data: [AmountData[0], AmountData[1], AmountData[2],],
+                backgroundColor: ['#191d21','#63ed7a','#ffa426',],
+                label: 'Dataset 1'
+            }],
+            labels: ['Total','Received','Pending',],
+        },
+        options: {
+            responsive: true,
+            legend: {
+                position: 'bottom',
+            },
+        }
+    });
+}
+
+function BuildChart_AllShop(ShopInfoForChartsList) {
+
+    var ShopName = [];
+
+    var TotalOrder = [];
+    var AwaitingOrder = [];
+    var InprogressOrder = [];
+    var DroppedOrder = [];
+    var CompletedOrder = [];
+
+    var TotalAmount = [];
+    var ReceivedAmount = [];
+    var PendingAmount = [];
+
+    var TotalOrderCount = 0;
+    var AwaitingOrderCount = 0;
+    var InprogressOrderCount = 0;
+    var DroppedOrderCount = 0;
+    var CompletedOrderCount = 0;
+
+    if (typeof (ShopInfoForChartsList) != "undefined" && ShopInfoForChartsList != null) {
+        $.each(ShopInfoForChartsList, function (key, val) {
+            if (val.TotalOrdersCount != 0) {
+                ShopName.push(val.Name);
+
+                TotalOrder.push(val.TotalOrdersCount);
+                AwaitingOrder.push(val.AwaitingOrdersCount);
+                InprogressOrder.push(val.InprogressOrdersCount);
+                DroppedOrder.push(val.DroppedOrdersCount);
+                CompletedOrder.push(val.CompletedOrdersCount);
+
+                TotalAmount.push(val.TotalAmount);
+                ReceivedAmount.push(val.ReceivedAmount);
+                PendingAmount.push(val.BalanceAmount);
+
+                TotalOrderCount += val.TotalOrdersCount;
+                AwaitingOrderCount += val.AwaitingOrdersCount;
+                InprogressOrderCount += val.InprogressOrdersCount;
+                DroppedOrderCount += val.DroppedOrdersCount;
+                CompletedOrderCount += val.CompletedOrdersCount;
+            }
+        });
+
+        $(".AwaitingOrdersCount").text(AwaitingOrderCount);
+        $(".InprogressOrdersCount").text(InprogressOrderCount);
+        $(".CompletedOrdersCount").text(DroppedOrderCount);
+        $(".DroppedOrdersCount").text(CompletedOrderCount);
+
+        var ctx = document.getElementById("AllShopOrderStatus").getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ShopName,
+                datasets: [
+                    {
+                        label: 'Total',
+                        data: TotalOrder,
+                        borderWidth: 2,
+                        backgroundColor: '#191d21',
+                        borderColor: '#191d21',
+                        borderWidth: 2.5,
+                        pointBackgroundColor: '#ffffff',
+                        pointRadius: 4
+                    },
+                    {
+                        label: 'Awaiting',
+                        data: AwaitingOrder,
+                        borderWidth: 2,
+                        backgroundColor: 'orange',
+                        borderColor: 'orange',
+                        borderWidth: 2.5,
+                        pointBackgroundColor: '#ffffff',
+                        pointRadius: 4
+                    },
+                    {
+                        label: 'Inprogress',
+                        data: InprogressOrder,
+                        borderWidth: 2,
+                        backgroundColor: 'blue',
+                        borderColor: 'blue',
+                        borderWidth: 2.5,
+                        pointBackgroundColor: '#ffffff',
+                        pointRadius: 4
+                    },
+                    {
+                        label: 'Completed',
+                        data: CompletedOrder,
+                        borderWidth: 2,
+                        backgroundColor: 'green',
+                        borderColor: 'green',
+                        borderWidth: 2.5,
+                        pointBackgroundColor: '#ffffff',
+                        pointRadius: 4
+                    },
+                    {
+                        label: 'Dropped',
+                        data: DroppedOrder,
+                        borderWidth: 2,
+                        backgroundColor: 'red',
+                        borderColor: 'red',
+                        borderWidth: 2.5,
+                        pointBackgroundColor: '#ffffff',
+                        pointRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                legend: {
+                    position: 'bottom',
+                },
+            }
+        });
+
+        var ctx = document.getElementById("AllShopAmountStatus").getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ShopName,
+                datasets: [
+                    {
+                        label: 'Total',
+                        data: TotalAmount,
+                        borderWidth: 2,
+                        backgroundColor: '#191d21',
+                        borderColor: '#191d21',
+                        borderWidth: 2.5,
+                        pointBackgroundColor: '#ffffff',
+                        pointRadius: 4
+                    },
+                    {
+                        label: 'Received',
+                        data: ReceivedAmount,
+                        borderWidth: 2,
+                        backgroundColor: '#63ed7a',
+                        borderColor: '#63ed7a',
+                        borderWidth: 2.5,
+                        pointBackgroundColor: '#ffffff',
+                        pointRadius: 4
+                    },
+                    {
+                        label: 'Pending',
+                        data: PendingAmount,
+                        borderWidth: 2,
+                        backgroundColor: '#ffa426',
+                        borderColor: '#ffa426',
+                        borderWidth: 2.5,
+                        pointBackgroundColor: '#ffffff',
+                        pointRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                legend: {
+                    position: 'bottom',
+                },
+            }
+        });
+    }
+
+
+}
+
+$(".SelectedShopName").click(function () {
+    var ShopId = $(this).attr("id");
+    var data = '{Id:"' + ShopId + '"}';
+    handleAjaxRequest(null, true, "/Method/GetShopInfoById", data, "CallBackGetShopInfoById_FromChart"); 
+});
+
+function CallBackGetShopInfoById_FromChart(responseData) {
+    if (responseData.message.status == "success") {
+        var ShopInfo = responseData.message.shopInfo;
+        $(".ShopName").text();
+
+        $("#ViewShopInfo").modal("show");
+    }
+}
+
+$(".ShopId").change(function () {
+    $(".OrdersNoDateDiv,.VisualInfo").hide();
+});
 
 
 function readFile() {

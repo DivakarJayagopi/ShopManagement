@@ -10,13 +10,13 @@ namespace ShopManagement.Utilities
     {
         Data.Order _orderData = new Data.Order();
 
-        public bool Add(string CustomerName, string Image, string ShopId, int Amount, string CustomerMobileNumber, string Status, string Notes, DateTime StartDate, DateTime EndDate, Models.SafariInfo safariInfo, Models.PantInfo pantInfo, Models.ShirtInfo shirtInfo)
+        public bool Add(string BillNumber,string CustomerName, string Image, string ShopId, int Amount, string CustomerMobileNumber, string Status, string Notes, DateTime StartDate, DateTime EndDate, Models.SafariInfo safariInfo, Models.PantInfo pantInfo, Models.ShirtInfo shirtInfo)
         {
             bool Result = false;
             try
             {
                 string Id = Guid.NewGuid().ToString();
-                Result = _orderData.Add(Id, CustomerName, Image, ShopId, Amount, CustomerMobileNumber, Status, Notes, StartDate, EndDate);
+                Result = _orderData.Add(Id, BillNumber, CustomerName, Image, ShopId, Amount, CustomerMobileNumber, Status, Notes, StartDate, EndDate);
                 if (Result)
                 {
 
@@ -56,12 +56,12 @@ namespace ShopManagement.Utilities
             return Result;
         }
 
-        public bool Update(string Id, string CustomerName, string Image, string ShopId, int Amount, string CustomerMobileNumber, string Status, string Notes, DateTime StartDate, DateTime EndDate, Models.SafariInfo safariInfo, Models.PantInfo pantInfo, Models.ShirtInfo shirtInfo)
+        public bool Update(string Id, string BillNumber, string CustomerName, string Image, string ShopId, int Amount, string CustomerMobileNumber, string Status, string Notes, DateTime StartDate, DateTime EndDate, Models.SafariInfo safariInfo, Models.PantInfo pantInfo, Models.ShirtInfo shirtInfo)
         {
             bool Result = false;
             try
             {
-                Result = _orderData.Update(Id, CustomerName, Image, ShopId, Amount, CustomerMobileNumber, Status, Notes, StartDate, EndDate);
+                Result = _orderData.Update(Id, BillNumber, CustomerName, Image, ShopId, Amount, CustomerMobileNumber, Status, Notes, StartDate, EndDate);
                 if (Result)
                 {
                     if (safariInfo != null)
@@ -236,6 +236,25 @@ namespace ShopManagement.Utilities
             return OrdersList;
         }
 
+        public int GetShopTodaysOderCount(string ShopId)
+        {
+            int OrdersCount = 0;
+            DataTable dt = new DataTable();
+            try
+            {
+                dt = _orderData.GetShopTodaysOderCount(ShopId);
+                foreach (DataRow record in dt.Rows)
+                {
+                    OrdersCount = (int)record["Count"];
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return OrdersCount;
+        }
+
         public Models.Order BuildOrderInfo(DataRow record)
         {
             Models.Order OrderInfo = new Models.Order();
@@ -243,6 +262,7 @@ namespace ShopManagement.Utilities
             try
             {
                 OrderInfo.Id = record["Id"].ToString();
+                OrderInfo.BillNumber = record["BillNumber"].ToString();
                 OrderInfo.CustomerName = record["CustomerName"].ToString();
                 OrderInfo.Image = record["Image"].ToString();
                 OrderInfo.ShopId = record["ShopId"].ToString();
@@ -258,7 +278,7 @@ namespace ShopManagement.Utilities
                 OrderInfo.PantInfo = GetPantiInfoByOrderId(record["Id"].ToString());
                 OrderInfo.ShirtInfo = GetShirtiInfoByOrderId(record["Id"].ToString());
                 var days = ((TimeSpan)(OrderInfo.EndDate - OrderInfo.StartDate)).Days;
-                OrderInfo.DaysRemaining = days.ToString();
+                OrderInfo.DaysRemaining = days > 0 ? days.ToString() : "0";
                 OrderInfo.ShopName = shopUtilities.GetShopById(record["ShopId"].ToString()).Name;
                 OrderInfo.StartDateInString = OrderInfo.StartDate.ToString("yyyy-MM-dd");
                 OrderInfo.EndDateInString = OrderInfo.EndDate.ToString("yyyy-MM-dd");

@@ -15,14 +15,24 @@
     <div class="section-body">
         @if (string.IsNullOrEmpty(ViewBag.Message) && ViewBag.Message != "Delete")
         {
-            <div class="row">
+
+
+<div class="row">
                 <div class="col-12 col-sm-12 col-lg-12">
                     <div class="row">
                         <div class="col-12 col-sm-12 col-lg-12">
                             <div class="card">
                                 <div class="card-header">
                                     <h4>Gallery</h4>
-                                    <a href="/Slider/Gallery?action=Delete" class="btn btn-info">Bulk Action</a>
+                                    @if (Model.HighQualityImage.Count <= 0 && Model.LowQualityImage.Count <= 0 && Model.MediumQualityImage.Count <= 0)
+                                    {
+
+                                    }
+                                    else
+                                    {
+                                        <a href="/Slider/Gallery?action=Delete" class="btn btn-info">Bulk Action</a>
+                                    }
+
                                 </div>
                                 <div class="card-body">
                                     <p class="text-success">High Quality</p>
@@ -50,29 +60,6 @@
                                     </div>
                                     <p class="text-warning">Medium Quality</p>
                                     <div class="gallery">
-                                        @if (Model.LowQualityImage.Count <= 0)
-                                        {
-                                            <div class="col-md-12">
-                                                <div class="card card-warning">
-                                                    <div class="card-header">
-                                                        <h4>No Images Found !</h4>
-                                                    </div>
-                                                    <div class="card-body" style="text-align:center;">
-                                                        <p>Add New Images to see the list here.. <i><b><a href="@Url.Action("AddImage", "Slider")">Add Image</a></b></i></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            foreach (var item in Model.LowQualityImage)
-                                            {
-                                                <div class="gallery-item" data-image="@item.Image" data-title="@item.Id"></div>
-                                            }
-                                        }
-                                    </div>
-                                    <p class="text-danger">Low Quality</p>
-                                    <div class="gallery">
                                         @if (Model.MediumQualityImage.Count <= 0)
                                         {
                                             <div class="col-md-12">
@@ -89,6 +76,29 @@
                                         else
                                         {
                                             foreach (var item in Model.MediumQualityImage)
+                                            {
+                                                <div class="gallery-item" data-image="@item.Image" data-title="@item.Id"></div>
+                                            }
+                                        }
+                                    </div>
+                                    <p class="text-danger">Low Quality</p>
+                                    <div class="gallery">
+                                        @if (Model.LowQualityImage.Count <= 0)
+                                        {
+                                            <div class="col-md-12">
+                                                <div class="card card-warning">
+                                                    <div class="card-header">
+                                                        <h4>No Images Found !</h4>
+                                                    </div>
+                                                    <div class="card-body" style="text-align:center;">
+                                                        <p>Add New Images to see the list here.. <i><b><a href="@Url.Action("AddImage", "Slider")">Add Image</a></b></i></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            foreach (var item in Model.LowQualityImage)
                                             {
                                                 <div class="gallery-item" data-image="@item.Image" data-title="@item.Id"></div>
                                             }

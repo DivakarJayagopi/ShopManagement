@@ -25,7 +25,7 @@ namespace ShopManagement.Controllers
                 return RedirectToAction("Login", "Account");
             Utilities.Order _orderUtility = new Utilities.Order();
             List<Models.Order> OrdersList = new List<Models.Order>();
-            if(Session["IsAdmin"].ToString() == "1")
+            if(Session["IsAdmin"].ToString() == "1" || Session["IsAdmin"].ToString() == "2")
             {
                 OrdersList = _orderUtility.GetAllOrders();
             }
@@ -38,7 +38,7 @@ namespace ShopManagement.Controllers
 
         public ActionResult OrdersManagement()
         {
-            if (Session["UserId"] == null)
+            if (Session["UserId"] == null || Session["IsAdmin"].ToString() == "1")
                 return RedirectToAction("Login", "Account");
             Utilities.Shop _ShopUtility = new Utilities.Shop();
             List<Models.Shop> Shopslist = new List<Models.Shop>();

@@ -17,6 +17,7 @@ namespace ShopManagement.Models
         public DateTime? ModifiedDate { get; set; }
         public string MobileNumber { get; set; }
         public int MaxOrderCount { get; set; }
+        public int TodaysOderCount { get; set; }
     }
 
     public class ShopAdditionalInfo
@@ -32,5 +33,20 @@ namespace ShopManagement.Models
         public string MobileNumber { get; set; }
         public int MaxOrderCount { get; set; }
         public User UserInfo { get; set; }
+        public int TodaysOderCount { get; set; }
+    }
+
+    public class ShopInfoForChart
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public int TotalOrdersCount { get; set; }
+        public int AwaitingOrdersCount { get; set; }
+        public int InprogressOrdersCount { get; set; }
+        public int CompletedOrdersCount { get; set; }
+        public int DroppedOrdersCount { get; set; }
+        public int TotalAmount { get; set; }
+        public int ReceivedAmount { get; set; }
+        public int BalanceAmount { get; set; }
     }
 }

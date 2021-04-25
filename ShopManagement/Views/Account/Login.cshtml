@@ -127,7 +127,12 @@
             }
             else {
                 $("#LoginFormSubmit").removeClass("btn-progress");
-                $(".customErrorMessageLogin").text("Invalid Login !");
+                var ErrorMessage = responseData.message.errorMessage;
+                if (typeof (ErrorMessage) != "undefined" && ErrorMessage != null && ErrorMessage != "") {
+                    $(".customErrorMessageLogin").text(ErrorMessage);
+                } else {
+                    $(".customErrorMessageLogin").text("Invalid Login !");
+                }
             }
         }
 

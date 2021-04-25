@@ -20,8 +20,6 @@
     <link rel="stylesheet" href="../../assets/css/components.css">
     <link rel="stylesheet" href="~/App-Assests/CSS/Custom.css">
     <link rel="stylesheet" href="~/App-Assests/CSS/Icons.css">
-    <!-- Start GA -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
 
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -111,19 +109,9 @@
                         <ul class="sidebar-menu">
                             <li class="menu-header text-info">DashBoard</li>
                             <li><a class="nav-link" href="@Url.Action("Dashboard", "Dashboard")"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/Dashboard.png" class="img-circle ImageAsIcon" /></i> <span>DashBoard</span></a></li>
-
-                            @*<li class="menu-header text-info">User Management</li>
-                            <li><a class="nav-link" href="@Url.Action("AddUser", "User")"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/AddUser.png" class="img-circle ImageAsIcon" /></i> <span>Add User</span></a></li>
-                            <li><a class="nav-link" href="@Url.Action("viewAllUser", "User")"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/ViewAllUsers.png" class="img-circle ImageAsIcon" /></i> <span>All Users</span></a></li>
-
-                            <li class="menu-header text-info">Shop Management</li>
-                            <li><a class="nav-link" href="@Url.Action("AddShop", "Shop")"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/AddShop.png" class="img-circle ImageAsIcon" /></i> <span>Add Shop</span></a></li>
-                            <li><a class="nav-link" href="@Url.Action("ViewAllShops", "Shop")"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/ViewAllShops.png" class="img-circle ImageAsIcon" /></i> <span>All Shops</span></a></li>*@
-
                             <li class="menu-header text-info">Order Management</li>
                             <li><a class="nav-link" href="@Url.Action("AddOrder", "Order")"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/AddOrder.png" class="img-circle ImageAsIcon" /></i> <span>Add Order</span></a></li>
                             <li><a class="nav-link" href="@Url.Action("ViewOrders", "Order")"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/ViewOrders.png" class="img-circle ImageAsIcon" /></i> <span>View Orders</span></a></li>
-                            <li><a class="nav-link" href="@Url.Action("OrdersManagement", "Order")"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/OrdersManagement.png" class="img-circle ImageAsIcon" /></i> <span>Orders Management</span></a></li>
 
                             <li class="menu-header text-info">Sliders</li>
                             <li><a class="nav-link" href="@Url.Action("AddImage", "Slider")"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/AddPhoto.png" class="img-circle ImageAsIcon" /></i> <span>Add Photos</span></a></li>
@@ -229,21 +217,27 @@
                     $("#ViewShopPage").parent().addClass("active");
                     break;
                 case "/Order/AddOrder":
+                    $('.main-sidebar.sidebar-style-2').scrollTop(200);
                     $("#AddOrderPage").parent().addClass("active");
                     break;
                 case "/Order/ViewOrders":
+                    $('.main-sidebar.sidebar-style-2').scrollTop(200);
                     $("#ViewOrderPage").parent().addClass("active");
                     break;
                 case "/Order/OrdersManagement":
+                    $('.main-sidebar.sidebar-style-2').scrollTop(200);
                     $("#ManageOrderPage").parent().addClass("active");
                     break;
                 case "/Slider/AddImage":
+                    $('.main-sidebar.sidebar-style-2').scrollTop(200);
                     $("#AddImagePage").parent().addClass("active");
                     break;
                 case "/Slider/Gallery":
+                    $('.main-sidebar.sidebar-style-2').scrollTop(200);
                     $("#GalleryPage").parent().addClass("active");
                     break;
                 case "/Slider/SliderSettings":
+                    $('.main-sidebar.sidebar-style-2').scrollTop(200);
                     $("#SliderPage").parent().addClass("active");
                     break;
             }

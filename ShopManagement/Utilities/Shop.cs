@@ -10,7 +10,7 @@ namespace ShopManagement.Utilities
     {
         Data.Shop _shopData = new Data.Shop();
         Data.Order _orderData = new Data.Order();
-        Utilities.Slider _sliderData = new Utilities.Slider();
+        
 
         public bool Add(string Name, string ShopArea, string UserId, string Image, string Notes, string Status, string MobileNumber, int MaxOrderCount)
         {
@@ -26,7 +26,7 @@ namespace ShopManagement.Utilities
                     {
                         Result = AddUserConnector(Id, UserId);
                     }
-
+                    Utilities.Slider _sliderData = new Utilities.Slider();
                     Result = _sliderData.Add("Slider One", Id);
                     Result = _sliderData.Add("Slider Two", Id);
                 }
@@ -140,6 +140,7 @@ namespace ShopManagement.Utilities
         public Models.Shop BuildShopData(DataRow record)
         {
             Models.Shop shop = new Models.Shop();
+            Utilities.Order _orderUtility = new Order();
             try
             {
                 shop.Id = record["Id"].ToString();
@@ -152,6 +153,7 @@ namespace ShopManagement.Utilities
                 shop.ModifiedDate = Convert.ToDateTime(record["ModifiedDate"].ToString());
                 shop.MobileNumber = record["MobileNumber"].ToString();
                 shop.MaxOrderCount = (int)record["MaxOrderCount"];
+                shop.TodaysOderCount = _orderUtility.GetShopTodaysOderCount(shop.Id);
             }
             catch (Exception)
             {

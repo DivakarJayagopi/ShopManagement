@@ -148,6 +148,7 @@
   <ItemGroup>
     <Content Include="App-Assests\CSS\Custom.css" />
     <Content Include="App-Assests\CSS\Icons.css" />
+    <Content Include="App-Assests\Js\Account.js" />
     <Content Include="App-Assests\Js\Custom.js" />
     <Content Include="App-Assests\Js\Login.js" />
     <Content Include="App-Assests\Js\Order.js" />

@@ -8,6 +8,7 @@ namespace ShopManagement.Models
     public class Order
     {
         public string Id { get; set; }
+        public string BillNumber { get; set; }
         public string CustomerName { get; set; }
         public string Image { get; set; }
         public string ShopId { get; set; }

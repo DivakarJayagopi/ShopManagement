@@ -128,7 +128,7 @@ function AddNewUser(target) {
             }
 
         if (IsSuccess)
-            if (UserPassword.length <= 8) {
+            if (UserPassword.length < 8) {
                 $(".UserPassword").addClass("form-error");
                 $(".customErrorMessageAddUser").text("Password length should be more than 8 characters");
                 IsSuccess = false;
@@ -266,7 +266,7 @@ function UpdateUserInfo(target) {
             }
 
         if (IsSuccess)
-            if (UserPassword.length <= 8) {
+            if (UserPassword.length < 8) {
                 $(".UserPassword").addClass("form-error");
                 $(".customErrorMessageAddUser").text("Password length should be more than 8 characters");
                 IsSuccess = false;
@@ -288,7 +288,8 @@ function UpdateUserInfo(target) {
 
 function CallBackUpdateUserInfo(responseData) {
     $(".EditUserFromSubmit").removeClass("btn-progress");
-    if (responseData.message.status == "success") {        
+    if (responseData.message.status == "success") {
+        window.location.reload();
         var UserInfo = responseData.message.userInfo;
         var UserId = UserInfo.Id;
         $(".SelectedUserImageExpand[data-id='" + UserId + "']").attr("href", UserInfo.Image);
@@ -349,6 +350,10 @@ function readFile() {
         var FR = new FileReader();
         FR.addEventListener("load", function (e) {
             UserImage = e.target.result;
+            var URL = window.location.pathname;
+            if (URL == "/Account/UserProfile") {
+                $(".UserProfileImage").attr("src", UserImage);
+            }
         });
         FR.readAsDataURL(this.files[0]);
     }
@@ -411,7 +416,7 @@ $(".UpdateUserProfileInfo").click(function () {
 
             $(".UpdateUserProfileInfo").addClass("btn-progress");
 
-            var data = '{Id:"' + Id + '",Name:"' + UserName + '",EmailId:"' + UserEmailId + '",Area:"' + UserArea + '",Notes:"' + User_Notes + '",MobileNumber:"' + UserMobileNumber + '"}';
+            var data = '{Id:"' + Id + '",Name:"' + UserName + '",EmailId:"' + UserEmailId + '",Area:"' + UserArea + '",Notes:"' + User_Notes + '",MobileNumber:"' + UserMobileNumber + '",Image:"' + UserImage + '"}';
             handleAjaxRequest(null, true, "/Method/UdpateUserProfileInfo", data, "CallBackUdpateUserProfileInfo");
         }
 

@@ -180,14 +180,11 @@
                     OptionHTML += "<option value='" + val.Id + "'>" + val.Name + "</option>";
                 });
             }
-            //else if (IsAdminUser == "1") {
-            //    OptionHTML += "<option value=''> My Slider </option>";
-            //}
             else {
                 $("#SlidersList, #ImagesCount, #ImageGallery").hide();
                 OptionHTML = "<option value='No data'> No shops Found </option>";
             }
-            if (IsAdminUser == "1") {
+            if (IsAdminUser == "1" || IsAdminUser == "2") {
                 OptionHTML = "";
                 OptionHTML += "<option value='No data'> Select Shop </option>";
                 OptionHTML += "<option value=''> My Slider </option>";

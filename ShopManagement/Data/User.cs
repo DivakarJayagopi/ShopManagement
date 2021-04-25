@@ -107,6 +107,34 @@ namespace ShopManagement.Data
             return Result;
         }
 
+        public bool UpdateUserPassword(string Id, string Password)
+        {
+            bool Result = false;
+            try
+            {
+                SqlCommand cmd = new SqlCommand("UPDATE Users SET Password=@Password, ModifiedDate=@ModifiedDate  WHERE Id=@Id");
+                cmd.Parameters.AddWithValue("@Id", Id);
+                cmd.Parameters.AddWithValue("@Password", Password);
+                cmd.Parameters.AddWithValue("@ModifiedDate", System.DateTime.Now);
+                con.Open();
+                cmd.Connection = con;
+                int i = cmd.ExecuteNonQuery();
+                if (i > 0)
+                {
+                    Result = true;
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+                con.Close();
+            }
+            return Result;
+        }
+
         public bool Delete(string Id)
         {
             bool Result = false;

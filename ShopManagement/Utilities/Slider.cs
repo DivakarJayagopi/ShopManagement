@@ -94,7 +94,7 @@ namespace ShopManagement.Utilities
                 {
                     foreach (string id in Ids)
                     {
-                        Result = DeleteSliderConnectorByImageId(id);
+                        DeleteSliderConnectorByImageId(id);
                     }                        
                 }
             }

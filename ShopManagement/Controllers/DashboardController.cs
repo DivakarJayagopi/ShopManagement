@@ -14,9 +14,13 @@ namespace ShopManagement.Controllers
             if (Session["UserId"] == null)
                 return RedirectToAction("Login", "Account");
             string ShopId = "";
-            if(Session["IsAdmin"].ToString() != "1")
+            if(Session["IsAdmin"].ToString() == "0")
             {
-
+                ShopId = Session["ShopId"].ToString();
+            }
+            else if (Session["IsAdmin"].ToString() == "2")
+            {
+                ShopId = Session["UserId"].ToString();
             }
             Utilities.Slider _sliderUtility = new Utilities.Slider();
             List<Models.Slider> sliderslist = _sliderUtility.GetSliderInfoByShopId(ShopId);

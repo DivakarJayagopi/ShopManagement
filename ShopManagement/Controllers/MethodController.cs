@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -27,7 +28,27 @@ namespace ShopManagement.Controllers
                     Session["Name"] = UserInfo.Name;
                     Session["UserImage"] = UserInfo.Image;
                     returnObject.Add("userInfo", UserInfo);
-                    returnObject.Add("status", "success");
+                   
+
+                    if(UserInfo.IsAdmin == 0)
+                    {
+                        Utilities.Shop _shopUtility = new Utilities.Shop();
+                        var ShopInfo = _shopUtility.GetUserConnectedShopInfo(UserInfo.Id);
+                        if (ShopInfo != null && !string.IsNullOrEmpty(ShopInfo.Id))
+                        {
+                            Session["ShopId"] = ShopInfo.Id;
+                            returnObject.Add("status", "success");
+                        }
+                        else
+                        {
+                            returnObject.Add("status", "fail");
+                            returnObject.Add("errorMessage", "You are Not Connected any Shop, Contact Admin");
+                        }
+                    }
+                    else
+                    {
+                        returnObject.Add("status", "success");
+                    }
 
                     if (IsRemember)
                     {
@@ -150,6 +171,11 @@ namespace ShopManagement.Controllers
 
                     System.IO.File.WriteAllBytes(imgPath, imageBytes);
                     Image = Globals.Default_ProfileImagePath + "/" + imageName;
+                    string SessionUser = Session["UserId"].ToString();
+                    if(Id == SessionUser)
+                    {
+                        Session["UserImage"] = Image;
+                    }
                 }
                 Result = _userData.Update(Id, Name, EmailId, Password, Image, Status, Area, Notes, MobileNumber, IsAdmin);
                 if (Result == true)
@@ -170,14 +196,42 @@ namespace ShopManagement.Controllers
             return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult UdpateUserProfileInfo(string Id, string Name, string EmailId, string Area, string Notes, string MobileNumber)
+        public ActionResult UdpateUserProfileInfo(string Id, string Name, string EmailId, string Area, string Notes, string MobileNumber,string Image)
         {
             Dictionary<string, object> returnObject = new Dictionary<string, object>();
             try
             {
                 bool Result = false;
-                var UserInfo = _userData.GetUserById(Id);                
-                Result = _userData.Update(Id, Name, EmailId, UserInfo.Password, UserInfo.Image, UserInfo.Status, Area, Notes, MobileNumber, UserInfo.IsAdmin);
+                var UserInfo = _userData.GetUserById(Id);
+                if (string.IsNullOrEmpty(Image))
+                {
+                    Image = UserInfo.Image;
+                }
+                else
+                {
+                    string path = Server.MapPath("~" + Globals.Default_ProfileImagePath); //Path
+
+                    //Check if directory exist
+                    if (!System.IO.Directory.Exists(path))
+                    {
+                        System.IO.Directory.CreateDirectory(path); //Create directory if it doesn't exist
+                    }
+
+                    string imageName = Guid.NewGuid().ToString() + ".jpg";
+
+                    //set the image path
+                    string imgPath = Path.Combine(path, imageName);
+                    var splitedValue = Image.Split(',');
+                    var ReplaceValue = splitedValue[0] + ',';
+                    Image = Image.Replace(ReplaceValue, "");
+                    var imageBytes = Convert.FromBase64String(Image);
+
+                    System.IO.File.WriteAllBytes(imgPath, imageBytes);
+                    Image = Globals.Default_ProfileImagePath + "/" + imageName;
+                    Session["UserImage"] = Image;
+                }
+                Session["Name"] = Name;
+                Result = _userData.Update(Id, Name, EmailId, UserInfo.Password, Image, UserInfo.Status, Area, Notes, MobileNumber, UserInfo.IsAdmin);
                 if (Result == true)
                 {
                     UserInfo = _userData.GetUserById(Id);
@@ -554,7 +608,7 @@ namespace ShopManagement.Controllers
             }
             return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult AddOrderInfo(string CustomerName, string Image, string ShopId, int Amount, string CustomerMobileNumber, string Status, string Notes, string StartDate, string EndDate, Models.SafariInfo safariInfo, Models.PantInfo pantInfo, Models.ShirtInfo shirtInfo)
+        public ActionResult AddOrderInfo(string BillNumber,string CustomerName, string Image, string ShopId, int Amount, string CustomerMobileNumber, string Status, string Notes, string StartDate, string EndDate, Models.SafariInfo safariInfo, Models.PantInfo pantInfo, Models.ShirtInfo shirtInfo)
         {
             Dictionary<string, object> returnObject = new Dictionary<string, object>();
             try
@@ -588,7 +642,7 @@ namespace ShopManagement.Controllers
                     System.IO.File.WriteAllBytes(imgPath, imageBytes);
                     Image = Globals.Default_OrderImagePath + "/" + imageName;
                 }
-                Result = _orderUtility.Add(CustomerName, Image, ShopId, Amount, CustomerMobileNumber, Status, Notes, StartDateVal, EndDateVal, safariInfo, pantInfo, shirtInfo);
+                Result = _orderUtility.Add(BillNumber, CustomerName, Image, ShopId, Amount, CustomerMobileNumber, Status, Notes, StartDateVal, EndDateVal, safariInfo, pantInfo, shirtInfo);
                 if (Result == true)
                 {
 
@@ -605,7 +659,7 @@ namespace ShopManagement.Controllers
             }
             return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult UpdateOrderInfo(string Id, string CustomerName, string Image, string ShopId, int Amount, string CustomerMobileNumber, string Status, string Notes, string StartDate, string EndDate, Models.SafariInfo safariInfo, Models.PantInfo pantInfo, Models.ShirtInfo shirtInfo)
+        public ActionResult UpdateOrderInfo(string Id,string BillNumber, string CustomerName, string Image, string ShopId, int Amount, string CustomerMobileNumber, string Status, string Notes, string StartDate, string EndDate, Models.SafariInfo safariInfo, Models.PantInfo pantInfo, Models.ShirtInfo shirtInfo)
         {
             Dictionary<string, object> returnObject = new Dictionary<string, object>();
             try
@@ -640,7 +694,7 @@ namespace ShopManagement.Controllers
                     System.IO.File.WriteAllBytes(imgPath, imageBytes);
                     Image = Globals.Default_OrderImagePath + "/" + imageName;
                 }
-                Result = _orderUtility.Update(Id, CustomerName, Image, ShopId, Amount, CustomerMobileNumber, Status, Notes, StartDateVal, EndDateVal, safariInfo, pantInfo, shirtInfo);
+                Result = _orderUtility.Update(Id, BillNumber, CustomerName, Image, ShopId, Amount, CustomerMobileNumber, Status, Notes, StartDateVal, EndDateVal, safariInfo, pantInfo, shirtInfo);
                 if (Result == true)
                 {
                     returnObject.Add("status", "success");
@@ -779,6 +833,94 @@ namespace ShopManagement.Controllers
                 OrderList = _orderUtility.GetAllOrdersDates(ShopId, FilterDate);
                 if (OrderList != null)
                 {
+                    if (!string.IsNullOrEmpty(ShopId))
+                    {
+                        int awaitingOrdersCount = OrderList.Where(x => x.Status == "awaiting").ToList().Count;
+                        int inprogressOrdersCount = OrderList.Where(x => x.Status == "inprogress").ToList().Count;
+                        int completedOrdersCount = OrderList.Where(x => x.Status == "completed").ToList().Count;
+                        int droppedOrdersCount = OrderList.Where(x => x.Status == "dropped").ToList().Count;
+
+                        List<int> _totalAmount = OrderList.Select(x => x.Amount).ToList();
+                        int TotalAmout = 0;
+
+                        if (_totalAmount != null && _totalAmount.Count > 0)
+                        {
+                            TotalAmout = _totalAmount.Take(_totalAmount.Count).Sum();
+                        }
+
+                        List<int> _receivedAmount = OrderList.Where(x => x.Status == "completed").Select(x => x.Amount).ToList();
+                        int ReceivedAmout = 0;
+
+                        if (_receivedAmount != null && _receivedAmount.Count > 0)
+                        {
+                            ReceivedAmout = _receivedAmount.Take(_receivedAmount.Count).Sum();
+                        }
+
+                        
+
+                        returnObject.Add("awaitingOrdersCount", awaitingOrdersCount);
+                        returnObject.Add("inprogressOrdersCount", inprogressOrdersCount);
+                        returnObject.Add("completedOrdersCount", completedOrdersCount);
+                        returnObject.Add("droppedOrdersCount", droppedOrdersCount);
+
+                        returnObject.Add("TotalAmount", TotalAmout);
+                        returnObject.Add("ReceivedAmount", ReceivedAmout);
+                        returnObject.Add("BalanceAmount", TotalAmout - ReceivedAmout);
+                    }
+                    else
+                    {
+                        Utilities.Shop shopUtility = new Utilities.Shop();
+                        var ShopsList = shopUtility.GetAllShopsByStaus(true);
+
+                        if(ShopsList != null && ShopsList.Count > 0)
+                        {
+                            List<Models.ShopInfoForChart> shopInfoForChartsList = new List<Models.ShopInfoForChart>();
+                            foreach(var Shop in ShopsList)
+                            {
+                                var SingleShopOrderList = _orderUtility.GetAllOrdersDates(Shop.Id, FilterDate);
+
+                                int awaitingOrdersCount = SingleShopOrderList.Where(x => x.Status == "awaiting").ToList().Count;
+                                int inprogressOrdersCount = SingleShopOrderList.Where(x => x.Status == "inprogress").ToList().Count;
+                                int completedOrdersCount = SingleShopOrderList.Where(x => x.Status == "completed").ToList().Count;
+                                int droppedOrdersCount = SingleShopOrderList.Where(x => x.Status == "dropped").ToList().Count;
+
+                                List<int> _totalAmount = SingleShopOrderList.Select(x => x.Amount).ToList();
+                                int TotalAmout = 0;
+
+                                if (_totalAmount != null && _totalAmount.Count > 0)
+                                {
+                                    TotalAmout = _totalAmount.Take(_totalAmount.Count).Sum();
+                                }
+
+                                List<int> _receivedAmount = SingleShopOrderList.Where(x => x.Status == "completed").Select(x => x.Amount).ToList();
+                                int ReceivedAmout = 0;
+
+                                if (_receivedAmount != null && _receivedAmount.Count > 0)
+                                {
+                                    ReceivedAmout = _receivedAmount.Take(_receivedAmount.Count).Sum();
+                                }
+
+                                Models.ShopInfoForChart shopInfoForChart = new Models.ShopInfoForChart()
+                                {
+                                    Id = Shop.Id,
+                                    Name = Shop.Name,
+
+                                    TotalOrdersCount = SingleShopOrderList.Count,
+                                    AwaitingOrdersCount = awaitingOrdersCount,
+                                    InprogressOrdersCount = inprogressOrdersCount,
+                                    CompletedOrdersCount = completedOrdersCount,
+                                    DroppedOrdersCount = droppedOrdersCount,
+
+                                    TotalAmount = TotalAmout,
+                                    ReceivedAmount = ReceivedAmout,
+                                    BalanceAmount = TotalAmout - ReceivedAmout
+                                };
+                                shopInfoForChartsList.Add(shopInfoForChart);
+                                
+                            }
+                            returnObject.Add("ShopInfoForChartsList", shopInfoForChartsList);
+                        }
+                    }
                     returnObject.Add("OrderList", OrderList);
                     returnObject.Add("status", "success");
                 }
@@ -787,7 +929,7 @@ namespace ShopManagement.Controllers
                     returnObject.Add("status", "fail");
                 }
             }
-            catch (Exception)
+            catch (Exception exe)
             {
 
             }
@@ -980,6 +1122,59 @@ namespace ShopManagement.Controllers
                 {
                     returnObject.Add("sliderslist", sliderslist);
                     returnObject.Add("status", "success");
+                }
+                else
+                {
+                    returnObject.Add("status", "fail");
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ValidateOldPassword(string UserPassword)
+        {
+            Dictionary<string, object> returnObject = new Dictionary<string, object>();
+            try
+            {
+                string UserId = Session["UserId"].ToString();
+                var UserInfo = _userData.GetUserById(UserId); ;
+                if (UserInfo != null && !string.IsNullOrEmpty(UserInfo.Id) && UserInfo.Password == UserPassword)
+                {
+                    returnObject.Add("status", "success");
+                }
+                else
+                {
+                    returnObject.Add("status", "fail");
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult UpdateUserPassword(string UserPassword)
+        {
+            Dictionary<string, object> returnObject = new Dictionary<string, object>();
+            try
+            {
+                string UserId = Session["UserId"].ToString();
+                if (!string.IsNullOrEmpty(UserId))
+                {
+                    var UpdatedStaus = _userData.UpdateUserPassword(UserId,UserPassword);
+                    if (UpdatedStaus)
+                    {
+                        if (Request.Cookies["Pwd"] != null)
+                        {
+                            Response.Cookies["Pwd"].Value = UserPassword;
+                        }
+                        returnObject.Add("status", "success");
+                    }
                 }
                 else
                 {

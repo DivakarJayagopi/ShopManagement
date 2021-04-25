@@ -38,6 +38,10 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group">
+                                <label>Bill Number</label>
+                                <input type="text" class="form-control" id="BillNumber">
+                            </div>
+                            <div class="form-group">
                                 <label>Customer Name</label>
                                 <input type="text" class="form-control" id="CustomerName">
                             </div>
@@ -50,7 +54,7 @@
                                 <select class="form-control select2" id="SelctedShopId">
                                     @foreach (var item in Model)
                                     {
-                                        <option value="@item.Id">@item.Name</option>
+                                        <option value="@item.Id" data-addedCount="@item.TodaysOderCount" data-maxCount="@item.MaxOrderCount" data-remainingCount="@item.MaxOrderCount-@item.TodaysOderCount">@item.Name</option>
                                     }
                                 </select>
                             </div>
@@ -128,7 +132,7 @@
                                 </div>
                             </div>
                             <span class="customErrorMessageAddOrder text-danger"></span>
-                            <button class="btn btn-block btn-info" id="OrderInfoFromSubmit" >Submit</button>
+                            <button class="btn btn-block btn-info" id="OrderInfoFromSubmit">Submit</button>
                         </div>
                     </div>
                 </div>

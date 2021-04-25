@@ -34,6 +34,12 @@ namespace ShopManagement.Utilities
             {
                 string Id = Guid.NewGuid().ToString();
                 Result = _userData.AddUser(Id, Name, EmailId, Password, Image, Status, Area, Notes, MobileNumber, IsAdmin);
+                if(IsAdmin == 2)
+                {
+                    Utilities.Slider _sliderData = new Utilities.Slider();
+                    Result = _sliderData.Add("Slider One", Id);
+                    Result = _sliderData.Add("Slider Two", Id);
+                }
             }
             catch (Exception)
             {
@@ -48,6 +54,20 @@ namespace ShopManagement.Utilities
             try
             {
                 Result = _userData.Update(Id, Name, EmailId, Password, Image, Status, Area, Notes, MobileNumber, IsAdmin);
+            }
+            catch (Exception)
+            {
+
+            }
+            return Result;
+        }
+
+        public bool UpdateUserPassword(string Id, string Password)
+        {
+            bool Result = false;
+            try
+            {
+                Result = _userData.UpdateUserPassword(Id, Password);
             }
             catch (Exception)
             {
