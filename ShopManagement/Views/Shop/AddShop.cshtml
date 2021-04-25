@@ -51,6 +51,7 @@
                         <div class="form-group">
                             <label>Choose User</label>
                             <select class="form-control select2 ShopManager">
+                                <option value="">Select User</option>
                                 @foreach (var item in Model)
                                 {
                                     <option value="@item.Id">@item.Name</option>

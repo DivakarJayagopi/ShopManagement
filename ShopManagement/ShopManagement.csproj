@@ -147,10 +147,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App-Assests\CSS\Custom.css" />
+    <Content Include="App-Assests\CSS\Icons.css" />
+    <Content Include="App-Assests\Js\Account.js" />
     <Content Include="App-Assests\Js\Custom.js" />
     <Content Include="App-Assests\Js\Login.js" />
     <Content Include="App-Assests\Js\Order.js" />
     <Content Include="App-Assests\Js\Shop.js" />
+    <Content Include="App-Assests\Js\Slider.js" />
     <Content Include="App-Assests\Js\User.js" />
     <Content Include="assets\css\components.css" />
     <Content Include="assets\css\style.css" />
@@ -875,6 +878,21 @@
     <Content Include="assets\modules\weather-icon\font\weathericons-regular-webfont.woff" />
     <Content Include="assets\modules\weather-icon\font\weathericons-regular-webfont.woff2" />
     <Content Include="assets\modules\weather-icon\font\weathericons-regular-webfontd41d.eot" />
+    <Content Include="ImageStorage\Icons\AddOrder.png" />
+    <Content Include="ImageStorage\Icons\AddPhoto.png" />
+    <Content Include="ImageStorage\Icons\AddShop.png" />
+    <Content Include="ImageStorage\Icons\AddUser.png" />
+    <Content Include="ImageStorage\Icons\Dashboard.png" />
+    <Content Include="ImageStorage\Icons\Gallery.png" />
+    <Content Include="ImageStorage\Icons\OrdersManagement.png" />
+    <Content Include="ImageStorage\Icons\ShopManagementLogo.jpg" />
+    <Content Include="ImageStorage\Icons\SlideManagement.png" />
+    <Content Include="ImageStorage\Icons\ViewAllShops.png" />
+    <Content Include="ImageStorage\Icons\ViewAllUsers.png" />
+    <Content Include="ImageStorage\Icons\ViewOrders.png" />
+    <Content Include="ImageStorage\OrderImage\product-2-50.png" />
+    <Content Include="ImageStorage\ShopImage\Shop.png" />
+    <Content Include="ImageStorage\UserImage\User.png" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -890,6 +908,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="ImageStorage\Gallery\High\" />
+    <Folder Include="ImageStorage\Gallery\Low\" />
+    <Folder Include="ImageStorage\Gallery\Medium\" />
+    <Folder Include="ImageStorage\SliderImage\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

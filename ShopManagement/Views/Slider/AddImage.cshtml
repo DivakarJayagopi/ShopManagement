@@ -9,6 +9,8 @@
 <!-- Template CSS -->
 <link rel="stylesheet" href="../../assets/css/style.css">
 <link rel="stylesheet" href="../../assets/css/components.css">
+<!-- CSS Libraries -->
+<link rel="stylesheet" href="../../assets/modules/izitoast/css/iziToast.min.css">
 <section class="section">
     <div class="section-header">
         <h1>Add Files</h1>
@@ -27,7 +29,7 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label>Choose Quality</label>
-                            <select class="form-control select2">
+                            <select class="form-control select2 ImageStatus">
                                 <option>High</option>
                                 <option>Medium</option>
                                 <option>Low</option>
@@ -35,9 +37,11 @@
                         </div>
                         <form action="#" class="dropzone" id="mydropzone">
                             <div class="fallback">
-                                <input name="file" type="file" multiple />
+                                <input name="file" type="file" multiple accept="image/x-png,image/gif,image/jpeg" />
                             </div>
                         </form>
+                        <br />
+                        <button type="button" class="btn btn-block btn-info SubmitUploadedImages" style="display:none;">Submit</button>
                     </div>
                 </div>
             </div>
@@ -52,4 +56,7 @@
 <script src="../../assets/modules/dropzonejs/min/dropzone.min.js"></script>
 
 <!-- Page Specific JS File -->
-<script src="../../assets/js/page/components-multiple-upload.js"></script>
+@*<script src="../../assets/js/page/components-multiple-upload.js"></script>*@
+<script src="~/App-Assests/Js/Slider.js"></script>
+<!-- JS Libraies -->
+<script src="../../assets/modules/izitoast/js/iziToast.min.js"></script>

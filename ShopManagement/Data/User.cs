@@ -11,8 +11,29 @@ namespace ShopManagement.Data
     public class User
     {
         public SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["connString"].ConnectionString);
-        DataTable dt = new DataTable();
+        public DataTable ValidateUserLogin(string MobileNumber, string Password)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Users WHERE MobileNumber=@MobileNumber AND Password=@Password");
+                cmd.Parameters.AddWithValue("@MobileNumber", MobileNumber);
+                cmd.Parameters.AddWithValue("@Password", Password);
+                con.Open();
+                cmd.Connection = con;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+            }
+            catch (Exception)
+            {
 
+            }
+            finally
+            {
+                con.Close();
+            }
+            return dt;
+        }
         public bool AddUser(string Id, string Name, string EmailId,string Password, string Image, string Status, string Area, string Notes, string MobileNumber,int IsAdmin)
         {
             bool Result = false;
@@ -86,6 +107,34 @@ namespace ShopManagement.Data
             return Result;
         }
 
+        public bool UpdateUserPassword(string Id, string Password)
+        {
+            bool Result = false;
+            try
+            {
+                SqlCommand cmd = new SqlCommand("UPDATE Users SET Password=@Password, ModifiedDate=@ModifiedDate  WHERE Id=@Id");
+                cmd.Parameters.AddWithValue("@Id", Id);
+                cmd.Parameters.AddWithValue("@Password", Password);
+                cmd.Parameters.AddWithValue("@ModifiedDate", System.DateTime.Now);
+                con.Open();
+                cmd.Connection = con;
+                int i = cmd.ExecuteNonQuery();
+                if (i > 0)
+                {
+                    Result = true;
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+                con.Close();
+            }
+            return Result;
+        }
+
         public bool Delete(string Id)
         {
             bool Result = false;
@@ -114,6 +163,7 @@ namespace ShopManagement.Data
 
         public DataTable GetAllUsers()
         {
+            DataTable dt = new DataTable();
             try
             {
                 SqlCommand cmd = new SqlCommand("SELECT * FROM Users");
@@ -135,6 +185,7 @@ namespace ShopManagement.Data
 
         public DataTable GetAllUsersByStatus(bool IsActive)
         {
+            DataTable dt = new DataTable();
             try
             {
                 string Status = "active";
@@ -160,6 +211,7 @@ namespace ShopManagement.Data
 
         public DataTable GetUserById(string Id)
         {
+            DataTable dt = new DataTable();
             try
             {
                 SqlCommand cmd = new SqlCommand("SELECT * FROM Users WHERE Id=@Id");
@@ -210,11 +262,47 @@ namespace ShopManagement.Data
 
         public DataTable GetShopConnectedUserInfo(string ShopId)
         {
+            DataTable dt = new DataTable();
             try
             {
                 dt = new DataTable();
                 SqlCommand cmd = new SqlCommand("SELECT usr.* FROM UserConnector uc JOIN Users usr ON usr.Id = uc.UserId WHERE uc.ShopId = @ShopId");
                 cmd.Parameters.AddWithValue("@ShopId", ShopId);
+                con.Open();
+                cmd.Connection = con;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+                con.Close();
+            }
+            return dt;
+        }
+
+        public DataTable GetUserInfoForExistsProperty(string UserName, string MobileNumber, string EMailId)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                string AppendQuery = "";
+                if (!string.IsNullOrEmpty(UserName))
+                {
+                    AppendQuery += "WHERE Name = @Name";
+                }
+                else if (!string.IsNullOrEmpty(MobileNumber))
+                {
+                    AppendQuery += "WHERE MobileNumber = @MobileNumber";
+                }
+                else if (!string.IsNullOrEmpty(EMailId))
+                {
+                    AppendQuery += "WHERE EmailId = @EmailId";
+                }
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Users " + AppendQuery);
                 con.Open();
                 cmd.Connection = con;
                 SqlDataAdapter da = new SqlDataAdapter(cmd);

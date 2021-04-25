@@ -9,15 +9,45 @@ namespace ShopManagement.Utilities
     public class Order
     {
         Data.Order _orderData = new Data.Order();
-        DataTable dt = new DataTable();
 
-        public bool Add(string CustomerName, string Image, string ShopId, int Amount, int CustomerMobileNumber, string Status, string Notes, DateTime StartDate, DateTime EndDate)
+        public bool Add(string BillNumber,string CustomerName, string Image, string ShopId, int Amount, string CustomerMobileNumber, string Status, string Notes, DateTime StartDate, DateTime EndDate, Models.SafariInfo safariInfo, Models.PantInfo pantInfo, Models.ShirtInfo shirtInfo)
         {
             bool Result = false;
             try
             {
                 string Id = Guid.NewGuid().ToString();
-                Result = _orderData.Add(Id, CustomerName, Image, ShopId, Amount, CustomerMobileNumber, Status, Notes, StartDate, EndDate);
+                Result = _orderData.Add(Id, BillNumber, CustomerName, Image, ShopId, Amount, CustomerMobileNumber, Status, Notes, StartDate, EndDate);
+                if (Result)
+                {
+
+                    if (safariInfo != null)
+                    {
+                        safariInfo.Id = Guid.NewGuid().ToString();
+                        safariInfo.OrderId = Id;
+                        Result = _orderData.AddSafariInfo(safariInfo.Id, safariInfo.OrderId, safariInfo.Length, safariInfo.Shoulder, safariInfo.S_Length, safariInfo.S_Loose, safariInfo.Chest, safariInfo.Waist, safariInfo.Hip, safariInfo.Collar, safariInfo.Collar_Style, safariInfo.Buttons, safariInfo.Side_Vent, safariInfo.S_Breast, safariInfo.D_Breast, safariInfo.Breast, safariInfo.Notes); 
+                    }
+
+                    if (Result)
+                    {
+                        if (pantInfo != null)
+                        {
+                            pantInfo.Id = Guid.NewGuid().ToString();
+                            pantInfo.OrderId = Id;
+                            Result = _orderData.AddPantInfo(pantInfo.Id, pantInfo.OrderId, pantInfo.Length, pantInfo.Seat, pantInfo.Hip, pantInfo.InSeen, pantInfo.Thigh, pantInfo.Knee, pantInfo.Bottom, pantInfo.BackPocket, pantInfo.WatchPocket, pantInfo.Iron, pantInfo.Emming, pantInfo.BottomFold, pantInfo.BuckleModel, pantInfo.HookButton, pantInfo.Button, pantInfo.Notes); 
+                        }
+
+                        if (Result)
+                        {
+                            if (shirtInfo != null)
+                            {
+                                shirtInfo.Id = Guid.NewGuid().ToString();
+                                shirtInfo.OrderId = Id;
+                                Result = _orderData.AddShirtInfo(shirtInfo.Id, shirtInfo.OrderId, shirtInfo.Length, shirtInfo.Shoulder, shirtInfo.S_Length, shirtInfo.S_Loose, shirtInfo.Chest, shirtInfo.Waist, shirtInfo.Hip, shirtInfo.Collar, shirtInfo.Collar_Size, shirtInfo.Collar_Style, shirtInfo.Cuf_Size, shirtInfo.Cuf_Style, shirtInfo.Collar_Button, shirtInfo.Patti, shirtInfo.Pocket, shirtInfo.InnerPocket, shirtInfo.KneePatch, shirtInfo.Fit, shirtInfo.Notes); 
+                            }
+                        }
+                    }
+                    
+                }
             }
             catch (Exception)
             {
@@ -26,12 +56,44 @@ namespace ShopManagement.Utilities
             return Result;
         }
 
-        public bool Update(string Id, string CustomerName, string Image, string ShopId, int Amount, int CustomerMobileNumber, string Status, string Notes, DateTime StartDate, DateTime EndDate)
+        public bool Update(string Id, string BillNumber, string CustomerName, string Image, string ShopId, int Amount, string CustomerMobileNumber, string Status, string Notes, DateTime StartDate, DateTime EndDate, Models.SafariInfo safariInfo, Models.PantInfo pantInfo, Models.ShirtInfo shirtInfo)
         {
             bool Result = false;
             try
             {
-                Result = _orderData.Update(Id, CustomerName, Image, ShopId, Amount, CustomerMobileNumber, Status, Notes, StartDate, EndDate);
+                Result = _orderData.Update(Id, BillNumber, CustomerName, Image, ShopId, Amount, CustomerMobileNumber, Status, Notes, StartDate, EndDate);
+                if (Result)
+                {
+                    if (safariInfo != null)
+                    {
+                        _orderData.DeleteSafariInfoByOrderId(Id);
+                        safariInfo.Id = Guid.NewGuid().ToString();
+                        safariInfo.OrderId = Id;
+                        Result = _orderData.AddSafariInfo(safariInfo.Id, safariInfo.OrderId, safariInfo.Length, safariInfo.Shoulder, safariInfo.S_Length, safariInfo.S_Loose, safariInfo.Chest, safariInfo.Waist, safariInfo.Hip, safariInfo.Collar, safariInfo.Collar_Style, safariInfo.Buttons, safariInfo.Side_Vent, safariInfo.S_Breast, safariInfo.D_Breast, safariInfo.Breast, safariInfo.Notes);
+                    }
+
+                    if (Result)
+                    {
+                        if (pantInfo != null)
+                        {
+                            _orderData.DeletePantiInfoByOrderId(Id);
+                            pantInfo.Id = Guid.NewGuid().ToString();
+                            pantInfo.OrderId = Id;
+                            Result = _orderData.AddPantInfo(pantInfo.Id, pantInfo.OrderId, pantInfo.Length, pantInfo.Seat, pantInfo.Hip, pantInfo.InSeen, pantInfo.Thigh, pantInfo.Knee, pantInfo.Bottom, pantInfo.BackPocket, pantInfo.WatchPocket, pantInfo.Iron, pantInfo.Emming, pantInfo.BottomFold, pantInfo.BuckleModel, pantInfo.HookButton, pantInfo.Button, pantInfo.Notes);
+                        }
+
+                        if (Result)
+                        {
+                            if (shirtInfo != null)
+                            {
+                                _orderData.DeleteShirtInfoByOrderId(Id);
+                                shirtInfo.Id = Guid.NewGuid().ToString();
+                                shirtInfo.OrderId = Id;
+                                Result = _orderData.AddShirtInfo(shirtInfo.Id, shirtInfo.OrderId, shirtInfo.Length, shirtInfo.Shoulder, shirtInfo.S_Length, shirtInfo.S_Loose, shirtInfo.Chest, shirtInfo.Waist, shirtInfo.Hip, shirtInfo.Collar, shirtInfo.Collar_Size, shirtInfo.Collar_Style, shirtInfo.Cuf_Size, shirtInfo.Cuf_Style, shirtInfo.Collar_Button, shirtInfo.Patti, shirtInfo.Pocket, shirtInfo.InnerPocket, shirtInfo.KneePatch, shirtInfo.Fit, shirtInfo.Notes);
+                            }
+                        }
+                    }
+                }
             }
             catch (Exception)
             {
@@ -46,6 +108,9 @@ namespace ShopManagement.Utilities
             try
             {
                 Result = _orderData.Delete(Id);
+                _orderData.DeleteSafariInfoByOrderId(Id);
+                _orderData.DeleteShirtInfoByOrderId(Id);
+                _orderData.DeletePantiInfoByOrderId(Id);
             }
             catch (Exception)
             {
@@ -70,6 +135,7 @@ namespace ShopManagement.Utilities
 
         public Models.Order GetOrderInfoById(string Id)
         {
+            DataTable dt = new DataTable();
             Models.Order OrderInfo = new Models.Order();
             try
             {
@@ -88,6 +154,7 @@ namespace ShopManagement.Utilities
 
         public List<Models.Order> GetAllOrders()
         {
+            DataTable dt = new DataTable();
             List<Models.Order> OrdersList = new List<Models.Order>();
             try
             {
@@ -108,6 +175,7 @@ namespace ShopManagement.Utilities
 
         public List<Models.Order> GetAllOrdersByShopId(string ShopId)
         {
+            DataTable dt = new DataTable();
             List<Models.Order> OrdersList = new List<Models.Order>();
             try
             {
@@ -128,6 +196,7 @@ namespace ShopManagement.Utilities
 
         public List<Models.Order> GetAllOrdersByStatus(string Status)
         {
+            DataTable dt = new DataTable();
             List<Models.Order> OrdersList = new List<Models.Order>();
             try
             {
@@ -148,6 +217,7 @@ namespace ShopManagement.Utilities
         
         public List<Models.Order> GetAllOrdersDates(string ShopId, string FilterDate)
         {
+            DataTable dt = new DataTable();
             List<Models.Order> OrdersList = new List<Models.Order>();
             try
             {
@@ -166,12 +236,33 @@ namespace ShopManagement.Utilities
             return OrdersList;
         }
 
+        public int GetShopTodaysOderCount(string ShopId)
+        {
+            int OrdersCount = 0;
+            DataTable dt = new DataTable();
+            try
+            {
+                dt = _orderData.GetShopTodaysOderCount(ShopId);
+                foreach (DataRow record in dt.Rows)
+                {
+                    OrdersCount = (int)record["Count"];
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return OrdersCount;
+        }
+
         public Models.Order BuildOrderInfo(DataRow record)
         {
             Models.Order OrderInfo = new Models.Order();
+            Utilities.Shop shopUtilities = new Shop();
             try
             {
                 OrderInfo.Id = record["Id"].ToString();
+                OrderInfo.BillNumber = record["BillNumber"].ToString();
                 OrderInfo.CustomerName = record["CustomerName"].ToString();
                 OrderInfo.Image = record["Image"].ToString();
                 OrderInfo.ShopId = record["ShopId"].ToString();
@@ -183,13 +274,145 @@ namespace ShopManagement.Utilities
                 OrderInfo.EndDate = Convert.ToDateTime(record["EndDate"].ToString());
                 OrderInfo.CreatedDate = Convert.ToDateTime(record["CreatedDate"].ToString());
                 OrderInfo.ModifiedDate = Convert.ToDateTime(record["ModifiedDate"].ToString());
-                
+                OrderInfo.SafariInfo = GetSafariInfoByOrderId(record["Id"].ToString());
+                OrderInfo.PantInfo = GetPantiInfoByOrderId(record["Id"].ToString());
+                OrderInfo.ShirtInfo = GetShirtiInfoByOrderId(record["Id"].ToString());
+                var days = ((TimeSpan)(OrderInfo.EndDate - OrderInfo.StartDate)).Days;
+                OrderInfo.DaysRemaining = days > 0 ? days.ToString() : "0";
+                OrderInfo.ShopName = shopUtilities.GetShopById(record["ShopId"].ToString()).Name;
+                OrderInfo.StartDateInString = OrderInfo.StartDate.ToString("yyyy-MM-dd");
+                OrderInfo.EndDateInString = OrderInfo.EndDate.ToString("yyyy-MM-dd");
             }
             catch (Exception)
             {
 
             }
             return OrderInfo;
+        }
+
+        public Models.SafariInfo GetSafariInfoByOrderId(string OrderId)
+        {
+            DataTable dt = new DataTable();
+            Models.SafariInfo SafariInfo = new Models.SafariInfo();
+            try
+            {
+                dt = _orderData.GetSafariInfoByOrderId(OrderId);
+                foreach (DataRow record in dt.Rows)
+                {
+                    SafariInfo = new Models.SafariInfo()
+                    {
+                        Id = record["Id"].ToString(),
+                        OrderId = record["OrderId"].ToString(),
+                        CreatedDate = record["CreatedDate"].ToString(),
+                        Length = record["Length"].ToString(),
+                        Shoulder = record["Shoulder"].ToString(),
+                        S_Length = record["S_Length"].ToString(),
+                        S_Loose = record["S_Loose"].ToString(),
+                        Chest = record["Chest"].ToString(),
+                        Waist = record["Waist"].ToString(),
+                        Hip = record["Hip"].ToString(),
+                        Collar = record["Collar"].ToString(),
+                        Collar_Style = record["Collar_Style"].ToString(),
+                        Buttons = record["Buttons"].ToString(),
+                        Side_Vent = record["Side_Vent"].ToString(),
+                        S_Breast = record["S_Breast"].ToString(),
+                        D_Breast = record["D_Breast"].ToString(),
+                        Breast = record["Breast"].ToString(),
+                        Notes = record["Notes"].ToString(),
+                        ModifiedDate = record["ModifiedDate"].ToString()
+                    };
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return SafariInfo;
+        }
+
+        public Models.PantInfo GetPantiInfoByOrderId(string OrderId)
+        {
+            DataTable dt = new DataTable();
+            Models.PantInfo PantInfo = new Models.PantInfo();
+            try
+            {
+                dt = _orderData.GetPantiInfoByOrderId(OrderId);
+                foreach (DataRow record in dt.Rows)
+                {
+                    PantInfo = new Models.PantInfo()
+                    {
+                        Id = record["Id"].ToString(),
+                        OrderId = record["OrderId"].ToString(),
+                        CreatedDate = record["CreatedDate"].ToString(),
+                        Length = record["Length"].ToString(),
+                        Seat = record["Seat"].ToString(),
+                        Hip = record["Hip"].ToString(),
+                        InSeen = record["InSeen"].ToString(),
+                        Thigh = record["Thigh"].ToString(),
+                        Knee = record["Knee"].ToString(),
+                        Bottom = record["Bottom"].ToString(),
+                        BackPocket = record["BackPocket"].ToString(),
+                        WatchPocket = record["WatchPocket"].ToString(),
+                        Iron = record["Iron"].ToString(),
+                        Emming = record["Emming"].ToString(),
+                        BottomFold = record["BottomFold"].ToString(),
+                        BuckleModel = record["BuckleModel"].ToString(),
+                        HookButton = record["HookButton"].ToString(),
+                        Button = record["Button"].ToString(),
+                        Notes = record["Notes"].ToString(),
+                        ModifiedDate = record["ModifiedDate"].ToString()
+                    };
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return PantInfo;
+        }
+
+        public Models.ShirtInfo GetShirtiInfoByOrderId(string OrderId)
+        {
+            DataTable dt = new DataTable();
+            Models.ShirtInfo ShirtInfo = new Models.ShirtInfo();
+            try
+            {
+                dt = _orderData.GetShirtiInfoByOrderId(OrderId);
+                foreach (DataRow record in dt.Rows)
+                {
+                    ShirtInfo = new Models.ShirtInfo()
+                    {
+                        Id = record["Id"].ToString(),
+                        OrderId = record["OrderId"].ToString(),
+                        CreatedDate = record["CreatedDate"].ToString(),
+                        Length = record["Length"].ToString(),
+                        Shoulder = record["Shoulder"].ToString(),
+                        S_Length = record["S_Length"].ToString(),
+                        S_Loose = record["S_Loose"].ToString(),
+                        Chest = record["Chest"].ToString(),
+                        Waist = record["Waist"].ToString(),
+                        Hip = record["Hip"].ToString(),
+                        Collar = record["Collar"].ToString(),
+                        Collar_Size = record["Collar_Size"].ToString(),
+                        Collar_Style = record["Collar_Style"].ToString(),
+                        Cuf_Size = record["Cuf_Size"].ToString(),
+                        Cuf_Style = record["Cuf_Style"].ToString(),
+                        Collar_Button = record["Collar_Button"].ToString(),
+                        Patti = record["Patti"].ToString(),
+                        Pocket = record["Pocket"].ToString(),
+                        InnerPocket = record["InnerPocket"].ToString(),
+                        KneePatch = record["KneePatch"].ToString(),
+                        Fit = record["Fit"].ToString(),
+                        Notes = record["Notes"].ToString(),
+                        ModifiedDate = record["ModifiedDate"].ToString()
+                    };
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return ShirtInfo;
         }
     }
 }

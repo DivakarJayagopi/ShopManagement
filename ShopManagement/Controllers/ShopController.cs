@@ -11,6 +11,8 @@ namespace ShopManagement.Controllers
         // GET: Shop
         public ActionResult AddShop()
         {
+            if (Session["UserId"] == null || Session["IsAdmin"].ToString() == "1")
+                return RedirectToAction("Login", "Account");
             Utilities.User _UserUtility = new Utilities.User();
             List<Models.User> UsersList = _UserUtility.GetAllUsers();
             UsersList = UsersList.Where(x => x.Status == "active").ToList();
@@ -18,6 +20,8 @@ namespace ShopManagement.Controllers
         }
         public ActionResult ViewAllShops()
         {
+            if (Session["UserId"] == null || Session["IsAdmin"].ToString() == "1")
+                return RedirectToAction("Login", "Account");
             Utilities.Shop _ShopUtility = new Utilities.Shop();
             List<Models.Shop> Shopslist = new List<Models.Shop>();
             Utilities.User _UserUtility = new Utilities.User();
@@ -44,6 +48,7 @@ namespace ShopManagement.Controllers
                 shopAdditionalInfo.ModifiedDate = shop.ModifiedDate;
                 shopAdditionalInfo.MobileNumber = shop.MobileNumber;
                 shopAdditionalInfo.MaxOrderCount = shop.MaxOrderCount;
+                shopAdditionalInfo.TodaysOderCount = shop.TodaysOderCount;
                 shopAdditionalInfo.UserInfo = _UserUtility.GetShopConnectedUserInfo(shop.Id);
                 ShopAdditionalInfoList.Add(shopAdditionalInfo);
             }

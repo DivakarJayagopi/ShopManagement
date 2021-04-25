@@ -42,7 +42,7 @@
                 <div class="col-md-12">
                     <div class="card card-warning">
                         <div class="card-header">
-                            <h4>No Data Found !</h4>
+                            <h4>No Shops Found !</h4>
                         </div>
                         <div class="card-body" style="text-align:center;">
                             <p>Add Shops to see the list here.. <i><b><a href="@Url.Action("AddShop", "Shop")">Add Shop</a></b></i></p>
@@ -80,7 +80,7 @@
                                     <div>
                                         <b>Area : <span data-id="@item.Id" class="ShopArea">@item.ShopArea</span></b><br />
                                         <b>Mobile : <span data-id="@item.Id" class="ShopMobileNumber">@item.MobileNumber</span></b><br />
-                                        <b>Orders : <span data-id="@item.Id" class="MaxOrderCountForShop">@item.MaxOrderCount</span></b><br />
+                                        <b>Orders : <span data-id="@item.Id" class="MaxOrderCountForShop">@item.TodaysOderCount / @item.MaxOrderCount</span></b><br />
                                         <span class="row" style="padding-left:14px;">
                                             <b>
                                                 Manager :

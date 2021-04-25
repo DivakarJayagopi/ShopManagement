@@ -3,7 +3,13 @@
     ViewBag.Title = "ViewOrders";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<link href="~/assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<link href="~/assets/modules/datatables/datatables.min.css" rel="stylesheet" />
+<style>
+    .SafariInfo, .PantInfo, .ShirtInfo {
+       
+    }
+</style>
 <section class="section">
     <div class="section-header">
         <h1>All Orders</h1>
@@ -13,63 +19,67 @@
     <div class="section-body">
         <div class="row">
             <div class="col-12 col-md-12 col-lg-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Orders</h4>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-striped table-responsive-lg">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Customer Name</th>
-                                    <th scope="col">Satus</th>
-                                    <th scope="col">Customer Mobile Number</th>
-                                    <th scope="col">Remaining Days</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Divakar</td>
-                                    <td>In Progress</td>
-                                    <td>8148563820</td>
-                                    <td>5</td>
-                                    <td>
-                                        <a href="javascript:void"><i class="fas fa-eye ViewOrderInfo"></i></a>
-                                        <a href="javascript:void"><i class="fas fa-edit EditOrderInfo"></i></a>
-                                        <a href="javascript:void"><i class="fas fa-trash DeleteOrder"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Divakar</td>
-                                    <td>In Progress</td>
-                                    <td>8148563820</td>
-                                    <td>5</td>
-                                    <td>
-                                        <a href="javascript:void"><i class="fas fa-eye ViewOrderInfo"></i></a>
-                                        <a href="javascript:void"><i class="fas fa-edit EditOrderInfo"></i></a>
-                                        <a href="javascript:void"><i class="fas fa-trash DeleteOrder"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Divakar</td>
-                                    <td>In Progress</td>
-                                    <td>8148563820</td>
-                                    <td>5</td>
-                                    <td>
-                                        <a href="javascript:void"><i class="fas fa-eye ViewOrderInfo"></i></a>
-                                        <a href="javascript:void"><i class="fas fa-edit EditOrderInfo"></i></a>
-                                        <a href="javascript:void"><i class="fas fa-trash DeleteOrder"></i></a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="card-body">
+                    @if (Model.Count <= 0)
+                    {
+                        <div class="col-md-12">
+                            <div class="card card-warning">
+                                <div class="card-header">
+                                    <h4>No Orders Found !</h4>
+                                </div>
+                                <div class="card-body" style="text-align:center;">
+                                    <p>Add Orders to see the list here.. <i><b><a href="@Url.Action("AddOrder", "Order")">Add Order</a></b></i></p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Orders</h4>
+                            </div>
+                            <div class="OdersTbllst">
+                                <table class="table table-striped table-responsive-lg" id="OrdersTable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Image</th>
+                                            <th scope="col">Bill Number</th>
+                                            <th scope="col">Customer Name</th>
+                                            <th scope="col">Satus</th>
+                                            <th scope="col">Customer Mobile Number</th>
+                                            <th scope="col">Remaining Days</th>
+                                            <th scope="col">ShopName</th>
+                                            <th scope="col">Amount</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <th scope="row"><img src="@item.Image" style="height:30px;width:30px" class="img img-responsive" /></th>
+                                                <td>@item.BillNumber</td>
+                                                <td>@item.CustomerName</td>
+                                                <td>@item.Status</td>
+                                                <td>@item.CustomerMobileNumber</td>
+                                                <td>@item.DaysRemaining</td>
+                                                <td>@item.ShopName</td>
+                                                <td>@item.Amount</td>
+                                                <td>
+                                                    <a href="javascript:void(0);" data-id="@item.Id"><i class="fas fa-eye ViewOrderInfo" data-id="@item.Id"></i></a>
+                                                    <a href="javascript:void(0);" data-id="@item.Id"><i class="fas fa-edit EditOrderInfo" data-id="@item.Id"></i></a>
+                                                    <a href="javascript:void(0);" data-id="@item.Id"><i class="fas fa-trash DeleteOrder" data-id="@item.Id"></i></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    }
                 </div>
+
             </div>
         </div>
     </div>
@@ -79,13 +89,242 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Shop Info - </h5>
+                <span class="modal-title">Order Info - <strong class="CustomerName"></strong> </span>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Modal body text goes here.</p>
+                <div class="SafariInfo">
+                    <h3 class="text-success">Suit/Safari Data : </h3>
+                    <div class="SafariNoData">
+                        <p class="text-warning text-center">No Suit/Safari Data Found</p>
+                    </div>
+                    <div class="SafariData">
+                        <table class="table table-sm" style="width:100%">
+                            <tr class="form-group">
+                                <td>Length</td>
+                                <td id="SafariLength"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Shoulder</td>
+                                <td id="SafariShoulder"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>S_Length</td>
+                                <td id="SafariS_Length"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>S_Loose</td>
+                                <td id="SafariS_Loose"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Chest</td>
+                                <td id="SafariChest"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Waist</td>
+                                <td id="SafariWaist"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Hip</td>
+                                <td id="SafariHip"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Collar</td>
+                                <td id="SafariCollar"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Collar_Style</td>
+                                <td id="SafariCollar_Style"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Buttons</td>
+                                <td id="SafariButtons"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Side_Vent</td>
+                                <td id="SafariSide_Vent"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>S_Breast</td>
+                                <td id="SafariS_Breast"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>D_Breast</td>
+                                <td id="SafariD_Breast"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Breast</td>
+                                <td id="SafariBreast"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Notes</td>
+                                <td class="Safari_Notes" id="Safari_Notes"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="PantInfo">
+                    <h3 class="text-success">Pant Data : </h3>
+                    <div class="PantNoData">
+                        <p class="text-warning text-center">No Pant Data Found</p>
+                    </div>
+                    <div class="PantData">
+                        <table class="table table-sm" style="width:100%">
+                            <tr class="form-group">
+                                <td>Length</td>
+                                <td id="PantInfoLength"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Seat</td>
+                                <td id="PantInfoSeat"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Hip</td>
+                                <td id="PantInfoHip"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>InSeen</td>
+                                <td id="PantInfoInSeen"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Thigh</td>
+                                <td id="PantInfoThigh"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Knee</td>
+                                <td id="PantInfoKnee"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Bottom</td>
+                                <td id="PantInfoBottom"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>BackPocket</td>
+                                <td id="PantInfoBackPocket"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>WatchPocket</td>
+                                <td id="PantInfoWatchPocket"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Iron</td>
+                                <td id="PantInfoIron"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Emming</td>
+                                <td id="PantInfoEmming"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>BottomFold</td>
+                                <td id="PantInfoBottomFold"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>BuckleModel</td>
+                                <td id="PantInfoBuckleModel"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>HookButton</td>
+                                <td id="PantInfoHookButton"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Button</td>
+                                <td id="PantInfoButton"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Notes</td>
+                                <td class="PantInfo_Notes" id="PantInfo_Notes"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="ShirtInfo">
+                    <h3 class="text-success">Shirt Data : </h3>
+                    <div class="ShirtNoData">
+                        <p class="text-warning text-center">No Shirt Data Found</p>
+                    </div>
+                    <div class="ShirtData">
+                        <table class="table table-sm" style="width:100%">
+                            <tr class="form-group">
+                                <td>Length</td>
+                                <td id="ShirtInfoLength"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Shoulder</td>
+                                <td id="ShirtInfoShoulder"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>S_Length</td>
+                                <td id="ShirtInfoS_Length"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>S_Loose</td>
+                                <td id="ShirtInfoS_Loose"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Chest</td>
+                                <td id="ShirtInfoChest"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Waist</td>
+                                <td id="ShirtInfoWaist"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Hip</td>
+                                <td id="ShirtInfoHip"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Collar</td>
+                                <td id="ShirtInfoCollar"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Collar_Size</td>
+                                <td id="ShirtInfoCollar_Size"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Collar_Style</td>
+                                <td id="ShirtInfoCollar_Style"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Cuf_Size</td>
+                                <td id="ShirtInfoCuf_Size"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Cuf_Style</td>
+                                <td id="ShirtInfoCuf_Style"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Collar_Button</td>
+                                <td id="ShirtInfoCollar_Button"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Patti</td>
+                                <td id="ShirtInfoPatti"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Pocket</td>
+                                <td id="ShirtInfoPocket"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>InnerPocket</td>
+                                <td id="ShirtInfoInnerPocket"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>KneePatch</td>
+                                <td id="ShirtInfoKneePatch"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Fit</td>
+                                <td id="ShirtInfoFit"></td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>Notes</td>
+                                <td class="ShirtInfo_Notes" id="ShirtInfo_Notes"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer bg-whitesmoke br">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -95,24 +334,411 @@
 </div>
 
 <div class="modal fade" tabindex="-1" role="dialog" id="EditOrder">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Edit Shop - </h5>
+                <h5 class="modal-title">Edit Order - <strong class="CustomerName"></strong> </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height:100px;height: 540px;overflow: auto;">
+                <div class="card">
+                    <div class="card-body">
+                        <input type="hidden" class="OrderId" />
+                        <input type="hidden" class="BillNumber" />
+                        <div class="form-group">
+                            <label>Customer Name</label>
+                            <input type="text" class="form-control" id="CustomerName">
+                        </div>
+                        <div class="form-group">
+                            <label>Mobile Number</label>
+                            <input type="number" class="form-control" id="CustomerMobileNumber">
+                        </div>
+                        <div class="form-group">
+                            <label>Choose shop</label>
+                            <select class="form-control select2" id="SelctedShopId">
+                                
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Amount</label>
+                            <input type="number" class="form-control" id="OrderAmount">
+                        </div>
+                        <div class="form-group">
+                            <label>Image</label>
+                            <input type="file" class="form-control" style="padding:.375rem .75rem;" id="OrderImage">
+                        </div>
+                        <div class="form-group">
+                            <label>Notes</label>
+                            <textarea class="form-control datemask" id="OrderNotes"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <div class="form-group">
+                                <div class="selectgroup w-100">
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="value" value="active" class="selectgroup-input" checked="">
+                                        <span class="selectgroup-button awaiting OrderStatus">Awaiting</span>
+                                    </label>
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="value" value="inactive" class="selectgroup-input">
+                                        <span class="selectgroup-button inprogress OrderStatus">InProgress</span>
+                                    </label>
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="value" value="inactive" class="selectgroup-input">
+                                        <span class="selectgroup-button completed OrderStatus">Completed</span>
+                                    </label>
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="value" value="inactive" class="selectgroup-input">
+                                        <span class="selectgroup-button dropped OrderStatus">Dropped</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Start Date</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-calendar"></i>
+                                    </div>
+                                </div>
+                                <input type="date" class="form-control datepicker" id="OrderStartDate">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Other Info</label>
+                            <div class="input-group">
+                                <div class="col-md-12 row OrderOtherInfo">
+                                    <div class="col-md-4">
+                                        <button class="btn btn-warning btn-block disabled AddSafariInfoButton" data-toggle="modal" data-target="#SafariInfo"><i class="fas fa-plus"></i> &nbsp; &nbsp; &nbsp;Suit/Safari</button>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button class="btn btn-warning btn-block disabled AddPantInfoButton" data-toggle="modal" data-target="#PantInfo"><i class="fas fa-plus"></i> &nbsp; &nbsp; &nbsp;Pant</button>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button class="btn btn-warning btn-block disabled AddShirtInfoButton" data-toggle="modal" data-target="#ShirtInfo"><i class="fas fa-plus"></i> &nbsp; &nbsp; &nbsp;Shirt</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>End Date</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-calendar"></i>
+                                    </div>
+                                </div>
+                                <input type="date" class="form-control datepicker" id="OrderEndDate">
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer bg-whitesmoke br">
+                <span class="customErrorMessageAddOrder text-danger"></span>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="UpdateOrderFromSubmit">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="SafariInfo">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Safari Info</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Modal body text goes here.</p>
+                <div class="SafariInfoForm">
+                    <form>
+                        <div class="form-group">
+                            <label>Length</label>
+                            <input type="text" class="form-control" id="SafariLength">
+                        </div>
+                        <div class="form-group">
+                            <label>Shoulder</label>
+                            <input type="text" class="form-control" id="SafariShoulder">
+                        </div>
+                        <div class="form-group">
+                            <label>S_Length</label>
+                            <input type="text" class="form-control" id="SafariS_Length">
+                        </div>
+                        <div class="form-group">
+                            <label>S_Loose</label>
+                            <input type="text" class="form-control" id="SafariS_Loose">
+                        </div>
+                        <div class="form-group">
+                            <label>Chest</label>
+                            <input type="text" class="form-control" id="SafariChest">
+                        </div>
+                        <div class="form-group">
+                            <label>Waist</label>
+                            <input type="text" class="form-control" id="SafariWaist">
+                        </div>
+                        <div class="form-group">
+                            <label>Hip</label>
+                            <input type="text" class="form-control" id="SafariHip">
+                        </div>
+                        <div class="form-group">
+                            <label>Collar</label>
+                            <input type="text" class="form-control" id="SafariCollar">
+                        </div>
+                        <div class="form-group">
+                            <label>Collar_Style</label>
+                            <input type="text" class="form-control" id="SafariCollar_Style">
+                        </div>
+                        <div class="form-group">
+                            <label>Buttons</label>
+                            <input type="text" class="form-control" id="SafariButtons">
+                        </div>
+                        <div class="form-group">
+                            <label>Side_Vent</label>
+                            <input type="text" class="form-control" id="SafariSide_Vent">
+                        </div>
+                        <div class="form-group">
+                            <label>S_Breast</label>
+                            <input type="text" class="form-control" id="SafariS_Breast">
+                        </div>
+                        <div class="form-group">
+                            <label>D_Breast</label>
+                            <input type="text" class="form-control" id="SafariD_Breast">
+                        </div>
+                        <div class="form-group">
+                            <label>Breast</label>
+                            <input type="text" class="form-control" id="SafariBreast">
+                        </div>
+                        <div class="form-group">
+                            <label>Notes</label>
+                            <textarea class="form-control Safari_Notes" id="Safari_Notes"></textarea>
+                        </div>
+                    </form>
+                </div>
             </div>
             <div class="modal-footer bg-whitesmoke br">
+                <span class="customErrorMessageAddSafariInfo text-danger" style="float:left;"></span>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button class="btn btn-info" id="SafariInfoFromSubmit">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="PantInfo">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pant Info</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="PantInfoForm">
+                    <form>
+                        <div class="form-group">
+                            <label>Length</label>
+                            <input type="text" class="form-control" id="PantInfoLength">
+                        </div>
+                        <div class="form-group">
+                            <label>Seat</label>
+                            <input type="text" class="form-control" id="PantInfoSeat">
+                        </div>
+                        <div class="form-group">
+                            <label>Hip</label>
+                            <input type="text" class="form-control" id="PantInfoHip">
+                        </div>
+                        <div class="form-group">
+                            <label>InSeen</label>
+                            <input type="text" class="form-control" id="PantInfoInSeen">
+                        </div>
+                        <div class="form-group">
+                            <label>Thigh</label>
+                            <input type="text" class="form-control" id="PantInfoThigh">
+                        </div>
+                        <div class="form-group">
+                            <label>Knee</label>
+                            <input type="text" class="form-control" id="PantInfoKnee">
+                        </div>
+                        <div class="form-group">
+                            <label>Bottom</label>
+                            <input type="text" class="form-control" id="PantInfoBottom">
+                        </div>
+                        <div class="form-group">
+                            <label>BackPocket</label>
+                            <input type="text" class="form-control" id="PantInfoBackPocket">
+                        </div>
+                        <div class="form-group">
+                            <label>WatchPocket</label>
+                            <input type="text" class="form-control" id="PantInfoWatchPocket">
+                        </div>
+                        <div class="form-group">
+                            <label>Iron</label>
+                            <input type="text" class="form-control" id="PantInfoIron">
+                        </div>
+                        <div class="form-group">
+                            <label>Emming</label>
+                            <input type="text" class="form-control" id="PantInfoEmming">
+                        </div>
+                        <div class="form-group">
+                            <label>BottomFold</label>
+                            <input type="text" class="form-control" id="PantInfoBottomFold">
+                        </div>
+                        <div class="form-group">
+                            <label>BuckleModel</label>
+                            <input type="text" class="form-control" id="PantInfoBuckleModel">
+                        </div>
+                        <div class="form-group">
+                            <label>HookButton</label>
+                            <input type="text" class="form-control" id="PantInfoHookButton">
+                        </div>
+                        <div class="form-group">
+                            <label>Button</label>
+                            <input type="text" class="form-control" id="PantInfoButton">
+                        </div>
+                        <div class="form-group">
+                            <label>Notes</label>
+                            <textarea class="form-control PantInfo_Notes" id="PantInfo_Notes"></textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer bg-whitesmoke br">
+                <span class="customErrorMessageAddPantInfo text-danger" style="float:left;"></span>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button class="btn btn-info" id="PantInfoFromSubmit">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="ShirtInfo">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Shirt Info</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="ShirtInfoForm">
+                    <form>
+                        <div class="form-group">
+                            <label>Length</label>
+                            <input type="text" class="form-control" id="ShirtInfoLength">
+                        </div>
+                        <div class="form-group">
+                            <label>Shoulder</label>
+                            <input type="text" class="form-control" id="ShirtInfoShoulder">
+                        </div>
+                        <div class="form-group">
+                            <label>S_Length</label>
+                            <input type="text" class="form-control" id="ShirtInfoS_Length">
+                        </div>
+                        <div class="form-group">
+                            <label>S_Loose</label>
+                            <input type="text" class="form-control" id="ShirtInfoS_Loose">
+                        </div>
+                        <div class="form-group">
+                            <label>Chest</label>
+                            <input type="text" class="form-control" id="ShirtInfoChest">
+                        </div>
+                        <div class="form-group">
+                            <label>Waist</label>
+                            <input type="text" class="form-control" id="ShirtInfoWaist">
+                        </div>
+                        <div class="form-group">
+                            <label>Hip</label>
+                            <input type="text" class="form-control" id="ShirtInfoHip">
+                        </div>
+                        <div class="form-group">
+                            <label>Collar</label>
+                            <input type="text" class="form-control" id="ShirtInfoCollar">
+                        </div>
+                        <div class="form-group">
+                            <label>Collar_Size</label>
+                            <input type="text" class="form-control" id="ShirtInfoCollar_Size">
+                        </div>
+                        <div class="form-group">
+                            <label>Collar_Style</label>
+                            <input type="text" class="form-control" id="ShirtInfoCollar_Style">
+                        </div>
+                        <div class="form-group">
+                            <label>Cuf_Size</label>
+                            <input type="text" class="form-control" id="ShirtInfoCuf_Size">
+                        </div>
+                        <div class="form-group">
+                            <label>Cuf_Style</label>
+                            <input type="text" class="form-control" id="ShirtInfoCuf_Style">
+                        </div>
+                        <div class="form-group">
+                            <label>Collar_Button</label>
+                            <input type="text" class="form-control" id="ShirtInfoCollar_Button">
+                        </div>
+                        <div class="form-group">
+                            <label>Patti</label>
+                            <input type="text" class="form-control" id="ShirtInfoPatti">
+                        </div>
+                        <div class="form-group">
+                            <label>Pocket</label>
+                            <input type="text" class="form-control" id="ShirtInfoPocket">
+                        </div>
+                        <div class="form-group">
+                            <label>InnerPocket</label>
+                            <input type="text" class="form-control" id="ShirtInfoInnerPocket">
+                        </div>
+                        <div class="form-group">
+                            <label>KneePatch</label>
+                            <input type="text" class="form-control" id="ShirtInfoKneePatch">
+                        </div>
+                        <div class="form-group">
+                            <label>Fit</label>
+                            <input type="text" class="form-control" id="ShirtInfoFit">
+                        </div>
+                        <div class="form-group">
+                            <label>Notes</label>
+                            <textarea class="form-control ShirtInfo_Notes" id="ShirtInfo_Notes"></textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer bg-whitesmoke br">
+                <span class="customErrorMessageAddShirtInfo text-danger" style="float:left;"></span>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button class="btn btn-info" id="ShirtInfoFromSubmit">Submit</button>
             </div>
         </div>
     </div>
 </div>
 <!-- General JS Scripts -->
 <script src="../../assets/modules/jquery.min.js"></script>
+<script src="~/assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
+<script src="~/assets/modules/datatables/datatables.min.js"></script>
 <script src="~/App-Assests/Js/Order.js"></script>
+<script>
+    $("#OrdersTable").DataTable();
+
+    $(document).ready(function () {
+        var data = '{IsActive:"' + true + '"}';
+        handleAjaxRequest(null, true, "/Method/GetAllShopsByStatus", data, "CallBackGetAllShopsByStatus");
+    });
+
+    function CallBackGetAllShopsByStatus(responseData) {
+        if (responseData.message.status == "success") {
+            var shopsList = responseData.message.ShopsList;
+            var OptionHTML = "";
+            $.each(shopsList, function (key, val) {
+                OptionHTML += "<option value='" + val.Id + "'>" + val.Name + "</option>";
+            });
+            $("#SelctedShopId").html(OptionHTML)
+        }
+    }
+</script>

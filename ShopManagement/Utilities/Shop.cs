@@ -10,7 +10,7 @@ namespace ShopManagement.Utilities
     {
         Data.Shop _shopData = new Data.Shop();
         Data.Order _orderData = new Data.Order();
-        DataTable dt = new DataTable();
+        
 
         public bool Add(string Name, string ShopArea, string UserId, string Image, string Notes, string Status, string MobileNumber, int MaxOrderCount)
         {
@@ -26,6 +26,9 @@ namespace ShopManagement.Utilities
                     {
                         Result = AddUserConnector(Id, UserId);
                     }
+                    Utilities.Slider _sliderData = new Utilities.Slider();
+                    Result = _sliderData.Add("Slider One", Id);
+                    Result = _sliderData.Add("Slider Two", Id);
                 }
             }
             catch (Exception)
@@ -75,6 +78,7 @@ namespace ShopManagement.Utilities
 
         public Models.Shop GetShopById(string Id)
         {
+            DataTable dt = new DataTable();
             Models.Shop shop = new Models.Shop();
             try
             {
@@ -93,6 +97,7 @@ namespace ShopManagement.Utilities
 
         public List<Models.Shop> GetAllShops()
         {
+            DataTable dt = new DataTable();
             List<Models.Shop> shopsList = new List<Models.Shop>();
             try
             {
@@ -113,6 +118,7 @@ namespace ShopManagement.Utilities
         
         public List<Models.Shop> GetAllShopsByStaus(bool IsActive)
         {
+            DataTable dt = new DataTable();
             List<Models.Shop> shopsList = new List<Models.Shop>();
             try
             {
@@ -134,6 +140,7 @@ namespace ShopManagement.Utilities
         public Models.Shop BuildShopData(DataRow record)
         {
             Models.Shop shop = new Models.Shop();
+            Utilities.Order _orderUtility = new Order();
             try
             {
                 shop.Id = record["Id"].ToString();
@@ -146,6 +153,7 @@ namespace ShopManagement.Utilities
                 shop.ModifiedDate = Convert.ToDateTime(record["ModifiedDate"].ToString());
                 shop.MobileNumber = record["MobileNumber"].ToString();
                 shop.MaxOrderCount = (int)record["MaxOrderCount"];
+                shop.TodaysOderCount = _orderUtility.GetShopTodaysOderCount(shop.Id);
             }
             catch (Exception)
             {
@@ -156,6 +164,7 @@ namespace ShopManagement.Utilities
 
         public string GetShopsCount()
         {
+            DataTable dt = new DataTable();
             string Count = "0";
             try
             {
@@ -174,6 +183,7 @@ namespace ShopManagement.Utilities
 
         public string GetShopCountByStaus(bool IsActive)
         {
+            DataTable dt = new DataTable();
             string Count = "0";
             try
             {
@@ -220,6 +230,7 @@ namespace ShopManagement.Utilities
 
         public Models.Shop GetUserConnectedShopInfo(string UserId)
         {
+            DataTable dt = new DataTable();
             Models.Shop shop = null;
             try
             {

@@ -11,17 +11,39 @@ namespace ShopManagement.Controllers
         // GET: Order
         public ActionResult AddOrder()
         {
-            return View();
+            if (Session["UserId"] == null)
+                return RedirectToAction("Login", "Account");
+            Utilities.Shop _ShopUtility = new Utilities.Shop();
+            List<Models.Shop> Shopslist = new List<Models.Shop>();
+            Shopslist = _ShopUtility.GetAllShops();
+            return View(Shopslist);
         }
 
         public ActionResult ViewOrders()
         {
-            return View();
+            if (Session["UserId"] == null)
+                return RedirectToAction("Login", "Account");
+            Utilities.Order _orderUtility = new Utilities.Order();
+            List<Models.Order> OrdersList = new List<Models.Order>();
+            if(Session["IsAdmin"].ToString() == "1" || Session["IsAdmin"].ToString() == "2")
+            {
+                OrdersList = _orderUtility.GetAllOrders();
+            }
+            else
+            {
+                OrdersList = _orderUtility.GetAllOrdersByShopId("");
+            }
+            return View(OrdersList);
         }
 
         public ActionResult OrdersManagement()
         {
-            return View();
+            if (Session["UserId"] == null || Session["IsAdmin"].ToString() == "1")
+                return RedirectToAction("Login", "Account");
+            Utilities.Shop _ShopUtility = new Utilities.Shop();
+            List<Models.Shop> Shopslist = new List<Models.Shop>();
+            Shopslist = _ShopUtility.GetAllShops();
+            return View(Shopslist);
         }
     }
 }

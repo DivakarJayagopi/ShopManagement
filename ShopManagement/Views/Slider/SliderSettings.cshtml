@@ -18,98 +18,242 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Choose Shop</label>
-                                <select class="form-control select2">
-                                    <option>Option 1</option>
-                                    <option>Option 2</option>
-                                    <option>Option 3</option>
+                                <select class="form-control select2 ShopsList">
+
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4" id="SlidersList" style="display:none">
                             <div class="form-group">
                                 <label>Choose Slider</label>
-                                <select class="form-control select2">
-                                    <option>Option 1</option>
-                                    <option>Option 2</option>
-                                    <option>Option 3</option>
+                                <select class="form-control select2 SliderInfo">
+
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4" id="ImagesCount" style="display:none">
                             <div class="form-group">
                                 <label>Choose Image Count</label>
-                                <select class="form-control select2">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
+                                <select class="form-control select2 SliderImagesCount">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
                                 </select>
                             </div>
                         </div>
                     </div>
-                    <div class="card">
+                    <div class="card" id="ImageGallery" style="display:none">
                         <div class="card-header">
                             <h4>All Image</h4>
                         </div>
                         <div class="card-body">
                             <div class="form-group">
                                 <div class="row gutters-sm">
-                                    <div class="col-6 col-sm-4">
-                                        <label class="imagecheck mb-4">
-                                            <input name="imagecheck" type="checkbox" value="1" class="imagecheck-input" />
-                                            <figure class="imagecheck-figure">
-                                                <img src="../../assets/img/news/img01.jpg" alt="}" class="imagecheck-image">
-                                            </figure>
-                                        </label>
+                                    <p class="text-success">High Quality</p>
+                                    <div class="gallery">
+                                        @if (Model.HighQualityImage.Count <= 0)
+                                        {
+                                            <div class="col-md-12">
+                                                <div class="card card-warning">
+                                                    <div class="card-header">
+                                                        <h4>No Images Found !</h4>
+                                                    </div>
+                                                    <div class="card-body" style="text-align:center;">
+                                                        <p>Add New Images to see the list here.. <i><b><a href="@Url.Action("AddImage", "Slider")">Add Image</a></b></i></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            var i =0;
+                                            foreach (var item in Model.HighQualityImage)
+                                            {
+                                                i++;
+                                                <div class="customGalleryItems">
+                                                    <label class="imagecheck mb-4">
+                                                        <input name="imagecheck" type="checkbox" value="@i" data-ImageId="@item.Id" class="imagecheck-input SliderImageCheck" />
+                                                        <figure class="imagecheck-figure">
+                                                            <img src="@item.Image" alt="}" data-title="@item.Id" class="imagecheck-image">
+                                                        </figure>
+                                                    </label>
+                                                </div>
+                                            }
+                                        }
                                     </div>
-                                    <div class="col-6 col-sm-4">
-                                        <label class="imagecheck mb-4">
-                                            <input name="imagecheck" type="checkbox" value="2" class="imagecheck-input" />
-                                            <figure class="imagecheck-figure">
-                                                <img src="../../assets/img/news/img02.jpg" alt="}" class="imagecheck-image">
-                                            </figure>
-                                        </label>
+                                    <p class="text-warning">Medium Quality</p>
+                                    <div class="gallery">
+                                        @if (Model.LowQualityImage.Count <= 0)
+                                        {
+                                            <div class="col-md-12">
+                                                <div class="card card-warning">
+                                                    <div class="card-header">
+                                                        <h4>No Images Found !</h4>
+                                                    </div>
+                                                    <div class="card-body" style="text-align:center;">
+                                                        <p>Add New Images to see the list here.. <i><b><a href="@Url.Action("AddImage", "Slider")">Add Image</a></b></i></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            var i = 0;
+                                            foreach (var item in Model.LowQualityImage)
+                                            {
+                                                i++;
+                                                <div class="customGalleryItems">
+                                                    <label class="imagecheck mb-4">
+                                                        <input name="imagecheck" type="checkbox" value="@i" data-ImageId="@item.Id" class="imagecheck-input SliderImageCheck" />
+                                                        <figure class="imagecheck-figure">
+                                                            <img src="@item.Image" alt="}" data-title="@item.Id" class="imagecheck-image">
+                                                        </figure>
+                                                    </label>
+                                                </div>
+                                            }
+                                        }
                                     </div>
-                                    <div class="col-6 col-sm-4">
-                                        <label class="imagecheck mb-4">
-                                            <input name="imagecheck" type="checkbox" value="3" class="imagecheck-input" />
-                                            <figure class="imagecheck-figure">
-                                                <img src="../../assets/img/news/img03.jpg" alt="}" class="imagecheck-image">
-                                            </figure>
-                                        </label>
-                                    </div>
-                                    <div class="col-6 col-sm-4">
-                                        <label class="imagecheck mb-4">
-                                            <input name="imagecheck" type="checkbox" value="4" class="imagecheck-input" />
-                                            <figure class="imagecheck-figure">
-                                                <img src="../../assets/img/news/img04.jpg" alt="}" class="imagecheck-image">
-                                            </figure>
-                                        </label>
-                                    </div>
-                                    <div class="col-6 col-sm-4">
-                                        <label class="imagecheck mb-4">
-                                            <input name="imagecheck" type="checkbox" value="5" class="imagecheck-input" />
-                                            <figure class="imagecheck-figure">
-                                                <img src="../../assets/img/news/img05.jpg" alt="}" class="imagecheck-image">
-                                            </figure>
-                                        </label>
-                                    </div>
-                                    <div class="col-6 col-sm-4">
-                                        <label class="imagecheck mb-4">
-                                            <input name="imagecheck" type="checkbox" value="6" class="imagecheck-input" />
-                                            <figure class="imagecheck-figure">
-                                                <img src="../../assets/img/news/img06.jpg" alt="}" class="imagecheck-image">
-                                            </figure>
-                                        </label>
+                                    <p class="text-danger">Low Quality</p>
+                                    <div class="gallery">
+                                        @if (Model.MediumQualityImage.Count <= 0)
+                                        {
+                                            <div class="col-md-12">
+                                                <div class="card card-warning">
+                                                    <div class="card-header">
+                                                        <h4>No Images Found !</h4>
+                                                    </div>
+                                                    <div class="card-body" style="text-align:center;">
+                                                        <p>Add New Images to see the list here.. <i><b><a href="@Url.Action("AddImage", "Slider")">Add Image</a></b></i></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            var i = 0;
+                                            foreach (var item in Model.MediumQualityImage)
+                                            {
+                                                i++;
+                                                <div class="customGalleryItems">
+                                                    <label class="imagecheck mb-4">
+                                                        <input name="imagecheck" type="checkbox" value="@i" data-ImageId="@item.Id" class="imagecheck-input SliderImageCheck" />
+                                                        <figure class="imagecheck-figure">
+                                                            <img src="@item.Image" alt="}" data-title="@item.Id" class="imagecheck-image">
+                                                        </figure>
+                                                    </label>
+                                                </div>
+                                            }
+                                        }
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-block btn-info">Submit</button>
+                    <button class="btn btn-block btn-info" style="display:none;" id="SubmitSliderInfoForm">Submit</button>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<!-- General JS Scripts -->
+<script src="../../assets/modules/jquery.min.js"></script>
+<!-- JS Libraies -->
+<script src="../../assets/modules/chocolat/dist/js/jquery.chocolat.min.js"></script>
+
+<script>
+    var IsAdminUser = '@Session["IsAdmin"]';
+    $(document).ready(function () {
+        var data = '{IsActive:"' + true + '"}';
+        handleAjaxRequest(null, true, "/Method/GetAllShopsByStatus", data, "CallBackGetAllShopsByStatus");
+    });
+
+    function CallBackGetAllShopsByStatus(responseData){
+        if (responseData.message.status == "success") {
+            var ShopsList = responseData.message.ShopsList;
+            var OptionHTML = "";
+            OptionHTML += "<option value='No data'> Select Shop </option>";
+            if (ShopsList != null && ShopsList.length > 0) {
+                $.each(ShopsList, function (key, val) {
+                    OptionHTML += "<option value='" + val.Id + "'>" + val.Name + "</option>";
+                });
+            }
+            else {
+                $("#SlidersList, #ImagesCount, #ImageGallery").hide();
+                OptionHTML = "<option value='No data'> No shops Found </option>";
+            }
+            if (IsAdminUser == "1" || IsAdminUser == "2") {
+                OptionHTML = "";
+                OptionHTML += "<option value='No data'> Select Shop </option>";
+                OptionHTML += "<option value=''> My Slider </option>";
+            }
+            $(".ShopsList").html(OptionHTML);
+        }
+    }
+
+    $(".ShopsList").change(function () {
+        var ShopId = $(this).val();
+
+        var data = '{ShopId:"' + ShopId + '"}';
+        handleAjaxRequest(null, true, "/Method/GetSliderInfoByShopId", data, "CallBackGetSliderInfoByShopId");
+    });
+
+    function CallBackGetSliderInfoByShopId(responseData) {
+        $("#SlidersList, #ImagesCount, #ImageGallery").show();
+        if (responseData.message.status == "success") {            
+            var sliderslist = responseData.message.sliderslist;
+            var OptionHTML = "";
+            if (sliderslist != null && sliderslist.length > 0) {
+                $.each(sliderslist, function (key, val) {
+                    OptionHTML += "<option value='" + val.Id + "'>" + val.Name + "</option>";
+                });
+            } else {
+                $("#SlidersList, #ImagesCount, #ImageGallery").hide();
+                OptionHTML = "<option value=''> No Sliders Found </option>";
+            }
+            $(".SliderInfo").html(OptionHTML);
+        }
+    }
+
+    var ImageGuids = [];
+    var SelectedImagesCount = 0;
+    $(".SliderImageCheck").click(function () {
+        var IsChecked = $(this).prop('checked');
+        var ChoosedCount = $(".SliderImagesCount").val();
+        var ImageGuid = $(this).attr("data-ImageId");
+        
+        if (IsChecked) {
+            if (ChoosedCount == SelectedImagesCount) {
+                return false;
+            } else {
+                SelectedImagesCount++;
+                ImageGuids.push(ImageGuid);
+            }
+        } else {
+            SelectedImagesCount--;
+            for (var i = 0; i < ImageGuids.length; i++) {
+                if (ImageGuids[i] === ImageGuid) {
+                    ImageGuids.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+        if (ChoosedCount == SelectedImagesCount)
+            $("#SubmitSliderInfoForm").show();
+    });
+
+
+    $("#SubmitSliderInfoForm").click(function () {
+        var SliderId = $(".SliderInfo").val();
+        var data = '{Id:"' + SliderId + '", ImageIds:"' + ImageGuids + '"}';
+        handleAjaxRequest(null, true, "/Method/UpdateSliderInfo", data, "CallBackUpdateSliderInfo");
+    });
+
+    function CallBackUpdateSliderInfo(responseData) {
+        if (responseData.message.status == "success") {
+
+        }
+    }
+</script>
