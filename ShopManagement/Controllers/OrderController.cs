@@ -38,7 +38,7 @@ namespace ShopManagement.Controllers
 
         public ActionResult OrdersManagement()
         {
-            if (Session["UserId"] == null || Session["IsAdmin"].ToString() == "1")
+            if (Session["UserId"] == null)
                 return RedirectToAction("Login", "Account");
             Utilities.Shop _ShopUtility = new Utilities.Shop();
             List<Models.Shop> Shopslist = new List<Models.Shop>();

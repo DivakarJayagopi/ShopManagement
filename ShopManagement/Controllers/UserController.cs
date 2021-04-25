@@ -13,14 +13,14 @@ namespace ShopManagement.Controllers
         DataTable dt = new DataTable();
         public ActionResult AddUser()
         {
-            if (Session["UserId"] == null || Session["IsAdmin"].ToString() == "1")
+            if (Session["UserId"] == null)
                 return RedirectToAction("Login", "Account");
             return View();
         }
 
         public ActionResult viewAllUser()
         {
-            if (Session["UserId"] == null || Session["IsAdmin"].ToString() == "1")
+            if (Session["UserId"] == null || Session["IsAdmin"].ToString() != "1")
                 return RedirectToAction("Login", "Account");
             Utilities.User _UserUtility = new Utilities.User();
             Utilities.Shop _ShopUtility = new Utilities.Shop();
