@@ -37,6 +37,7 @@ namespace ShopManagement.Controllers
                         if (ShopInfo != null && !string.IsNullOrEmpty(ShopInfo.Id))
                         {
                             Session["ShopId"] = ShopInfo.Id;
+                            Session["ShopName"] = ShopInfo.Name;
                             returnObject.Add("status", "success");
                         }
                         else
@@ -1184,6 +1185,78 @@ namespace ShopManagement.Controllers
             catch (Exception)
             {
 
+            }
+            return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ForgotPassowrd(string MobileNumber)
+        {
+            Dictionary<string, object> returnObject = new Dictionary<string, object>();
+            try
+            {
+                var UserInfo = _userData.GetUserByMobileNumber(MobileNumber);
+                if (UserInfo != null && !string.IsNullOrEmpty(UserInfo.Id))
+                {
+                    string Message = "Hi " + UserInfo.Name + ", Your Password for Fb Designer Emporium is " + UserInfo.Password;
+                    string SendSMS = _orderUtility.sendSMS(UserInfo.MobileNumber, Message);
+                    returnObject.Add("status", "success");
+                }
+                else
+                {
+                    returnObject.Add("status", "fail");
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult IsMobileNmberExists(string MobileNumber)
+        {
+            Dictionary<string, object> returnObject = new Dictionary<string, object>();
+            try
+            {
+                var UserInfo = _userData.GetUserByMobileNumber(MobileNumber);
+                if (UserInfo != null && !string.IsNullOrEmpty(UserInfo.Id))
+                {
+                    returnObject.Add("IsExist", true);
+                    returnObject.Add("status", "success");
+                }
+                else
+                {
+                    returnObject.Add("IsExist", false);
+                    returnObject.Add("status", "success");
+                }
+            }
+            catch (Exception)
+            {
+                returnObject.Add("status", "fail");
+            }
+            return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult IsBillNumberExists(string BillNumber)
+        {
+            Dictionary<string, object> returnObject = new Dictionary<string, object>();
+            try
+            {
+                var OrderInfo = _orderUtility.GetOrderByBillNumber(BillNumber);
+                if (OrderInfo != null && !string.IsNullOrEmpty(OrderInfo.Id))
+                {
+                    returnObject.Add("IsExist", true);
+                    returnObject.Add("status", "success");
+                }
+                else
+                {
+                    returnObject.Add("IsExist", false);
+                    returnObject.Add("status", "success");
+                }
+            }
+            catch (Exception)
+            {
+                returnObject.Add("status", "fail");
             }
             return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
         }

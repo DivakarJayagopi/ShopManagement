@@ -20,14 +20,6 @@
     <link rel="stylesheet" href="../../assets/css/components.css">
     <link rel="stylesheet" href="~/App-Assests/CSS/Custom.css">
     <link rel="stylesheet" href="~/App-Assests/CSS/Icons.css">
-
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'UA-94034622-3');</script>
-    <!-- /END GA -->
 </head>
 
 <body>
@@ -108,15 +100,16 @@
                         </div>
                         <ul class="sidebar-menu">
                             <li class="menu-header text-info">DashBoard</li>
-                            <li><a class="nav-link" href="@Url.Action("Dashboard", "Dashboard")"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/Dashboard.png" class="img-circle ImageAsIcon" /></i> <span>DashBoard</span></a></li>
+                            <li><a class="nav-link" href="@Url.Action("Dashboard", "Dashboard")" id="DashboardPage"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/Dashboard.png" class="img-circle ImageAsIcon" /></i> <span>DashBoard</span></a></li>
+
                             <li class="menu-header text-info">Order Management</li>
-                            <li><a class="nav-link" href="@Url.Action("AddOrder", "Order")"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/AddOrder.png" class="img-circle ImageAsIcon" /></i> <span>Add Order</span></a></li>
-                            <li><a class="nav-link" href="@Url.Action("ViewOrders", "Order")"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/ViewOrders.png" class="img-circle ImageAsIcon" /></i> <span>View Orders</span></a></li>
+                            <li><a class="nav-link" href="@Url.Action("AddOrder", "Order")" id="AddOrderPage"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/AddOrder.png" class="img-circle ImageAsIcon" /></i> <span>Add Order</span></a></li>
+                            <li><a class="nav-link" href="@Url.Action("ViewOrders", "Order")" id="ViewOrderPage"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/ViewOrders.png" class="img-circle ImageAsIcon" /></i> <span>View Orders</span></a></li>
 
                             <li class="menu-header text-info">Sliders</li>
-                            <li><a class="nav-link" href="@Url.Action("AddImage", "Slider")"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/AddPhoto.png" class="img-circle ImageAsIcon" /></i> <span>Add Photos</span></a></li>
-                            <li><a class="nav-link" href="@Url.Action("Gallery", "Slider")"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/Gallery.png" class="img-circle ImageAsIcon" /></i> <span>Gallery</span></a></li>
-                            <li><a class="nav-link" href="@Url.Action("SliderSettings", "Slider")"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/SlideManagement.png" class="img-circle ImageAsIcon" /></i> <span>Slider Management</span></a></li>
+                            <li><a class="nav-link" href="@Url.Action("AddImage", "Slider")" id="AddImagePage"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/AddPhoto.png" class="img-circle ImageAsIcon" /></i> <span>Add Photos</span></a></li>
+                            <li><a class="nav-link" href="@Url.Action("Gallery", "Slider")" id="GalleryPage"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/Gallery.png" class="img-circle ImageAsIcon" /></i> <span>Gallery</span></a></li>
+                            <li><a class="nav-link" href="@Url.Action("SliderSettings", "Slider")" id="SliderPage"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/SlideManagement.png" class="img-circle ImageAsIcon" /></i> <span>Slider Management</span></a></li>
                         </ul>
                     </aside>
                 </div>
@@ -133,25 +126,17 @@
                         </div>
                         <ul class="sidebar-menu">
                             <li class="menu-header text-info">DashBoard</li>
-                            <li><a class="nav-link" href="@Url.Action("Dashboard", "Dashboard")"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/Dashboard.png" class="img-circle ImageAsIcon" /></i> <span>DashBoard</span></a></li>
-
-                            @*<li class="menu-header text-info">User Management</li>
-                            <li><a class="nav-link" href="@Url.Action("AddUser", "User")"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/AddUser.png" class="img-circle ImageAsIcon" /></i> <span>Add User</span></a></li>
-                            <li><a class="nav-link" href="@Url.Action("viewAllUser", "User")"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/ViewAllUsers.png" class="img-circle ImageAsIcon" /></i> <span>All Users</span></a></li>
-
-                            <li class="menu-header text-info">Shop Management</li>
-                            <li><a class="nav-link" href="@Url.Action("AddShop", "Shop")"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/AddShop.png" class="img-circle ImageAsIcon" /></i> <span>Add Shop</span></a></li>
-                            <li><a class="nav-link" href="@Url.Action("ViewAllShops", "Shop")"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/ViewAllShops.png" class="img-circle ImageAsIcon" /></i> <span>All Shops</span></a></li>*@
+                            <li><a class="nav-link" href="@Url.Action("Dashboard", "Dashboard")" id="DashboardPage"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/Dashboard.png" class="img-circle ImageAsIcon" /></i> <span>DashBoard</span></a></li>
 
                             <li class="menu-header text-info">Order Management</li>
-                            <li><a class="nav-link" href="@Url.Action("AddOrder", "Order")"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/AddOrder.png" class="img-circle ImageAsIcon" /></i> <span>Add Order</span></a></li>
-                            <li><a class="nav-link" href="@Url.Action("ViewOrders", "Order")"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/ViewOrders.png" class="img-circle ImageAsIcon" /></i> <span>View Orders</span></a></li>
-                            <li><a class="nav-link" href="@Url.Action("OrdersManagement", "Order")"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/OrdersManagement.png" class="img-circle ImageAsIcon" /></i> <span>Orders Management</span></a></li>
+                            <li><a class="nav-link" href="@Url.Action("AddOrder", "Order")" id="AddOrderPage"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/AddOrder.png" class="img-circle ImageAsIcon" /></i> <span>Add Order</span></a></li>
+                            <li><a class="nav-link" href="@Url.Action("ViewOrders", "Order")" id="ViewOrderPage"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/ViewOrders.png" class="img-circle ImageAsIcon" /></i> <span>View Orders</span></a></li>
+                            <li><a class="nav-link" href="@Url.Action("OrdersManagement", "Order")" id="ManageOrderPage"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/OrdersManagement.png" class="img-circle ImageAsIcon" /></i> <span>Orders Management</span></a></li>
 
                             <li class="menu-header text-info">Sliders</li>
-                            <li><a class="nav-link" href="@Url.Action("AddImage", "Slider")"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/AddPhoto.png" class="img-circle ImageAsIcon" /></i> <span>Add Photos</span></a></li>
-                            <li><a class="nav-link" href="@Url.Action("Gallery", "Slider")"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/Gallery.png" class="img-circle ImageAsIcon" /></i> <span>Gallery</span></a></li>
-                            <li><a class="nav-link" href="@Url.Action("SliderSettings", "Slider")"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/SlideManagement.png" class="img-circle ImageAsIcon" /></i> <span>Slider Management</span></a></li>
+                            <li><a class="nav-link" href="@Url.Action("AddImage", "Slider")" id="AddImagePage"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/AddPhoto.png" class="img-circle ImageAsIcon" /></i> <span>Add Photos</span></a></li>
+                            <li><a class="nav-link" href="@Url.Action("Gallery", "Slider")" id="GalleryPage"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/Gallery.png" class="img-circle ImageAsIcon" /></i> <span>Gallery</span></a></li>
+                            <li><a class="nav-link" href="@Url.Action("SliderSettings", "Slider")" id="SliderPage"><i class="DashBoardIcon"><img src="/ImageStorage/Icons/SlideManagement.png" class="img-circle ImageAsIcon" /></i> <span>Slider Management</span></a></li>
                         </ul>
                     </aside>
                 </div>

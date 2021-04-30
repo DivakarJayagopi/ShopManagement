@@ -10,6 +10,13 @@
     .ShopInfo {
         border-radius: 15px;
     }
+    .TableData          { overflow: auto; height: 300px; }
+    .TableData thead th { position: sticky; top: 0; z-index: 1; }
+
+    /* Just common table stuff. Really. */
+    table  { border-collapse: collapse; width: 100%; }
+    th, td { padding: 8px 16px; }
+    th     { background:#eee; }
 </style>
 <section class="section">
     <div class="section-header">
@@ -50,7 +57,14 @@
                                             }
                                             @foreach (var item in Model)
                                             {
-                                                <option value="@item.Id" data-ShopName="@item.Name">@item.Name</option>
+                                                if (Session["IsAdmin"].ToString() == "1")
+                                                {
+                                                    <option value="@item.Id" data-ShopName="@item.Name">@item.Name</option>
+                                                }
+                                                else if (item.Id == Session["ShopId"].ToString())
+                                                {
+                                                    <option value="@item.Id" data-ShopName="@item.Name">@item.Name</option>
+                                                }
                                             }
                                         </select>
                                     </div>
@@ -101,7 +115,7 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <div class="card-icon shadow-primary bg-primary">
                                                     <i class="fas fa-archive"></i>
                                                 </div>
@@ -114,7 +128,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <div class="card-icon shadow-primary bg-primary">
                                                     <i class="fas fa-archive"></i>
                                                 </div>
@@ -127,7 +141,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <div class="card-icon shadow-primary bg-primary">
                                                     <i class="fas fa-archive"></i>
                                                 </div>
@@ -140,26 +154,39 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="col-md-3">
+                                                <div class="card-icon shadow-primary bg-primary">
+                                                    <i class="fas fa-archive"></i>
+                                                </div>
+                                                <div class="card-wrap">
+                                                    <div class="card-header">
+                                                        <h4>Balance Amount</h4>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <span class="BalanceAmout">0</span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <table class="table table-striped table-responsive-lg" id="OrdersTableListView">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Image</th>
-                                            <th scope="col">Bill Number</th>
-                                            <th scope="col">Customer Name</th>
-                                            <th scope="col">Satus</th>
-                                            <th scope="col">Customer Mobile Number</th>
-                                            <th scope="col">Remaining Days</th>
-                                            <th scope="col">Amount</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="OrdersTableView">
-                                        
-                                    </tbody>
-                                </table>
-
+                                <div class="TableData">
+                                    <table class="table table-striped table-responsive-lg" id="OrdersTableListView">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Image</th>
+                                                <th scope="col">Bill Number</th>
+                                                <th scope="col">Customer Name</th>
+                                                <th scope="col">Satus</th>
+                                                <th scope="col">Customer Mobile Number</th>
+                                                <th scope="col">Remaining Days</th>
+                                                <th scope="col">Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="OrdersTableView">
+                                        </tbody>
+                                    </table>
+                                </div>
                                 <div class="BySingleShop">
                                     <h2 class="section-title SelectedShopNameTitle">Single Shop</h2>
                                     <p class="section-lead">
@@ -171,7 +198,7 @@
                                                 <div class="card-header">
                                                     <h4>Orders Status</h4>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body SingleShopOrderStatusParent">
                                                     <canvas id="SingleShopOrderStatus"></canvas>
                                                 </div>
                                             </div>
@@ -181,7 +208,7 @@
                                                 <div class="card-header">
                                                     <h4>Amount Status</h4>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body SingleShopAmountStatusParent">
                                                     <canvas id="SingleShopAmountStatus"></canvas>
                                                 </div>
                                             </div>
@@ -200,7 +227,7 @@
                                                 <div class="card-header">
                                                     <h4>Orders Status</h4>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body AllShopOrderStatusParent">
                                                     <canvas id="AllShopOrderStatus"></canvas>
                                                 </div>
                                             </div>
@@ -210,7 +237,7 @@
                                                 <div class="card-header">
                                                     <h4>Amount Status</h4>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body AllShopAmountStatusParent">
                                                     <canvas id="AllShopAmountStatus"></canvas>
                                                 </div>
                                             </div>
@@ -273,20 +300,20 @@
                 <table>
                     <tbody>
                         <tr>
-                            <td>Name</td>
-                            <td class="ShopName">Best Shop</td>
+                            <td>Manager Name</td>
+                            <td class="ManagerName">Best Shop</td>
                         </tr>
                         <tr>
                             <td>Mobile Number</td>
-                            <td class="UserMobileNumber">8148563820</td>
+                            <td class="ShopMobileNumber">8148563820</td>
                         </tr>
                         <tr>
                             <td>Area</td>
-                            <td class="UserArea">Anna Nagar</td>
+                            <td class="ShopArea">Anna Nagar</td>
                         </tr>
                         <tr>
                             <td>Orders</td>
-                            <td class="UserArea">10 / 10</td>
+                            <td class="OrdersCount">10 / 10</td>
                         </tr>
                     </tbody>
                 </table>

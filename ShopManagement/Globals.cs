@@ -22,5 +22,6 @@ namespace ShopManagement
         public static string Default_OrderImagePath = "/ImageStorage/OrderImage";
         public static string Default_orderImage = "/ImageStorage/OrderImage/product-2-50.png";
 
+        public static bool IsSendSMS = true;
     }
 }

@@ -52,9 +52,17 @@
                                     <h1><span class="SelectedUserName" data-id="@item.Id" data>@item.Name</span></h1>
                                 </div>
                                 <div class="author-box-job">
-                                    @if (item.ShopInfo != null)
+                                    @if (item.IsAdmin == 1)
                                     {
-                                        <a href="javascript:void(0)" data-id="@item.ShopInfo.Id" class="ViewShopInfo">@item.ShopInfo.Name</a>  <small>@item.ShopInfo.ShopArea</small>
+                                        <span href="javascript:void(0)" class="text-success"><i><b>Super Admin</b></i></span>
+                                    }
+                                    else if (item.IsAdmin == 2)
+                                    {
+                                        <span href="javascript:void(0)" class="text-danger"><i><b>Special User</b></i></span>
+                                    }
+                                    else if (item.ShopInfo != null)
+                                    {
+                                        <a href="javascript:void(0)" data-id="@item.ShopInfo.Id" class="ViewShopInfo">@item.ShopInfo.Name / </a> <small>@item.ShopInfo.ShopArea</small>
                                     }
                                     else
                                     {

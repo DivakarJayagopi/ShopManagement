@@ -508,6 +508,26 @@ namespace ShopManagement.Data
             return dt;
         }
 
+        public DataTable GetOrderByBillNumber(string BillNumber)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                SqlCommand cmd = new SqlCommand("SELECT * FROM OrderInfo WHERE BillNumber=@BillNumber");
+                cmd.Parameters.AddWithValue("@BillNumber", BillNumber);
+                con.Open();
+                cmd.Connection = con;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+                con.Close();
+            }
+            catch (Exception)
+            {
+                con.Close();
+            }
+            return dt;
+        }
+
         public DataTable GetAllOrders()
         {
             DataTable dt = new DataTable();

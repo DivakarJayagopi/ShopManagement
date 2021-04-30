@@ -24,6 +24,7 @@ namespace ShopManagement.Controllers
             }
             Utilities.Slider _sliderUtility = new Utilities.Slider();
             List<Models.Slider> sliderslist = _sliderUtility.GetSliderInfoByShopId(ShopId);
+
             return View(sliderslist);
         }
     }

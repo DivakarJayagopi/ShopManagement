@@ -31,7 +31,8 @@ namespace ShopManagement.Controllers
             }
             else
             {
-                OrdersList = _orderUtility.GetAllOrdersByShopId("");
+                var ShopId = Session["ShopId"].ToString();
+                OrdersList = _orderUtility.GetAllOrdersByShopId(ShopId);
             }
             return View(OrdersList);
         }

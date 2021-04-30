@@ -40,9 +40,7 @@ namespace ShopManagement.Controllers
         }
 
         public ActionResult ResetPassword()
-        {
-            if (Session["UserId"] == null)
-                return RedirectToAction("Login", "Account");
+        {            
             return View();
         }
     }

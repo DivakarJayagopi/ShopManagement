@@ -277,7 +277,6 @@ $("#UpdateOrderFromSubmit").click(function () {
                 IsSuccess = true;
             }
         }
-
         if (IsSuccess) {
 
             $("#UpdateOrderFromSubmit").addClass("btn-progress");
@@ -419,11 +418,11 @@ $("#OrderInfoFromSubmit").click(function () {
             parseInt(MaximunOrderCount_ForShop);
             if (remainingOrderCount_ForShop <= 0) {
                 $("#SelctedShopId").addClass("form-error");
-                $(".customErrorMessageAddOrder").text("Maximin order fro the selected shopd is " + MaximunOrderCount_ForShop);
+                $(".customErrorMessageAddOrder").text("Maximin order for the selected shopd is " + MaximunOrderCount_ForShop);
                 IsSuccess = false;
             }
         }
-
+        IsSuccess = IsBillNumberExists(BillNumber);
         if (IsSuccess) {
 
             $("#OrderInfoFromSubmit").addClass("btn-progress");
@@ -826,8 +825,13 @@ function CallBackGetAllOrdersDates(responseData, AdditionalInfo) {
             $(".TotalOrdersAmount").text(responseData.message.TotalAmout);
             $(".TotalReceivedAmout").text(responseData.message.ReceivedAmout);
 
-            $(".SelectedShopName,.SelectedShopNameTitle").text(AdditionalInfo[0]);
             $(".SelectedShopName").attr("id", AdditionalInfo[2]);
+
+            var SelectedShopName = $('.ShopId option:selected').text();
+            var SelectedShopId = $('.ShopId option:selected').val();
+
+            $(".SelectedShopName").html('<b>' + SelectedShopName + '</b>');
+            $(".SelectedShopName").attr("id", SelectedShopId);
 
             var OrdersListHTML = "";
             $.each(OrderList, function (key, val) {
@@ -862,6 +866,9 @@ function CallBackGetAllOrdersDates(responseData, AdditionalInfo) {
                 AmountData.push(responseData.message.BalanceAmount);
 
                 BuildChart_SingleShop(OrderData, AmountData);
+                $(".TotalOrdersAmount").text(responseData.message.TotalAmount);
+                $(".TotalReceivedAmout").text(responseData.message.ReceivedAmount);
+                $(".BalanceAmout").text(responseData.message.BalanceAmount);                
             } else {
                 $(".BySingleShop").hide();
                 $(".ByAllShopShop").show();
@@ -881,6 +888,7 @@ function CallBackGetAllOrdersDates(responseData, AdditionalInfo) {
 }
 
 function BuildChart_SingleShop(OrderData, AmountData) {
+    $(".SingleShopOrderStatusParent").html('<canvas id="SingleShopOrderStatus"></canvas>');
     var SingleShopOrderStatus = document.getElementById("SingleShopOrderStatus").getContext('2d');
     new Chart(SingleShopOrderStatus, {
         type: 'doughnut',
@@ -900,6 +908,7 @@ function BuildChart_SingleShop(OrderData, AmountData) {
         }
     });
 
+    $(".SingleShopAmountStatusParent").html('<canvas id="SingleShopAmountStatus"></canvas>');
     var SingleShopAmountStatus = document.getElementById("SingleShopAmountStatus").getContext('2d');
     new Chart(SingleShopAmountStatus, {
         type: 'pie',
@@ -940,6 +949,10 @@ function BuildChart_AllShop(ShopInfoForChartsList) {
     var DroppedOrderCount = 0;
     var CompletedOrderCount = 0;
 
+    var TotalOrdersAmount = 0;
+    var TotalReceivedAmout = 0;
+    var BalanceAmout = 0;
+
     if (typeof (ShopInfoForChartsList) != "undefined" && ShopInfoForChartsList != null) {
         $.each(ShopInfoForChartsList, function (key, val) {
             if (val.TotalOrdersCount != 0) {
@@ -960,14 +973,23 @@ function BuildChart_AllShop(ShopInfoForChartsList) {
                 InprogressOrderCount += val.InprogressOrdersCount;
                 DroppedOrderCount += val.DroppedOrdersCount;
                 CompletedOrderCount += val.CompletedOrdersCount;
+
+                TotalOrdersAmount += val.TotalAmount;
+                TotalReceivedAmout += val.ReceivedAmount;
+                BalanceAmout += val.BalanceAmount;
             }
         });
 
+        $(".TotalOrdersAmount").text(TotalOrdersAmount);
+        $(".TotalReceivedAmout").text(TotalReceivedAmout);
+        $(".BalanceAmout").text(BalanceAmout);
+
         $(".AwaitingOrdersCount").text(AwaitingOrderCount);
         $(".InprogressOrdersCount").text(InprogressOrderCount);
-        $(".CompletedOrdersCount").text(DroppedOrderCount);
-        $(".DroppedOrdersCount").text(CompletedOrderCount);
+        $(".CompletedOrdersCount").text(CompletedOrderCount);
+        $(".DroppedOrdersCount").text(DroppedOrderCount);
 
+        $(".AllShopOrderStatusParent").html('<canvas id="AllShopOrderStatus"></canvas>');
         var ctx = document.getElementById("AllShopOrderStatus").getContext('2d');
         new Chart(ctx, {
             type: 'bar',
@@ -1034,6 +1056,7 @@ function BuildChart_AllShop(ShopInfoForChartsList) {
             }
         });
 
+        $(".AllShopAmountStatusParent").html('<canvas id="AllShopAmountStatus"></canvas>');
         var ctx = document.getElementById("AllShopAmountStatus").getContext('2d');
         new Chart(ctx, {
             type: 'bar',
@@ -1103,6 +1126,57 @@ $(".ShopId").change(function () {
     $(".OrdersNoDateDiv,.VisualInfo").hide();
 });
 
+$(document).on('focusout', '#BillNumber', function () {
+    var BillNumber = $(this).val();
+    if (typeof (BillNumber) != "undefined" && BillNumber != null && BillNumber != "")
+        IsBillNumberExists(BillNumber);
+});
+
+function IsBillNumberExists(BillNumber) {
+    var data = '{BillNumber:"' + BillNumber + '"}';
+    var response = handleAjaxRequest(null, false, "/Method/IsBillNumberExists", data);
+    if (typeof (response) != "undefined") {
+        if (typeof (response.message.status) != "undefined" && response.message.status == "success") {
+            if (response.message.IsExist == true) {
+                $("#BillNumber").addClass("form-error");
+                $(".BillNumberValidationMessage").text("Bill Number already exist");
+                return false;
+            } else {
+                $("#BillNumber").removeClass("form-error");
+                $(".BillNumberValidationMessage").text("");
+                return true;
+            }
+        }
+    }
+}
+
+$(".SelectedShopName").click(function () {
+    var ShopId = $(this).attr("id");
+    var data = '{Id:"' + ShopId + '"}';
+    handleAjaxRequest(null, true, "/Method/GetShopInfoById", data, "CallBackGetShopInfoByIdInOderManagement"); 
+});
+
+function CallBackGetShopInfoByIdInOderManagement(responseData) {
+    if (responseData.message.status == "success") {
+        var ShopInfo = responseData.message.shopInfo;
+        var UsersList = responseData.message.usersList;
+        var ManagerName = "";
+        if (UsersList != null && UsersList.length > 0) {
+            $.each(UsersList, function (key, val) {
+                if (val.Id == responseData.message.ShopConnecteduserId) {
+                    $(".ManagerName").text(ManagerName);
+
+                }
+            });
+        }
+        $(".ShopName").text(ShopInfo.Name);
+        $(".ManagerName").text(ManagerName);
+        $(".ShopMobileNumber").text(ShopInfo.MobileNumber);
+        $(".ShopArea").text(ShopInfo.ShopArea);
+        $(".OrdersCount").text(ShopInfo.TodaysOderCount + "/ " + ShopInfo.MaxOrderCount);
+        $(".ShopImage").attr("src", ShopInfo.Image);
+    }
+}
 
 function readFile() {
     if (this.files && this.files[0]) {

@@ -137,6 +137,8 @@ function AddNewUser(target) {
                 IsSuccess = true;
             }
 
+        IsSuccess = IsMobileNmberExists(UserMobileNumber);
+
         if (IsSuccess) {
 
             $(".AddUserFromSubmit").addClass("btn-progress");
@@ -144,7 +146,6 @@ function AddNewUser(target) {
             var data = '{Name:"' + UserName + '",EmailId:"' + UserEmailId + '",Password:"' + UserPassword + '",Image:"' + UserImage + '",Status:"' + Status + '",Area:"' + UserArea + '",Notes:"' + User_Notes + '",MobileNumber:"' + UserMobileNumber + '",IsAdmin:"' + IsAdmin + '"}';
             handleAjaxRequest(null, true, "/Method/AddUserInfo", data, "CallBackAddNewUser");
         }
-        
     }
 }
 
@@ -274,7 +275,7 @@ function UpdateUserInfo(target) {
                 $(".UserPassword").removeClass("form-error");
                 IsSuccess = true;
             }
-
+        IsSuccess = IsMobileNmberExists(UserMobileNumber);
         if (IsSuccess) {
 
             $(".EditUserFromSubmit").addClass("btn-progress");
@@ -432,3 +433,38 @@ function CallBackUdpateUserProfileInfo(responseData) {
 $(".UserProfileImage").click(function () {
     $(".UserSelectedImage").trigger("click");
 });
+
+$(document).on('focusout', '.UserMobileNumber', function () {
+    var MobileNumber = $(this).val();
+    IsMobileNmberExists(MobileNumber);
+});
+
+function IsMobileNmberExists(MobileNumber) {
+    var IsSuccess = true;
+
+    if (MobileNumber.length != 10) {
+        $(".UserMobileNumber").addClass("form-error");
+        $(".customErrorMessageAddUser").text("Please enter valid mobile number");
+        IsSuccess = false;
+    } else {
+        $(".UserMobileNumber").removeClass("form-error");
+        IsSuccess = true;
+    }
+    if (IsSuccess) {
+        var data = '{MobileNumber:"' + MobileNumber + '"}';
+        var response = handleAjaxRequest(null, false, "/Method/IsMobileNmberExists", data);
+        if (typeof (response) != "undefined") {
+            if (typeof (response.message.status) != "undefined" && response.message.status == "success") {
+                if (response.message.IsExist == true) {
+                    $(".UserMobileNumber").addClass("form-error");
+                    $(".MobileNumberValidationMessage").text("Mobile Number already exist");
+                    return false;
+                } else {
+                    $(".UserMobileNumber").removeClass("form-error");
+                    $(".MobileNumberValidationMessage").text("");
+                    return true;
+                }
+            }
+        }
+    }
+}

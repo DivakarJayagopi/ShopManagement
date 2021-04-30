@@ -145,3 +145,42 @@ $("#ConfirmPassword").on('click', function () {
         console.log(e);
     }
 });
+
+$(".ForgotPassowrdFromSubmit").click(function () {
+    var MobileNumber = $(".UserMobileNumber").val();
+    var IsSuccess = false;
+    if (MobileNumber == "") {
+        $(".UserMobileNumber").addClass("form-error");
+        $(".customErrorMessageForgotPassowrd").text("Validation Failed, recheck the form !");
+    } else {
+        $(".UserMobileNumber").removeClass("form-error");
+        $(".customErrorMessageForgotPassowrd").text("");
+        IsSuccess = true;
+        if (MobileNumber.length != 10) {
+            $(".UserMobileNumber").addClass("form-error");
+            $(".customErrorMessageForgotPassowrd").text("Invalid Mobile number, Enter valid mobile number!");
+            IsSuccess = false;
+        } else {
+            $(".UserMobileNumber").removeClass("form-error");
+            $(".customErrorMessageForgotPassowrd").text("");
+            IsSuccess = true;
+        }
+    }
+
+    if (IsSuccess) {
+        var data = '{MobileNumber:"' + MobileNumber + '"}';
+        handleAjaxRequest(null, true, "/Method/ForgotPassowrd", data, "CallBackForgotPassowrd");
+    }
+});
+
+function CallBackForgotPassowrd(responseData) {
+    if (responseData.message.status == "success") {
+        iziToast.success({
+            title: 'success',
+            message: 'Your password has been send to your mobile number',
+            position: 'topCenter'
+        });
+    } else {
+        $(".customErrorMessageForgotPassowrd").text("Invalid Mobile Number, Enter a registerd mobile number");
+    }
+}

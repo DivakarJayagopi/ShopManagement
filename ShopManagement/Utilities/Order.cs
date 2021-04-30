@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Data;
 using System.Linq;
+using System.Net;
 using System.Web;
 
 namespace ShopManagement.Utilities
@@ -19,7 +21,8 @@ namespace ShopManagement.Utilities
                 Result = _orderData.Add(Id, BillNumber, CustomerName, Image, ShopId, Amount, CustomerMobileNumber, Status, Notes, StartDate, EndDate);
                 if (Result)
                 {
-
+                    string Message = "Hi "+ CustomerName + ", Your Order has been Taken, Expected Delivery " + EndDate.ToString("dd/MMM/yyyy");
+                    sendSMS(CustomerMobileNumber, Message);
                     if (safariInfo != null)
                     {
                         safariInfo.Id = Guid.NewGuid().ToString();
@@ -61,6 +64,15 @@ namespace ShopManagement.Utilities
             bool Result = false;
             try
             {
+                var _previousOrderData = GetOrderInfoById(Id);
+                if(_previousOrderData != null && !string.IsNullOrEmpty(_previousOrderData.Id))
+                {
+                    if(_previousOrderData.Status != Status)
+                    {
+                        string Message = "Hi " + CustomerName + ", Your Order status has been changed from" + _previousOrderData.Status + " to " + Status + ", Expected Delivery " + EndDate.ToString("dd/MMM/yyyy");
+                        sendSMS(CustomerMobileNumber, Message);
+                    }
+                }
                 Result = _orderData.Update(Id, BillNumber, CustomerName, Image, ShopId, Amount, CustomerMobileNumber, Status, Notes, StartDate, EndDate);
                 if (Result)
                 {
@@ -140,6 +152,25 @@ namespace ShopManagement.Utilities
             try
             {
                 dt = _orderData.GetOrderById(Id);
+                foreach (DataRow record in dt.Rows)
+                {
+                    OrderInfo = BuildOrderInfo(record);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return OrderInfo;
+        }
+
+        public Models.Order GetOrderByBillNumber(string BillNumber)
+        {
+            DataTable dt = new DataTable();
+            Models.Order OrderInfo = new Models.Order();
+            try
+            {
+                dt = _orderData.GetOrderByBillNumber(BillNumber);
                 foreach (DataRow record in dt.Rows)
                 {
                     OrderInfo = BuildOrderInfo(record);
@@ -413,6 +444,27 @@ namespace ShopManagement.Utilities
 
             }
             return ShirtInfo;
+        }
+        public string sendSMS(string MobileNumber, string Message)
+        {
+            bool IsSendMessage = Globals.IsSendSMS;
+            string result = "";
+            if (IsSendMessage)
+            {
+                String message = HttpUtility.UrlEncode(Message);
+                using (var wb = new WebClient())
+                {
+                    byte[] response = wb.UploadValues("https://api.textlocal.in/send/", new NameValueCollection()
+                {
+                {"apikey" , "ZDMwODgwMjViYmY0NWZhNGQ5NjljMTQ3MjJlZmRjZjU="},
+                {"numbers" , "918148563820"},
+                {"message" , "test"},
+                {"sender" , "TXTLCL"}
+                });
+                    result = System.Text.Encoding.UTF8.GetString(response);                    
+                }
+            }
+            return result;
         }
     }
 }

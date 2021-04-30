@@ -110,6 +110,25 @@ namespace ShopManagement.Utilities
             return user;
         }
 
+        public Models.User GetUserByMobileNumber(string MobileNumber)
+        {
+            DataTable dt = new DataTable();
+            Models.User user = new Models.User();
+            try
+            {
+                dt = _userData.GetUserByMobileNumber(MobileNumber);
+                foreach (DataRow record in dt.Rows)
+                {
+                    user = BuildUserData(record);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return user;
+        }
+
         public List<Models.User> GetAllUsers()
         {
             DataTable dt = new DataTable();

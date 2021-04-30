@@ -232,6 +232,29 @@ namespace ShopManagement.Data
             return dt;
         }
 
+        public DataTable GetUserByMobileNumber(string MobileNumber)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Users WHERE MobileNumber=@MobileNumber");
+                cmd.Parameters.AddWithValue("@MobileNumber", MobileNumber);
+                con.Open();
+                cmd.Connection = con;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+                con.Close();
+            }
+            return dt;
+        }
+
         public bool DeleteUserConnectorByUserId(string UserId)
         {
             bool Result = false;

@@ -3,6 +3,8 @@
     ViewBag.Title = "SliderSettings";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<!-- CSS Libraries -->
+<link rel="stylesheet" href="../../assets/modules/izitoast/css/iziToast.min.css">
 <section class="section">
     <div class="section-header">
         <h1>Slider Manager</h1>
@@ -19,7 +21,6 @@
                             <div class="form-group">
                                 <label>Choose Shop</label>
                                 <select class="form-control select2 ShopsList">
-
                                 </select>
                             </div>
                         </div>
@@ -27,7 +28,6 @@
                             <div class="form-group">
                                 <label>Choose Slider</label>
                                 <select class="form-control select2 SliderInfo">
-
                                 </select>
                             </div>
                         </div>
@@ -68,7 +68,7 @@
                                         }
                                         else
                                         {
-                                            var i =0;
+                                            var i = 0;
                                             foreach (var item in Model.HighQualityImage)
                                             {
                                                 i++;
@@ -162,12 +162,28 @@
 <script src="../../assets/modules/jquery.min.js"></script>
 <!-- JS Libraies -->
 <script src="../../assets/modules/chocolat/dist/js/jquery.chocolat.min.js"></script>
+<!-- JS Libraies -->
+<script src="../../assets/modules/izitoast/js/iziToast.min.js"></script>
 
 <script>
     var IsAdminUser = '@Session["IsAdmin"]';
+    var ShopId = '@Session["ShopId"]';
+    var ShopName = '@Session["ShopName"]';
     $(document).ready(function () {
-        var data = '{IsActive:"' + true + '"}';
-        handleAjaxRequest(null, true, "/Method/GetAllShopsByStatus", data, "CallBackGetAllShopsByStatus");
+        var OptionHTML = "";
+        if (IsAdminUser == "1") {
+            OptionHTML += "<option value='No data'> Select</option>";
+            OptionHTML += "<option value=''> My Slider </option>";
+        }
+        else if (IsAdminUser == "2") {
+            OptionHTML += "<option value='No data'> Select</option>";
+            OptionHTML += "<option value='@Session["UserId"]'> My Slider </option>";
+        }
+        else {
+            OptionHTML += "<option value='No data'> Select</option>";
+            OptionHTML += "<option value='" + ShopId + "'>" + ShopName + "</option>";
+        }
+        $(".ShopsList").html(OptionHTML);
     });
 
     function CallBackGetAllShopsByStatus(responseData){
@@ -202,7 +218,7 @@
 
     function CallBackGetSliderInfoByShopId(responseData) {
         $("#SlidersList, #ImagesCount, #ImageGallery").show();
-        if (responseData.message.status == "success") {            
+        if (responseData.message.status == "success") {
             var sliderslist = responseData.message.sliderslist;
             var OptionHTML = "";
             if (sliderslist != null && sliderslist.length > 0) {
@@ -223,7 +239,7 @@
         var IsChecked = $(this).prop('checked');
         var ChoosedCount = $(".SliderImagesCount").val();
         var ImageGuid = $(this).attr("data-ImageId");
-        
+
         if (IsChecked) {
             if (ChoosedCount == SelectedImagesCount) {
                 return false;
@@ -253,7 +269,27 @@
 
     function CallBackUpdateSliderInfo(responseData) {
         if (responseData.message.status == "success") {
-
+            iziToast.success({
+                title: 'success',
+                message: 'Your password has been send to your mobile number',
+                position: 'topCenter'
+            });
+            resetSelection();
         }
+    }
+
+    $(".SliderImagesCount,.SliderInfo").change(function () {
+        resetSelection();
+    });
+
+    function resetSelection() {
+        $("input[type='checkbox']").IsChecked = false;
+        var CheckBoxCount = $("input[type=\"checkbox\"]").length;
+        for (var i = 0; i < CheckBoxCount; i++) {
+            $("input[type=\"checkbox\"]")[i].checked = false;
+        }
+        ImageGuids = [];
+        SelectedImagesCount = 0;
+        $("#SubmitSliderInfoForm").hide();
     }
 </script>
