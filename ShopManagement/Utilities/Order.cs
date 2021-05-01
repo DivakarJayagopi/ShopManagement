@@ -286,6 +286,27 @@ namespace ShopManagement.Utilities
             return OrdersCount;
         }
 
+        public List<Models.Order> GetOrdersByCompletedDate(string ShopId, string FilterDate)
+        {
+            DataTable dt = new DataTable();
+            List<Models.Order> OrdersList = new List<Models.Order>();
+            try
+            {
+                dt = _orderData.GetOrdersByCompletedDate(ShopId, FilterDate);
+                foreach (DataRow record in dt.Rows)
+                {
+                    Models.Order OrderInfo = new Models.Order();
+                    OrderInfo = BuildOrderInfo(record);
+                    OrdersList.Add(OrderInfo);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return OrdersList;
+        }
+
         public Models.Order BuildOrderInfo(DataRow record)
         {
             Models.Order OrderInfo = new Models.Order();

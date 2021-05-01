@@ -7,7 +7,7 @@
 <div>
     <section class="section">
         <div class="row">
-            @foreach (var item in Model)
+            @foreach (var item in Model.Sliders)
             {
                 <div class="col-12 col-sm-6 col-lg-6">
                     <div class="card">
@@ -118,11 +118,337 @@
                 </div>
             </div>
         </div>
+        <div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Orders Completing in Next 5 Days</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="OrdersPendingStatus">
+                            <div class="row">
+                                <div class="col-12 col-md-12">
+                                    <div class="card card-primary">
+                                        <div class="card-header">
+                                            <h4>Orders Status</h4>
+                                        </div>
+                                        <div class="card-body OrderPendingStatusChartParent">
+                                            <canvas id="OrderPendingStatusChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Today completing orders</h4>
+                </div>
+                <div class="card-body">
+                    @if (Model.TodayCompletingOrders != null && Model.TodayCompletingOrders.Count > 0)
+                    {
+                        <div class="OdersTbllst">
+                            <table class="table table-striped table-responsive-lg OrdersTable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Image</th>
+                                        <th scope="col">Bill Number</th>
+                                        <th scope="col">Customer Name</th>
+                                        <th scope="col">Satus</th>
+                                        <th scope="col">Customer Mobile Number</th>
+                                        <th scope="col">Remaining Days</th>
+                                        <th scope="col">ShopName</th>
+                                        <th scope="col">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.TodayCompletingOrders)
+                                    {
+                                        <tr>
+                                            <th scope="row"><img src="@item.Image" style="height:30px;width:30px" class="img img-responsive" /></th>
+                                            <td>@item.BillNumber</td>
+                                            <td>@item.CustomerName</td>
+                                            <td>@item.Status</td>
+                                            <td>@item.CustomerMobileNumber</td>
+                                            <td>@item.DaysRemaining</td>
+                                            <td>@item.ShopName</td>
+                                            <td>@item.Amount</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-12">
+                            <div class="card card-warning">
+                                <div class="card-header">
+                                    <h4>No Orders Found !</h4>
+                                </div>
+                                <div class="card-body" style="text-align:center;">
+                                    <p>There are no orders Completing by Today</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Tomorrow completing orders</h4>
+                </div>
+                <div class="card-body">
+                    @if (Model.TomorrowCompletingOrders != null && Model.TomorrowCompletingOrders.Count > 0)
+                    {
+                        <div class="OdersTbllst">
+                            <table class="table table-striped table-responsive-lg OrdersTable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Image</th>
+                                        <th scope="col">Bill Number</th>
+                                        <th scope="col">Customer Name</th>
+                                        <th scope="col">Satus</th>
+                                        <th scope="col">Customer Mobile Number</th>
+                                        <th scope="col">Remaining Days</th>
+                                        <th scope="col">ShopName</th>
+                                        <th scope="col">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.TomorrowCompletingOrders)
+                                    {
+                                        <tr>
+                                            <th scope="row"><img src="@item.Image" style="height:30px;width:30px" class="img img-responsive" /></th>
+                                            <td>@item.BillNumber</td>
+                                            <td>@item.CustomerName</td>
+                                            <td>@item.Status</td>
+                                            <td>@item.CustomerMobileNumber</td>
+                                            <td>@item.DaysRemaining</td>
+                                            <td>@item.ShopName</td>
+                                            <td>@item.Amount</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-12">
+                            <div class="card card-warning">
+                                <div class="card-header">
+                                    <h4>No Orders Found !</h4>
+                                </div>
+                                <div class="card-body" style="text-align:center;">
+                                    <p>There are no orders Completing by Tomorrow</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Orders completing 3 Days</h4>
+                </div>
+                <div class="card-body">
+                    @if (Model.OrderCompletingIn5Days != null && Model.OrderCompletingIn3Days.Count > 0)
+                    {
+                        <div class="OdersTbllst">
+                            <table class="table table-striped table-responsive-lg OrdersTable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Image</th>
+                                        <th scope="col">Bill Number</th>
+                                        <th scope="col">Customer Name</th>
+                                        <th scope="col">Satus</th>
+                                        <th scope="col">Customer Mobile Number</th>
+                                        <th scope="col">Remaining Days</th>
+                                        <th scope="col">ShopName</th>
+                                        <th scope="col">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.OrderCompletingIn3Days)
+                                    {
+                                        <tr>
+                                            <th scope="row"><img src="@item.Image" style="height:30px;width:30px" class="img img-responsive" /></th>
+                                            <td>@item.BillNumber</td>
+                                            <td>@item.CustomerName</td>
+                                            <td>@item.Status</td>
+                                            <td>@item.CustomerMobileNumber</td>
+                                            <td>@item.DaysRemaining</td>
+                                            <td>@item.ShopName</td>
+                                            <td>@item.Amount</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-12">
+                            <div class="card card-warning">
+                                <div class="card-header">
+                                    <h4>No Orders Found !</h4>
+                                </div>
+                                <div class="card-body" style="text-align:center;">
+                                    <p>There are no orders Completing in 3 Days</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Orders completing 4 Days</h4>
+                </div>
+                <div class="card-body">
+                    @if (Model.OrderCompletingIn5Days != null && Model.OrderCompletingIn4Days.Count > 0)
+                    {
+                        <div class="OdersTbllst">
+                            <table class="table table-striped table-responsive-lg OrdersTable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Image</th>
+                                        <th scope="col">Bill Number</th>
+                                        <th scope="col">Customer Name</th>
+                                        <th scope="col">Satus</th>
+                                        <th scope="col">Customer Mobile Number</th>
+                                        <th scope="col">Remaining Days</th>
+                                        @if (Session["IsAdmin"].ToString() == "1" || Session["IsAdmin"].ToString() == "2")
+                                        {
+                                            <th scope="col">ShopName</th>
+                                        }
+                                        <th scope="col">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.OrderCompletingIn4Days)
+                                    {
+                                        <tr>
+                                            <th scope="row"><img src="@item.Image" style="height:30px;width:30px" class="img img-responsive" /></th>
+                                            <td>@item.BillNumber</td>
+                                            <td>@item.CustomerName</td>
+                                            <td>@item.Status</td>
+                                            <td>@item.CustomerMobileNumber</td>
+                                            <td>@item.DaysRemaining</td>
+                                            @if (Session["IsAdmin"].ToString() == "1" || Session["IsAdmin"].ToString() == "2")
+                                            {
+                                                <td>@item.ShopName</td>
+                                            }
+                                            <td>@item.Amount</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-12">
+                            <div class="card card-warning">
+                                <div class="card-header">
+                                    <h4>No Orders Found !</h4>
+                                </div>
+                                <div class="card-body" style="text-align:center;">
+                                    <p>There are no orders Completing in 4 Days</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Orders completing 5 Days</h4>
+                </div>
+                <div class="card-body">
+                    @if (Model.OrderCompletingIn5Days != null && Model.OrderCompletingIn5Days.Count > 0)
+                    {
+                        <div class="OdersTbllst">
+                            <table class="table table-striped table-responsive-lg OrdersTable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Image</th>
+                                        <th scope="col">Bill Number</th>
+                                        <th scope="col">Customer Name</th>
+                                        <th scope="col">Satus</th>
+                                        <th scope="col">Customer Mobile Number</th>
+                                        <th scope="col">Remaining Days</th>
+                                        <th scope="col">ShopName</th>
+                                        <th scope="col">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.OrderCompletingIn5Days)
+                                    {
+                                        <tr>
+                                            <th scope="row"><img src="@item.Image" style="height:30px;width:30px" class="img img-responsive" /></th>
+                                            <td>@item.BillNumber</td>
+                                            <td>@item.CustomerName</td>
+                                            <td>@item.Status</td>
+                                            <td>@item.CustomerMobileNumber</td>
+                                            <td>@item.DaysRemaining</td>
+                                            <td>@item.ShopName</td>
+                                            <td>@item.Amount</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-12">
+                            <div class="card card-warning">
+                                <div class="card-header">
+                                    <h4>No Orders Found !</h4>
+                                </div>
+                                <div class="card-body" style="text-align:center;">
+                                    <p>There are no orders Completing in 5 Days</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
     </section>
 </div>
-<script src="./../assets/modules/jquery.min.js"></script>
+<script src="../../assets/modules/jquery.min.js"></script>
+<script src="~/assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
+<script src="~/assets/modules/datatables/datatables.min.js"></script>
 <!-- JS Libraies -->
 <script src="../../assets/modules/owlcarousel2/dist/owl.carousel.min.js"></script>
 
 <!-- Page Specific JS File -->
 <script src="../../assets/js/page/modules-slider.js"></script>
+<!-- JS Libraies -->
+<script src="../../assets/modules/chart.min.js"></script>
+<script src="~/App-Assests/Js/DashBoard.js"></script>
+<script>
+    $(".OrdersTable").DataTable();
+    var ShopName = '@ViewBag.ShopName';
+    var TodayOrderCount = '@ViewBag.TodayOrderCount';
+    var TomorrowOrderCount = '@ViewBag.TomorrowOrderCount';
+    var _3DaysOrderCount = '@ViewBag._3DaysOrderCount';
+    var _4DaysOrderCount = '@ViewBag._4DaysOrderCount';
+    var _5DaysOrderCount = '@ViewBag._5DaysOrderCount';
+    BuildChart(ShopName, TodayOrderCount, TomorrowOrderCount, _3DaysOrderCount, _4DaysOrderCount, _5DaysOrderCount);
+</script>

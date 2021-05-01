@@ -135,6 +135,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Globals.cs" />
+    <Compile Include="Models\Custom.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\Shop.cs" />
     <Compile Include="Models\Slider.cs" />
@@ -150,6 +151,7 @@
     <Content Include="App-Assests\CSS\Icons.css" />
     <Content Include="App-Assests\Js\Account.js" />
     <Content Include="App-Assests\Js\Custom.js" />
+    <Content Include="App-Assests\Js\DashBoard.js" />
     <Content Include="App-Assests\Js\Login.js" />
     <Content Include="App-Assests\Js\Order.js" />
     <Content Include="App-Assests\Js\Shop.js" />

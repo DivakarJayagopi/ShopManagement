@@ -628,7 +628,40 @@ namespace ShopManagement.Data
             }
             return dt;
         }
-        
+
+        public DataTable GetOrdersByCompletedDate(string ShopId, string FilterDate)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                SqlCommand cmd;
+                if (!string.IsNullOrEmpty(ShopId))
+                {
+                    cmd = new SqlCommand("SELECT * FROM OrderInfo WHERE DATEPART(MONTH,EndDate)=DATEPART(MONTH,@FilterDate) and DATEPART(YEAR,EndDate)=DATEPART(YEAR,@FilterDate)and DATEPART(DAY,EndDate)=DATEPART(DAY,@FilterDate) and ShopId=@ShopId");
+                    cmd.Parameters.AddWithValue("@ShopId", ShopId);
+                    cmd.Parameters.AddWithValue("@FilterDate", FilterDate);
+                }
+                else
+                {
+                    cmd = new SqlCommand("SELECT * FROM OrderInfo WHERE DATEPART(MONTH,EndDate)=DATEPART(MONTH,@FilterDate) and DATEPART(YEAR,EndDate)=DATEPART(YEAR,@FilterDate) and DATEPART(DAY,EndDate)=DATEPART(DAY,@FilterDate)");
+                    cmd.Parameters.AddWithValue("@FilterDate", FilterDate);
+                }
+                con.Open();
+                cmd.Connection = con;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+                con.Close();
+            }
+            return dt;
+        }
+
         public DataTable GetShopTodaysOderCount(string ShopId)
         {
             DataTable dt = new DataTable();

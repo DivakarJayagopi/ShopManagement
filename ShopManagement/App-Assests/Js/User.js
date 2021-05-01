@@ -275,7 +275,6 @@ function UpdateUserInfo(target) {
                 $(".UserPassword").removeClass("form-error");
                 IsSuccess = true;
             }
-        IsSuccess = IsMobileNmberExists(UserMobileNumber);
         if (IsSuccess) {
 
             $(".EditUserFromSubmit").addClass("btn-progress");

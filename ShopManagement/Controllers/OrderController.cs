@@ -41,6 +41,10 @@ namespace ShopManagement.Controllers
         {
             if (Session["UserId"] == null)
                 return RedirectToAction("Login", "Account");
+            else if(Session["IsAdmin"].ToString() == "2")
+                return RedirectToAction("Dashboard", "Dashboard");
+
+
             Utilities.Shop _ShopUtility = new Utilities.Shop();
             List<Models.Shop> Shopslist = new List<Models.Shop>();
             Shopslist = _ShopUtility.GetAllShops();

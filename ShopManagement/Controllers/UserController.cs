@@ -15,6 +15,8 @@ namespace ShopManagement.Controllers
         {
             if (Session["UserId"] == null)
                 return RedirectToAction("Login", "Account");
+            else if (Session["IsAdmin"].ToString() != "1")
+                return RedirectToAction("Dashboard", "Dashboard");
             return View();
         }
 
@@ -22,6 +24,9 @@ namespace ShopManagement.Controllers
         {
             if (Session["UserId"] == null || Session["IsAdmin"].ToString() != "1")
                 return RedirectToAction("Login", "Account");
+            else if (Session["IsAdmin"].ToString() != "1")
+                return RedirectToAction("Dashboard", "Dashboard");
+
             Utilities.User _UserUtility = new Utilities.User();
             Utilities.Shop _ShopUtility = new Utilities.Shop();
 
