@@ -168,12 +168,15 @@ $(".ForgotPassowrdFromSubmit").click(function () {
     }
 
     if (IsSuccess) {
+        $(".ForgotPassowrdFromSubmit").addClass("btn-progress");
+
         var data = '{MobileNumber:"' + MobileNumber + '"}';
         handleAjaxRequest(null, true, "/Method/ForgotPassowrd", data, "CallBackForgotPassowrd");
     }
 });
 
 function CallBackForgotPassowrd(responseData) {
+    $(".ForgotPassowrdFromSubmit").removeClass("btn-progress");
     if (responseData.message.status == "success") {
         iziToast.success({
             title: 'success',

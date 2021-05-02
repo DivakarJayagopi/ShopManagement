@@ -23,5 +23,6 @@ namespace ShopManagement
         public static string Default_orderImage = "/ImageStorage/OrderImage/product-2-50.png";
 
         public static bool IsSendSMS = true;
+        public static string API_Key = "2a3hlez9u0bIoDrCtH0ZC93bhOLJTDZ346umAM8G4VIRLwQDfMdqkAe0etib";
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data;
@@ -21,7 +22,7 @@ namespace ShopManagement.Utilities
                 Result = _orderData.Add(Id, BillNumber, CustomerName, Image, ShopId, Amount, CustomerMobileNumber, Status, Notes, StartDate, EndDate);
                 if (Result)
                 {
-                    string Message = "Hi "+ CustomerName + ", Your Order has been Taken, Expected Delivery " + EndDate.ToString("dd/MMM/yyyy");
+                    string Message = "Hi "+ CustomerName + ", Your Order has been Taken, Expected Delivery " + EndDate.ToString("dd/MMM/yyyy") + " and Total Amount is " + Amount;
                     sendSMS(CustomerMobileNumber, Message);
                     if (safariInfo != null)
                     {
@@ -69,7 +70,7 @@ namespace ShopManagement.Utilities
                 {
                     if(_previousOrderData.Status != Status)
                     {
-                        string Message = "Hi " + CustomerName + ", Your Order status has been changed from" + _previousOrderData.Status + " to " + Status + ", Expected Delivery " + EndDate.ToString("dd/MMM/yyyy");
+                        string Message = "Hi " + CustomerName + ", Your Order status has been changed from " + _previousOrderData.Status + " to " + Status + ", Expected Delivery " + EndDate.ToString("dd/MMM/yyyy") + " and Total Amount is " + Amount;
                         sendSMS(CustomerMobileNumber, Message);
                     }
                 }
@@ -470,20 +471,12 @@ namespace ShopManagement.Utilities
         {
             bool IsSendMessage = Globals.IsSendSMS;
             string result = "";
+            string API_Key = Globals.API_Key;
             if (IsSendMessage)
             {
-                String message = HttpUtility.UrlEncode(Message);
-                using (var wb = new WebClient())
-                {
-                    byte[] response = wb.UploadValues("https://api.textlocal.in/send/", new NameValueCollection()
-                {
-                {"apikey" , "ZDMwODgwMjViYmY0NWZhNGQ5NjljMTQ3MjJlZmRjZjU="},
-                {"numbers" , "918148563820"},
-                {"message" , "test"},
-                {"sender" , "TXTLCL"}
-                });
-                    result = System.Text.Encoding.UTF8.GetString(response);                    
-                }
+                var client = new RestClient("https://www.fast2sms.com/dev/bulkV2?authorization=" + API_Key + "&route=v3&sender_id=TXTIND&message=" + Message + "&language=english&flash=1&numbers=" + MobileNumber);
+                var request = new RestRequest(Method.GET);
+                IRestResponse response = client.Execute(request);
             }
             return result;
         }
