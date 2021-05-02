@@ -177,12 +177,14 @@ $(".ForgotPassowrdFromSubmit").click(function () {
 
 function CallBackForgotPassowrd(responseData) {
     $(".ForgotPassowrdFromSubmit").removeClass("btn-progress");
-    if (responseData.message.status == "success") {
+    
+    if (responseData.message.status == "success") {        
         iziToast.success({
             title: 'success',
             message: 'Your password has been send to your mobile number',
             position: 'topCenter'
         });
+        $("input[type=\"number\"]").val('');
     } else {
         $(".customErrorMessageForgotPassowrd").text("Invalid Mobile Number, Enter a registerd mobile number");
     }
