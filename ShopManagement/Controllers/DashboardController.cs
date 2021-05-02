@@ -57,7 +57,7 @@ namespace ShopManagement.Controllers
             ViewBag.TomorrowOrderCount = TomorrowCompletingOrders.Count;
             ViewBag._3DaysOrderCount = OrderCompletingIn3Days.Count;
             ViewBag._4DaysOrderCount = OrderCompletingIn4Days.Count;
-            ViewBag._4DaysOrderCount = OrderCompletingIn5Days.Count;
+            ViewBag._5DaysOrderCount = OrderCompletingIn5Days.Count;
             return View(dashBoardCustomClass);
         }
     }
