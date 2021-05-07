@@ -46,8 +46,11 @@ namespace ShopManagement.Utilities
                 Result = _shopData.Update(Id, Name, ShopArea, Image, Notes, Status, MobileNumber, MaxOrderCount);
                 if (Result)
                 {
-                    DeleteUserConnectorByShopId(Id);
-                    if (Result)
+                    //DeleteUserConnectorByShopId(Id);
+                    Utilities.User UserUtility = new User();
+                    List<Models.User> UsersList = UserUtility.GetShopConnectedUserList(Id);
+                    var UserIds = UsersList.Select(x => x.Id).ToList();
+                    if (!UserIds.Contains(UserId))
                     {
                         Result = AddUserConnector(Id, UserId);
                     }
@@ -220,6 +223,19 @@ namespace ShopManagement.Utilities
             try
             {
                 Result = _shopData.DeleteUserConnectorByShopId(ShopId);
+            }
+            catch (Exception)
+            {
+
+            }
+            return Result;
+        }
+        public bool DeleteUserConnectorByUserAndShopId(string ShopId, string UserId)
+        {
+            bool Result = false;
+            try
+            {
+                Result = _shopData.DeleteUserConnectorByUserAndShopId(ShopId, UserId);
             }
             catch (Exception)
             {

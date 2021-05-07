@@ -26,8 +26,11 @@
         background-color: #f34e00;
     }
 
-    .CustomPointer {
+    .CustomPointer, .RemoveUserFromShop {
         cursor: pointer;
+    }
+    ol li{
+        padding:10px;
     }
 </style>
 <section class="section">
@@ -83,8 +86,8 @@
                                         <b>Orders : <span data-id="@item.Id" class="MaxOrderCountForShop">@item.TodaysOderCount / @item.MaxOrderCount</span></b><br />
                                         <span class="row" style="padding-left:14px;">
                                             <b>
-                                                Manager :
-                                                @if (item.UserInfo != null && item.UserInfo.Id != null)
+                                                Managers : <a href="javascript:void(0)" data-id="@item.Id" class="GetShopManagersList">View</a>
+                                                @*@if (item.UserInfo != null && item.UserInfo.Id != null)
                                                 {
                                                     <span class="chocolat-parent">
                                                         <a href="@item.UserInfo.Image" data-id="@item.Id" class="chocolat-image ShopManagerImageExpand" title="Just an example">
@@ -98,7 +101,7 @@
                                                 else
                                                 {
                                                     <span href="javascript:void(0)" class="text-warning"><i><b>No UserInfo Info Found !</b></i></span>
-                                                }
+                                                }*@
 
                                             </b>&nbsp;
 
@@ -194,29 +197,11 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div>
-                    <img alt="image" src="../../assets/img/example-image.jpg" class="img-fluid ShopManagerImageInModel">
+                <div class="ShopManagersList">
+                    <ol>
+
+                    </ol>
                 </div>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>Name</td>
-                            <td class="ShopOwnerName">Divakar Jayagopi</td>
-                        </tr>
-                        <tr>
-                            <td>EmailId</td>
-                            <td class="UserEmailId">divakarjayagopi@gmail.com</td>
-                        </tr>
-                        <tr>
-                            <td>Mobile Number</td>
-                            <td class="UserMobileNumber">8148563820</td>
-                        </tr>
-                        <tr>
-                            <td>Area</td>
-                            <td class="UserArea">Redhills</td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
             <div class="modal-footer bg-whitesmoke br">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

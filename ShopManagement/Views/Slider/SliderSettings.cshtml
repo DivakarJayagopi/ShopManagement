@@ -34,13 +34,7 @@
                         <div class="col-md-4" id="ImagesCount" style="display:none">
                             <div class="form-group">
                                 <label>Choose Image Count</label>
-                                <select class="form-control select2 SliderImagesCount">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
+                                <input type="number" class="form-control SliderImagesCount"/>
                             </div>
                         </div>
                     </div>
@@ -271,7 +265,7 @@
         if (responseData.message.status == "success") {
             iziToast.success({
                 title: 'success',
-                message: 'Your password has been send to your mobile number',
+                message: 'Slider settings updated success fully',
                 position: 'topCenter'
             });
             resetSelection();
@@ -279,6 +273,10 @@
     }
 
     $(".SliderImagesCount,.SliderInfo").change(function () {
+        resetSelection();
+    });
+
+    $(".SliderImagesCount").focusout(function () {
         resetSelection();
     });
 

@@ -16,3 +16,18 @@
     height: 200px;
     float: left !important;
 }
+.imagecheck-image {
+    max-width: 200px;
+    opacity: .64;
+    transition: .3s opacity;
+    height: 200px;
+}
+.owl-carousel .owl-item img {
+    display: block;
+    width: 100%;
+    height: 500px;
+}
+img.img-fluid.ShopImageExpand {
+    height: 300px;
+    width: calc(100% - 0px);
+}

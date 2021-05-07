@@ -88,7 +88,9 @@ function CallBackGetShopInfoById(responseData) {
         if (UsersList != null && UsersList.length > 0) {
             var OptionHTML = "";
             $.each(UsersList, function (key, val) {
-                OptionHTML += "<option value='"+val.Id+"'>" + val.Name + "</option>";
+                if (val.IsAdmin == 0) {
+                    OptionHTML += "<option value='" + val.Id + "'>" + val.Name + "</option>";
+                }                
             });
             $(".SelectedShopManager").html(OptionHTML)
         }
@@ -181,7 +183,7 @@ function CallBackUpdateShopInfo(responseData) {
         $(".ShopName[data-id='" + ShopId + "']").text(ShopInfo.Name);
         $(".ShopArea[data-id='" + ShopId + "']").text(ShopInfo.ShopArea);
         $(".ShopMobileNumber[data-id='" + ShopId + "']").text(ShopInfo.MobileNumber);
-        $(".MaxOrderCountForShop[data-id='" + ShopId + "']").text(ShopInfo.MaxOrderCount);
+        $(".MaxOrderCountForShop[data-id='" + ShopId + "']").text(ShopInfo.TodaysOderCount + " / " + ShopInfo.MaxOrderCount);
 
         $(".ShopListCardStatus[data-id='" + ShopId + "']").removeClass("card-danger");
         $(".ShopListCardStatus[data-id='" + ShopId + "']").removeClass("card-success");
@@ -207,23 +209,46 @@ function CallBackUpdateShopInfo(responseData) {
     }
 }
 
-$(".ShopManagerName").click(function () {
-    var UserId = $(this).attr("data-id");
-    var data = '{Id:"' + UserId + '"}';
-    handleAjaxRequest(null, true, "/Method/GetUserById", data, "CallBackGetUserInfoByIdInShopsList");   
+$(".GetShopManagersList").click(function () {
+    var ShopId = $(this).attr("data-id");
+    var data = '{ShopId:"' + ShopId + '"}';
+    handleAjaxRequest(null, true, "/Method/GetShopConnectedUsersList", data, "CallBackGetShopConnectedUsersList", ShopId);   
 });
 
-function CallBackGetUserInfoByIdInShopsList(responseData) {
+function CallBackGetShopConnectedUsersList(responseData, ShopId) {
     if (responseData.message.status == "success") {
-        var UserInfo = responseData.message.userInfo;
-        $(".ShopOwnerName").text(UserInfo.Name);
-        $(".UserEmailId").text(UserInfo.EmailId);
-        $(".UserMobileNumber").text(UserInfo.MobileNumber);
-        $(".UserArea").text(UserInfo.Area);
-
-        $(".ShopManagerImageInModel").attr("src", UserInfo.Image);
-
+        var UsersList = responseData.message.UsersList;
+        var ListHTML = "<ol>";
+        if (UsersList.length == 1) {
+            $.each(UsersList, function (key, val) {
+                ListHTML += "<li class='ShopManagerName'> <img alt=\"image\" src='" + val.Image + "' class=\"img-fluid ShopManagerImage\">&nbsp;&nbsp;&nbsp;" + val.Name + "<i class=\"fas fa-trash-alt text-danger\" style='float:right;' data-ShopId='" + ShopId + "' data-UserId='" + val.Id + "'></i> </li>";
+            });
+        } else {
+            $.each(UsersList, function (key, val) {
+                ListHTML += "<li class='ShopManagerName'> <img alt=\"image\" src='" + val.Image + "' class=\"img-fluid ShopManagerImage\">&nbsp;&nbsp;&nbsp;" + val.Name + "<i class=\"fas fa-trash-alt RemoveUserFromShop text-danger\" style='float:right;' data-ShopId='" + ShopId + "' data-UserId='" + val.Id + "'></i> </li>";
+            });
+        }
+       
+        ListHTML += "</ol>";
+        $(".ShopManagersList").html(ListHTML);
         $("#ViewOwnerInfo").modal("show");
+    }
+}
+
+$(document).on('click', '.RemoveUserFromShop', function () {
+    var UserId = $(this).attr("data-UserId");
+    var ShopId = $(this).attr("data-ShopId");
+    var data = '{ShopId:"' + ShopId + '",UserId:"' + UserId + '"}';
+    handleAjaxRequest(null, true, "/Method/DeleteUserConnectorByUserAndShopId", data, "CallBackDeleteUserConnectorByUserAndShopId", $(this));   
+});
+
+function CallBackDeleteUserConnectorByUserAndShopId(responseData,$this) {
+    if (responseData.message.status == "success") {
+        $this.parent().remove();
+        var UsersListLength = $(".ShopManagerName").length;
+        if (UsersListLength == 1) {
+            $(".RemoveUserFromShop").removeClass("RemoveUserFromShop");
+        }
     }
 }
 

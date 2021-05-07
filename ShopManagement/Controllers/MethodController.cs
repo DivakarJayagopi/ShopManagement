@@ -1260,5 +1260,45 @@ namespace ShopManagement.Controllers
             }
             return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult GetShopConnectedUsersList(string ShopId)
+        {
+            Dictionary<string, object> returnObject = new Dictionary<string, object>();
+            try
+            {
+                var UsersList = _userData.GetShopConnectedUserList(ShopId);
+                if (UsersList != null && UsersList.Count > 0)
+                {
+                    returnObject.Add("UsersList", UsersList);
+                }
+                returnObject.Add("status", "success");
+            }
+            catch (Exception)
+            {
+                returnObject.Add("status", "fail");
+            }
+            return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult DeleteUserConnectorByUserAndShopId(string ShopId, string UserId)
+        {
+            Dictionary<string, object> returnObject = new Dictionary<string, object>();
+            try
+            {
+                var result = _shopData.DeleteUserConnectorByUserAndShopId(ShopId, UserId);
+                if (result)
+                {
+                    returnObject.Add("status", "success");
+                }
+                else
+                {
+                    returnObject.Add("status", "fail");
+                }                
+            }
+            catch (Exception)
+            {
+                returnObject.Add("status", "fail");
+            }
+            return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

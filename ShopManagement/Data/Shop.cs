@@ -286,6 +286,34 @@ namespace ShopManagement.Data
             }
             return Result;
         }
+        
+        public bool DeleteUserConnectorByUserAndShopId(string ShopId, string UserId)
+        {
+            DataTable dt = new DataTable();
+            bool Result = false;
+            try
+            {
+                SqlCommand cmd = new SqlCommand("DELETE FROM UserConnector WHERE ShopId=@ShopId AND UserId=@UserId");
+                cmd.Parameters.AddWithValue("@ShopId", ShopId);
+                cmd.Parameters.AddWithValue("@UserId", UserId);
+                con.Open();
+                cmd.Connection = con;
+                int i = cmd.ExecuteNonQuery();
+                if (i > 0)
+                {
+                    Result = true;
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+                con.Close();
+            }
+            return Result;
+        }
 
         public DataTable GetUserConnectedShopInfo(string UserId)
         {

@@ -484,85 +484,85 @@ $("#SafariInfoFromSubmit").click(function () {
     var Breast = $("#SafariBreast").val();
     var Notes = $("#Safari_Notes").val();
 
-    if (Length == "" || Shoulder == "" || S_Length == "" || S_Loose == "" || Chest == "" || Waist == "" || Hip == "" || Collar == "" || Collar_Style == "" || Buttons == "" || Side_Vent == "" || S_Breast == "" || D_Breast == "" || Breast == "") {
+    //if (Length == "" || Shoulder == "" || S_Length == "" || S_Loose == "" || Chest == "" || Waist == "" || Hip == "" || Collar == "" || Collar_Style == "" || Buttons == "" || Side_Vent == "" || S_Breast == "" || D_Breast == "" || Breast == "") {
 
-        if (Length == "") $("#SafariLength").addClass("form-error");
-        else $("#SafariLength").removeClass("form-error");
+    //    if (Length == "") $("#SafariLength").addClass("form-error");
+    //    else $("#SafariLength").removeClass("form-error");
 
-        if (Shoulder == "") $("#SafariShoulder").addClass("form-error");
-        else $("#SafariShoulder").removeClass("form-error");
+    //    if (Shoulder == "") $("#SafariShoulder").addClass("form-error");
+    //    else $("#SafariShoulder").removeClass("form-error");
 
-        if (S_Length == "") $("#SafariS_Length").addClass("form-error");
-        else $("#SafariS_Length").removeClass("form-error");
+    //    if (S_Length == "") $("#SafariS_Length").addClass("form-error");
+    //    else $("#SafariS_Length").removeClass("form-error");
 
-        if (S_Loose == "") $("#SafariS_Loose").addClass("form-error");
-        else $("#SafariS_Loose").removeClass("form-error");
+    //    if (S_Loose == "") $("#SafariS_Loose").addClass("form-error");
+    //    else $("#SafariS_Loose").removeClass("form-error");
 
-        if (Chest == "") $("#SafariChest").addClass("form-error");
-        else $("#SafariChest").removeClass("form-error");
+    //    if (Chest == "") $("#SafariChest").addClass("form-error");
+    //    else $("#SafariChest").removeClass("form-error");
 
-        if (Waist == "") $("#SafariWaist").addClass("form-error");
-        else $("#SafariWaist").removeClass("form-error");
+    //    if (Waist == "") $("#SafariWaist").addClass("form-error");
+    //    else $("#SafariWaist").removeClass("form-error");
 
-        if (Hip == "") $("#SafariHip").addClass("form-error");
-        else $("#SafariHip").removeClass("form-error");
+    //    if (Hip == "") $("#SafariHip").addClass("form-error");
+    //    else $("#SafariHip").removeClass("form-error");
 
-        if (Collar == "") $("#SafariCollar").addClass("form-error");
-        else $("#SafariCollar").removeClass("form-error");
+    //    if (Collar == "") $("#SafariCollar").addClass("form-error");
+    //    else $("#SafariCollar").removeClass("form-error");
 
-        if (Collar_Style == "") $("#SafariCollar_Style").addClass("form-error");
-        else $("#SafariCollar_Style").removeClass("form-error");
+    //    if (Collar_Style == "") $("#SafariCollar_Style").addClass("form-error");
+    //    else $("#SafariCollar_Style").removeClass("form-error");
 
-        if (Buttons == "") $("#SafariButtons").addClass("form-error");
-        else $("#SafariButtons").removeClass("form-error");
+    //    if (Buttons == "") $("#SafariButtons").addClass("form-error");
+    //    else $("#SafariButtons").removeClass("form-error");
 
-        if (Side_Vent == "") $("#SafariSide_Vent").addClass("form-error");
-        else $("#SafariSide_Vent").removeClass("form-error");
+    //    if (Side_Vent == "") $("#SafariSide_Vent").addClass("form-error");
+    //    else $("#SafariSide_Vent").removeClass("form-error");
 
-        if (S_Breast == "") $("#SafariS_Breast").addClass("form-error");
-        else $("#SafariS_Breast").removeClass("form-error");
+    //    if (S_Breast == "") $("#SafariS_Breast").addClass("form-error");
+    //    else $("#SafariS_Breast").removeClass("form-error");
 
-        if (D_Breast == "") $("#SafariD_Breast").addClass("form-error");
-        else $("#SafariD_Breast").removeClass("form-error");
+    //    if (D_Breast == "") $("#SafariD_Breast").addClass("form-error");
+    //    else $("#SafariD_Breast").removeClass("form-error");
 
-        if (Breast == "") $("#SafariBreast").addClass("form-error");
-        else $("#SafariBreast").removeClass("form-error");
+    //    if (Breast == "") $("#SafariBreast").addClass("form-error");
+    //    else $("#SafariBreast").removeClass("form-error");
 
-        $(".customErrorMessageAddSafariInfo").text("Validation Failed, recheck the form !");
-    } else {
-        $("input[type=\"text\"]").removeClass("form-error");
-        $(".customErrorMessageAddSafariInfo").text("");
+    //    $(".customErrorMessageAddSafariInfo").text("Validation Failed, recheck the form !");
+    //} else {
+    $("input[type=\"text\"]").removeClass("form-error");
+    $(".customErrorMessageAddSafariInfo").text("");
 
-        var _safariInfo = {};
+    var _safariInfo = {};
 
-        _safariInfo.Id = "";
-        _safariInfo.OrderId = "";
-        _safariInfo.CreatedDate = new Date();
-        _safariInfo.Length = Length;
-        _safariInfo.Shoulder = Shoulder;
-        _safariInfo.S_Length = S_Length;
-        _safariInfo.S_Loose = S_Loose;
-        _safariInfo.Chest = Chest;
-        _safariInfo.Waist = Waist;
-        _safariInfo.Hip = Hip;
-        _safariInfo.Collar = Collar;
-        _safariInfo.Collar_Style = Collar_Style;
-        _safariInfo.Buttons = Buttons;
-        _safariInfo.Side_Vent = Side_Vent;
-        _safariInfo.S_Breast = S_Breast;
-        _safariInfo.D_Breast = D_Breast;
-        _safariInfo.Breast = Breast;
-        _safariInfo.Notes = Notes;
-        _safariInfo.ModifiedDate = new Date();
+    _safariInfo.Id = "";
+    _safariInfo.OrderId = "";
+    _safariInfo.CreatedDate = new Date();
+    _safariInfo.Length = Length;
+    _safariInfo.Shoulder = Shoulder;
+    _safariInfo.S_Length = S_Length;
+    _safariInfo.S_Loose = S_Loose;
+    _safariInfo.Chest = Chest;
+    _safariInfo.Waist = Waist;
+    _safariInfo.Hip = Hip;
+    _safariInfo.Collar = Collar;
+    _safariInfo.Collar_Style = Collar_Style;
+    _safariInfo.Buttons = Buttons;
+    _safariInfo.Side_Vent = Side_Vent;
+    _safariInfo.S_Breast = S_Breast;
+    _safariInfo.D_Breast = D_Breast;
+    _safariInfo.Breast = Breast;
+    _safariInfo.Notes = Notes;
+    _safariInfo.ModifiedDate = new Date();
 
-        Global_SafariInfo = JSON.stringify(_safariInfo);
+    Global_SafariInfo = JSON.stringify(_safariInfo);
 
-        $("#SafariInfo").modal("hide");
+    $("#SafariInfo").modal("hide");
 
-        $(".AddSafariInfoButton").removeClass("disabled");
-        $(".AddSafariInfoButton").removeClass("btn-warning");
-        $(".AddSafariInfoButton").addClass("btn-success");
-    }
+    $(".AddSafariInfoButton").removeClass("disabled");
+    $(".AddSafariInfoButton").removeClass("btn-warning");
+    $(".AddSafariInfoButton").addClass("btn-success");
+    //}
 
 });
 
@@ -584,89 +584,89 @@ $("#PantInfoFromSubmit").click(function () {
     var Button = $("#PantInfoButton").val();
     var Notes = $("#PantInfo_Notes").val();
 
-    if (Length == "" || Seat == "" || Hip == "" || InSeen == "" || Thigh == "" || Knee == "" || Bottom == "" || BackPocket == "" || WatchPocket == "" || Iron == "" || Emming == "" || BottomFold == "" || BuckleModel == "" || HookButton == "" || Button == "") {
+    //if (Length == "" || Seat == "" || Hip == "" || InSeen == "" || Thigh == "" || Knee == "" || Bottom == "" || BackPocket == "" || WatchPocket == "" || Iron == "" || Emming == "" || BottomFold == "" || BuckleModel == "" || HookButton == "" || Button == "") {
 
-        if (Length == "") $("#PantInfoLength").addClass("form-error");
-        else $("#PantInfoLength").removeClass("form-error");
+    //    if (Length == "") $("#PantInfoLength").addClass("form-error");
+    //    else $("#PantInfoLength").removeClass("form-error");
 
-        if (Seat == "") $("#PantInfoSeat").addClass("form-error");
-        else $("#PantInfoSeat").removeClass("form-error");
+    //    if (Seat == "") $("#PantInfoSeat").addClass("form-error");
+    //    else $("#PantInfoSeat").removeClass("form-error");
 
-        if (Hip == "") $("#PantInfoHip").addClass("form-error");
-        else $("#PantInfoHip").removeClass("form-error");
+    //    if (Hip == "") $("#PantInfoHip").addClass("form-error");
+    //    else $("#PantInfoHip").removeClass("form-error");
 
-        if (InSeen == "") $("#PantInfoInSeen").addClass("form-error");
-        else $("#PantInfoInSeen").removeClass("form-error");
+    //    if (InSeen == "") $("#PantInfoInSeen").addClass("form-error");
+    //    else $("#PantInfoInSeen").removeClass("form-error");
 
-        if (Thigh == "") $("#PantInfoThigh").addClass("form-error");
-        else $("#PantInfoThigh").removeClass("form-error");
+    //    if (Thigh == "") $("#PantInfoThigh").addClass("form-error");
+    //    else $("#PantInfoThigh").removeClass("form-error");
 
-        if (Knee == "") $("#PantInfoKnee").addClass("form-error");
-        else $("#PantInfoKnee").removeClass("form-error");
+    //    if (Knee == "") $("#PantInfoKnee").addClass("form-error");
+    //    else $("#PantInfoKnee").removeClass("form-error");
 
-        if (Bottom == "") $("#PantInfoBottom").addClass("form-error");
-        else $("#PantInfoBottom").removeClass("form-error");
+    //    if (Bottom == "") $("#PantInfoBottom").addClass("form-error");
+    //    else $("#PantInfoBottom").removeClass("form-error");
 
-        if (BackPocket == "") $("#PantInfoBackPocket").addClass("form-error");
-        else $("#PantInfoBackPocket").removeClass("form-error");
+    //    if (BackPocket == "") $("#PantInfoBackPocket").addClass("form-error");
+    //    else $("#PantInfoBackPocket").removeClass("form-error");
 
-        if (WatchPocket == "") $("#PantInfoWatchPocket").addClass("form-error");
-        else $("#PantInfoWatchPocket").removeClass("form-error");
+    //    if (WatchPocket == "") $("#PantInfoWatchPocket").addClass("form-error");
+    //    else $("#PantInfoWatchPocket").removeClass("form-error");
 
-        if (Iron == "") $("#PantInfoIron").addClass("form-error");
-        else $("#PantInfoIron").removeClass("form-error");
+    //    if (Iron == "") $("#PantInfoIron").addClass("form-error");
+    //    else $("#PantInfoIron").removeClass("form-error");
 
-        if (Emming == "") $("#PantInfoEmming").addClass("form-error");
-        else $("#PantInfoEmming").removeClass("form-error");
+    //    if (Emming == "") $("#PantInfoEmming").addClass("form-error");
+    //    else $("#PantInfoEmming").removeClass("form-error");
 
-        if (BottomFold == "") $("#PantInfoBottomFold").addClass("form-error");
-        else $("#PantInfoBottomFold").removeClass("form-error");
+    //    if (BottomFold == "") $("#PantInfoBottomFold").addClass("form-error");
+    //    else $("#PantInfoBottomFold").removeClass("form-error");
 
-        if (BuckleModel == "") $("#PantInfoBuckleModel").addClass("form-error");
-        else $("#PantInfoBuckleModel").removeClass("form-error");
+    //    if (BuckleModel == "") $("#PantInfoBuckleModel").addClass("form-error");
+    //    else $("#PantInfoBuckleModel").removeClass("form-error");
 
-        if (HookButton == "") $("#PantInfoHookButton").addClass("form-error");
-        else $("#PantInfoHookButton").removeClass("form-error");
+    //    if (HookButton == "") $("#PantInfoHookButton").addClass("form-error");
+    //    else $("#PantInfoHookButton").removeClass("form-error");
 
-        if (Button == "") $("#PantInfoButton").addClass("form-error");
-        else $("#PantInfoButton").removeClass("form-error");
+    //    if (Button == "") $("#PantInfoButton").addClass("form-error");
+    //    else $("#PantInfoButton").removeClass("form-error");
 
-        $(".customErrorMessageAddPantInfo").text("Validation Failed, recheck the form !");
-    } else {
-        $("input[type=\"text\"]").removeClass("form-error");
-        $(".customErrorMessageAddSafariInfo").text("");
+    //    $(".customErrorMessageAddPantInfo").text("Validation Failed, recheck the form !");
+    //} else {
+    $("input[type=\"text\"]").removeClass("form-error");
+    $(".customErrorMessageAddSafariInfo").text("");
 
-        var _pantInfo = {};
+    var _pantInfo = {};
 
-        _pantInfo.Id = "";
-        _pantInfo.OrderId = "";
-        _pantInfo.CreatedDate = new Date();
-        _pantInfo.Length = Length;
-        _pantInfo.Seat = Seat;
-        _pantInfo.Hip = Hip;
-        _pantInfo.InSeen = InSeen;
-        _pantInfo.Thigh = Thigh;
-        _pantInfo.Knee = Knee;
-        _pantInfo.Bottom = Bottom;
-        _pantInfo.BackPocket = BackPocket;
-        _pantInfo.WatchPocket = WatchPocket;
-        _pantInfo.Iron = Iron;
-        _pantInfo.Emming = Emming;
-        _pantInfo.BottomFold = BottomFold;
-        _pantInfo.BuckleModel = BuckleModel;
-        _pantInfo.HookButton = HookButton;
-        _pantInfo.Button = Button;
-        _pantInfo.Notes = Notes;
-        _pantInfo.ModifiedDate = new Date();
+    _pantInfo.Id = "";
+    _pantInfo.OrderId = "";
+    _pantInfo.CreatedDate = new Date();
+    _pantInfo.Length = Length;
+    _pantInfo.Seat = Seat;
+    _pantInfo.Hip = Hip;
+    _pantInfo.InSeen = InSeen;
+    _pantInfo.Thigh = Thigh;
+    _pantInfo.Knee = Knee;
+    _pantInfo.Bottom = Bottom;
+    _pantInfo.BackPocket = BackPocket;
+    _pantInfo.WatchPocket = WatchPocket;
+    _pantInfo.Iron = Iron;
+    _pantInfo.Emming = Emming;
+    _pantInfo.BottomFold = BottomFold;
+    _pantInfo.BuckleModel = BuckleModel;
+    _pantInfo.HookButton = HookButton;
+    _pantInfo.Button = Button;
+    _pantInfo.Notes = Notes;
+    _pantInfo.ModifiedDate = new Date();
 
-        Global_PantInfo = JSON.stringify(_pantInfo);
+    Global_PantInfo = JSON.stringify(_pantInfo);
 
-        $("#PantInfo").modal("hide");
+    $("#PantInfo").modal("hide");
 
-        $(".AddPantInfoButton").removeClass("disabled");
-        $(".AddPantInfoButton").removeClass("btn-warning");
-        $(".AddPantInfoButton").addClass("btn-success");
-    }
+    $(".AddPantInfoButton").removeClass("disabled");
+    $(".AddPantInfoButton").removeClass("btn-warning");
+    $(".AddPantInfoButton").addClass("btn-success");
+    //}
 });
 
 $("#ShirtInfoFromSubmit").click(function () {
@@ -690,64 +690,64 @@ $("#ShirtInfoFromSubmit").click(function () {
     var Fit = $("#ShirtInfoFit").val();
     var Notes = $("#ShirtInfo_Notes").val();
 
-    if (Length == "" || Shoulder == "" || S_Length == "" || S_Loose == "" || Chest == "" || Waist == "" || Hip == "" || Collar == "" || Collar_Size == "" || Collar_Style == "" || Cuf_Size == "" || Cuf_Style == "" || Collar_Button == "" || Patti == "" || Pocket == "" || InnerPocket == "" || KneePatch == "" || Fit == "") {
+    //if (Length == "" || Shoulder == "" || S_Length == "" || S_Loose == "" || Chest == "" || Waist == "" || Hip == "" || Collar == "" || Collar_Size == "" || Collar_Style == "" || Cuf_Size == "" || Cuf_Style == "" || Collar_Button == "" || Patti == "" || Pocket == "" || InnerPocket == "" || KneePatch == "" || Fit == "") {
 
-        if (Length == "") $("#ShirtInfoLength").addClass("form-error");
-        else $("#ShirtInfoLength").removeClass("form-error");
+    //    if (Length == "") $("#ShirtInfoLength").addClass("form-error");
+    //    else $("#ShirtInfoLength").removeClass("form-error");
 
-        if (Shoulder == "") $("#ShirtInfoShoulder").addClass("form-error");
-        else $("#ShirtInfoShoulder").removeClass("form-error");
+    //    if (Shoulder == "") $("#ShirtInfoShoulder").addClass("form-error");
+    //    else $("#ShirtInfoShoulder").removeClass("form-error");
 
-        if (S_Length == "") $("#ShirtInfoS_Length").addClass("form-error");
-        else $("#ShirtInfoS_Length").removeClass("form-error");
+    //    if (S_Length == "") $("#ShirtInfoS_Length").addClass("form-error");
+    //    else $("#ShirtInfoS_Length").removeClass("form-error");
 
-        if (S_Loose == "") $("#ShirtInfoS_Loose").addClass("form-error");
-        else $("#ShirtInfoS_Loose").removeClass("form-error");
+    //    if (S_Loose == "") $("#ShirtInfoS_Loose").addClass("form-error");
+    //    else $("#ShirtInfoS_Loose").removeClass("form-error");
 
-        if (Chest == "") $("#ShirtInfoChest").addClass("form-error");
-        else $("#ShirtInfoChest").removeClass("form-error");
+    //    if (Chest == "") $("#ShirtInfoChest").addClass("form-error");
+    //    else $("#ShirtInfoChest").removeClass("form-error");
 
-        if (Waist == "") $("#ShirtInfoWaist").addClass("form-error");
-        else $("#ShirtInfoWaist").removeClass("form-error");
+    //    if (Waist == "") $("#ShirtInfoWaist").addClass("form-error");
+    //    else $("#ShirtInfoWaist").removeClass("form-error");
 
-        if (Hip == "") $("#ShirtInfoHip").addClass("form-error");
-        else $("#ShirtInfoHip").removeClass("form-error");
+    //    if (Hip == "") $("#ShirtInfoHip").addClass("form-error");
+    //    else $("#ShirtInfoHip").removeClass("form-error");
 
-        if (Collar == "") $("#ShirtInfoCollar").addClass("form-error");
-        else $("#ShirtInfoCollar").removeClass("form-error");
+    //    if (Collar == "") $("#ShirtInfoCollar").addClass("form-error");
+    //    else $("#ShirtInfoCollar").removeClass("form-error");
 
-        if (Collar_Size == "") $("#ShirtInfoCollar_Size").addClass("form-error");
-        else $("#ShirtInfoCollar_Size").removeClass("form-error");
+    //    if (Collar_Size == "") $("#ShirtInfoCollar_Size").addClass("form-error");
+    //    else $("#ShirtInfoCollar_Size").removeClass("form-error");
 
-        if (Collar_Style == "") $("#ShirtInfoCollar_Style").addClass("form-error");
-        else $("#ShirtInfoCollar_Style").removeClass("form-error");
+    //    if (Collar_Style == "") $("#ShirtInfoCollar_Style").addClass("form-error");
+    //    else $("#ShirtInfoCollar_Style").removeClass("form-error");
 
-        if (Cuf_Size == "") $("#ShirtInfoCuf_Size").addClass("form-error");
-        else $("#ShirtInfoCuf_Size").removeClass("form-error");
+    //    if (Cuf_Size == "") $("#ShirtInfoCuf_Size").addClass("form-error");
+    //    else $("#ShirtInfoCuf_Size").removeClass("form-error");
 
-        if (Cuf_Style == "") $("#ShirtInfoCuf_Style").addClass("form-error");
-        else $("#ShirtInfoCuf_Style").removeClass("form-error");
+    //    if (Cuf_Style == "") $("#ShirtInfoCuf_Style").addClass("form-error");
+    //    else $("#ShirtInfoCuf_Style").removeClass("form-error");
 
-        if (Collar_Button == "") $("#ShirtInfoCollar_Button").addClass("form-error");
-        else $("#ShirtInfoCollar_Button").removeClass("form-error");
+    //    if (Collar_Button == "") $("#ShirtInfoCollar_Button").addClass("form-error");
+    //    else $("#ShirtInfoCollar_Button").removeClass("form-error");
 
-        if (Patti == "") $("#ShirtInfoPatti").addClass("form-error");
-        else $("#ShirtInfoPatti").removeClass("form-error");
+    //    if (Patti == "") $("#ShirtInfoPatti").addClass("form-error");
+    //    else $("#ShirtInfoPatti").removeClass("form-error");
 
-        if (Pocket == "") $("#ShirtInfoPocket").addClass("form-error");
-        else $("#ShirtInfoPocket").removeClass("form-error");
+    //    if (Pocket == "") $("#ShirtInfoPocket").addClass("form-error");
+    //    else $("#ShirtInfoPocket").removeClass("form-error");
 
-        if (InnerPocket == "") $("#ShirtInfoInnerPocket").addClass("form-error");
-        else $("#ShirtInfoInnerPocket").removeClass("form-error");
+    //    if (InnerPocket == "") $("#ShirtInfoInnerPocket").addClass("form-error");
+    //    else $("#ShirtInfoInnerPocket").removeClass("form-error");
 
-        if (KneePatch == "") $("#ShirtInfoKneePatch").addClass("form-error");
-        else $("#ShirtInfoKneePatch").removeClass("form-error");
+    //    if (KneePatch == "") $("#ShirtInfoKneePatch").addClass("form-error");
+    //    else $("#ShirtInfoKneePatch").removeClass("form-error");
 
-        if (Fit == "") $("#ShirtInfoFit").addClass("form-error");
-        else $("#ShirtInfoFit").removeClass("form-error");
+    //    if (Fit == "") $("#ShirtInfoFit").addClass("form-error");
+    //    else $("#ShirtInfoFit").removeClass("form-error");
 
-        $(".customErrorMessageAddShirtInfo").text("Validation Failed, recheck the form !");
-    } else {
+    //    $(".customErrorMessageAddShirtInfo").text("Validation Failed, recheck the form !");
+    //} else {
         $("input[type=\"text\"]").removeClass("form-error");
         $(".customErrorMessageAddShirtInfo").text("");
 
@@ -784,7 +784,7 @@ $("#ShirtInfoFromSubmit").click(function () {
         $(".AddShirtInfoButton").removeClass("disabled");
         $(".AddShirtInfoButton").removeClass("btn-warning");
         $(".AddShirtInfoButton").addClass("btn-success");
-    }
+    /*}*/
 
 });
 
@@ -1130,6 +1130,14 @@ $(document).on('focusout', '#BillNumber', function () {
     var BillNumber = $(this).val();
     if (typeof (BillNumber) != "undefined" && BillNumber != null && BillNumber != "")
         IsBillNumberExists(BillNumber);
+});
+$(document).on('focusout', '#AdvanceAmount,#OrderAmount', function () {
+    var TotalAmout = $("#OrderAmount").val();
+    var PaidAmount = $("#AdvanceAmount").val();
+    if (typeof (TotalAmout) != "undefined" && TotalAmout != null && TotalAmout != "" && typeof (PaidAmount) != "undefined" && PaidAmount != null && PaidAmount != "") {
+        var BalanceAmount = parseInt(TotalAmout) - parseInt(PaidAmount);
+        $("#BalanceAmount").val(BalanceAmount);
+    }   
 });
 
 function IsBillNumberExists(BillNumber) {

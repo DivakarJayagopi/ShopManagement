@@ -443,7 +443,7 @@ function IsMobileNmberExists(MobileNumber) {
 
     if (MobileNumber.length != 10) {
         $(".UserMobileNumber").addClass("form-error");
-        $(".customErrorMessageAddUser").text("Please enter valid mobile number");
+        $(".MobileNumberValidationMessage").text("Please enter valid mobile number");
         IsSuccess = false;
     } else {
         $(".UserMobileNumber").removeClass("form-error");

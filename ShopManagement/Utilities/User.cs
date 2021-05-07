@@ -229,6 +229,27 @@ namespace ShopManagement.Utilities
             return user;
         }
 
+        public List<Models.User> GetShopConnectedUserList(string ShopId)
+        {
+            DataTable dt = new DataTable();
+            List<Models.User> usersList = new List<Models.User>();
+            try
+            {
+                dt = _userData.GetShopConnectedUserInfo(ShopId);
+                foreach (DataRow record in dt.Rows)
+                {
+                    Models.User user = new Models.User();
+                    user = BuildUserData(record);
+                    usersList.Add(user);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return usersList;
+        }
+
         public bool GetUserInfoForExistsProperty(string UserName, string MobileNumber, string EMailId)
         {
             DataTable dt = new DataTable();
