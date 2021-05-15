@@ -163,21 +163,25 @@
                                         <th scope="col">Remaining Days</th>
                                         <th scope="col">ShopName</th>
                                         <th scope="col">Amount</th>
+                                        <th scope="col">Paid Amount</th>
+                                        <th scope="col">Balance Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach (var item in Model.TodayCompletingOrders)
                                     {
-                                        <tr>
-                                            <th scope="row"><img src="@item.Image" style="height:30px;width:30px" class="img img-responsive" /></th>
-                                            <td>@item.BillNumber</td>
-                                            <td>@item.CustomerName</td>
-                                            <td>@item.Status</td>
-                                            <td>@item.CustomerMobileNumber</td>
-                                            <td>@item.DaysRemaining</td>
-                                            <td>@item.ShopName</td>
-                                            <td>@item.Amount</td>
-                                        </tr>
+                                    <tr>
+                                        <th scope="row"><img src="@item.Image" style="height:30px;width:30px" class="img img-responsive" /></th>
+                                        <td>@item.BillNumber</td>
+                                        <td>@item.CustomerName</td>
+                                        <td>@item.Status</td>
+                                        <td>@item.CustomerMobileNumber</td>
+                                        <td>@item.DaysRemaining</td>
+                                        <td>@item.ShopName</td>
+                                        <td>@item.Amount</td>
+                                        <td>@item.PaidAmount</td>
+                                        <td>@item.BalanceAmount</td>
+                                    </tr>
                                     }
                                 </tbody>
                             </table>
@@ -219,21 +223,25 @@
                                         <th scope="col">Remaining Days</th>
                                         <th scope="col">ShopName</th>
                                         <th scope="col">Amount</th>
+                                        <th scope="col">Paid Amount</th>
+                                        <th scope="col">Balace Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach (var item in Model.TomorrowCompletingOrders)
                                     {
-                                        <tr>
-                                            <th scope="row"><img src="@item.Image" style="height:30px;width:30px" class="img img-responsive" /></th>
-                                            <td>@item.BillNumber</td>
-                                            <td>@item.CustomerName</td>
-                                            <td>@item.Status</td>
-                                            <td>@item.CustomerMobileNumber</td>
-                                            <td>@item.DaysRemaining</td>
-                                            <td>@item.ShopName</td>
-                                            <td>@item.Amount</td>
-                                        </tr>
+                                    <tr>
+                                        <th scope="row"><img src="@item.Image" style="height:30px;width:30px" class="img img-responsive" /></th>
+                                        <td>@item.BillNumber</td>
+                                        <td>@item.CustomerName</td>
+                                        <td>@item.Status</td>
+                                        <td>@item.CustomerMobileNumber</td>
+                                        <td>@item.DaysRemaining</td>
+                                        <td>@item.ShopName</td>
+                                        <td>@item.Amount</td>
+                                        <td>@item.PaidAmount</td>
+                                        <td>@item.BalanceAmount</td>
+                                    </tr>
                                     }
                                 </tbody>
                             </table>
@@ -275,21 +283,25 @@
                                         <th scope="col">Remaining Days</th>
                                         <th scope="col">ShopName</th>
                                         <th scope="col">Amount</th>
+                                        <th scope="col">Paid Amount</th>
+                                        <th scope="col">Balance Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach (var item in Model.OrderCompletingIn3Days)
                                     {
-                                        <tr>
-                                            <th scope="row"><img src="@item.Image" style="height:30px;width:30px" class="img img-responsive" /></th>
-                                            <td>@item.BillNumber</td>
-                                            <td>@item.CustomerName</td>
-                                            <td>@item.Status</td>
-                                            <td>@item.CustomerMobileNumber</td>
-                                            <td>@item.DaysRemaining</td>
-                                            <td>@item.ShopName</td>
-                                            <td>@item.Amount</td>
-                                        </tr>
+                                    <tr>
+                                        <th scope="row"><img src="@item.Image" style="height:30px;width:30px" class="img img-responsive" /></th>
+                                        <td>@item.BillNumber</td>
+                                        <td>@item.CustomerName</td>
+                                        <td>@item.Status</td>
+                                        <td>@item.CustomerMobileNumber</td>
+                                        <td>@item.DaysRemaining</td>
+                                        <td>@item.ShopName</td>
+                                        <td>@item.Amount</td>
+                                        <td>@item.PaidAmount</td>
+                                        <td>@item.BalanceAmount</td>
+                                    </tr>
                                     }
                                 </tbody>
                             </table>
@@ -329,11 +341,10 @@
                                         <th scope="col">Satus</th>
                                         <th scope="col">Customer Mobile Number</th>
                                         <th scope="col">Remaining Days</th>
-                                        @if (Session["IsAdmin"].ToString() == "1" || Session["IsAdmin"].ToString() == "2")
-                                        {
-                                            <th scope="col">ShopName</th>
-                                        }
+                                        <th scope="col">ShopName</th>
                                         <th scope="col">Amount</th>
+                                        <th scope="col">Paid Amount</th>
+                                        <th scope="col">Balance Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -346,11 +357,10 @@
                                             <td>@item.Status</td>
                                             <td>@item.CustomerMobileNumber</td>
                                             <td>@item.DaysRemaining</td>
-                                            @if (Session["IsAdmin"].ToString() == "1" || Session["IsAdmin"].ToString() == "2")
-                                            {
-                                                <td>@item.ShopName</td>
-                                            }
+                                            <td>@item.ShopName</td>
                                             <td>@item.Amount</td>
+                                            <td>@item.PaidAmount</td>
+                                            <td>@item.BalanceAmount</td>
                                         </tr>
                                     }
                                 </tbody>
@@ -393,21 +403,25 @@
                                         <th scope="col">Remaining Days</th>
                                         <th scope="col">ShopName</th>
                                         <th scope="col">Amount</th>
+                                        <th scope="col">Paid Amount</th>
+                                        <th scope="col">Balance Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach (var item in Model.OrderCompletingIn5Days)
                                     {
-                                        <tr>
-                                            <th scope="row"><img src="@item.Image" style="height:30px;width:30px" class="img img-responsive" /></th>
-                                            <td>@item.BillNumber</td>
-                                            <td>@item.CustomerName</td>
-                                            <td>@item.Status</td>
-                                            <td>@item.CustomerMobileNumber</td>
-                                            <td>@item.DaysRemaining</td>
-                                            <td>@item.ShopName</td>
-                                            <td>@item.Amount</td>
-                                        </tr>
+                                    <tr>
+                                        <th scope="row"><img src="@item.Image" style="height:30px;width:30px" class="img img-responsive" /></th>
+                                        <td>@item.BillNumber</td>
+                                        <td>@item.CustomerName</td>
+                                        <td>@item.Status</td>
+                                        <td>@item.CustomerMobileNumber</td>
+                                        <td>@item.DaysRemaining</td>
+                                        <td>@item.ShopName</td>
+                                        <td>@item.Amount</td>
+                                        <td>@item.PaidAmount</td>
+                                        <td>@item.BalanceAmount</td>
+                                    </tr>
                                     }
                                 </tbody>
                             </table>
@@ -444,7 +458,7 @@
 <script src="~/App-Assests/Js/DashBoard.js"></script>
 <script>
     $(".OrdersTable").DataTable();
-    var ShopName = '@ViewBag.ShopName';
+    var ShopName = "Shops";
     var TodayOrderCount = '@ViewBag.TodayOrderCount';
     var TomorrowOrderCount = '@ViewBag.TomorrowOrderCount';
     var _3DaysOrderCount = '@ViewBag._3DaysOrderCount';

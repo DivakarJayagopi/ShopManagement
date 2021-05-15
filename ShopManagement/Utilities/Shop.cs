@@ -26,9 +26,9 @@ namespace ShopManagement.Utilities
                     {
                         Result = AddUserConnector(Id, UserId);
                     }
-                    Utilities.Slider _sliderData = new Utilities.Slider();
-                    Result = _sliderData.Add("Slider One", Id);
-                    Result = _sliderData.Add("Slider Two", Id);
+                    //Utilities.Slider _sliderData = new Utilities.Slider();
+                    //Result = _sliderData.Add("Slider One", Id);
+                    //Result = _sliderData.Add("Slider Two", Id);
                 }
             }
             catch (Exception)
@@ -118,7 +118,27 @@ namespace ShopManagement.Utilities
             }
             return shopsList;
         }
-        
+        public List<Models.Shop> GetUserConnectedShopsList(string UserId)
+        {
+            DataTable dt = new DataTable();
+            List<Models.Shop> shopsList = new List<Models.Shop>();
+            try
+            {
+                dt = _shopData.GetUserConnectedShopsList(UserId);
+                foreach (DataRow record in dt.Rows)
+                {
+                    Models.Shop shop = new Models.Shop();
+                    shop = BuildShopData(record);
+                    shopsList.Add(shop);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return shopsList;
+        }
+
         public List<Models.Shop> GetAllShopsByStaus(bool IsActive)
         {
             DataTable dt = new DataTable();

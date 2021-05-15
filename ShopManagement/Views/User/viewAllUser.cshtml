@@ -20,6 +20,18 @@
     .selectgroup-input:focus + .selectgroup-button, .selectgroup-input:checked + .selectgroup-button.inactive {
         background-color: #f34e00;
     }
+    .ShopImage {
+        height: 30px;
+        width: 30px;
+        border-radius: 100px;
+    }
+    .RemoveUserFromShop {
+        cursor: pointer;
+    }
+
+    ol li {
+        padding: 10px;
+    }
 </style>
 <!-- CSS Libraries -->
 <link rel="stylesheet" href="../../assets/modules/chocolat/dist/css/chocolat.css">
@@ -62,7 +74,7 @@
                                     }
                                     else if (item.ShopInfo != null)
                                     {
-                                        <a href="javascript:void(0)" data-id="@item.ShopInfo.Id" class="ViewShopInfo">@item.ShopInfo.Name / </a> <small>@item.ShopInfo.ShopArea</small>
+                                        <a href="javascript:void(0)" data-id="@item.Id" class="GetUserConnectedShopsList"> View Shops </a>
                                     }
                                     else
                                     {
@@ -199,35 +211,16 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Shop -<span class="ShopName text-success">ShopName</span></h5>
+                <h5 class="modal-title">Shop Info</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div>
-                    <img alt="image" src="../../assets/img/example-image.jpg" id="ShopImage" class="img-fluid">
+                <div class="ShopList">
+                    <ol>
+                    </ol>
                 </div>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>Name</td>
-                            <td class="ShopName">Best Shop</td>
-                        </tr>
-                        <tr>
-                            <td>Mobile Number</td>
-                            <td class="ShopMobileNumber">8148563820</td>
-                        </tr>
-                        <tr>
-                            <td>Area</td>
-                            <td class="ShopArea">Anna Nagar</td>
-                        </tr>
-                        <tr>
-                            <td>Orders</td>
-                            <td class="MaxOrderCountForShop">10 / 10</td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
             <div class="modal-footer bg-whitesmoke br">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

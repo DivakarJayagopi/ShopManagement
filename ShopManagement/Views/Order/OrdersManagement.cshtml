@@ -20,7 +20,7 @@
 </style>
 <section class="section">
     <div class="section-header">
-        <h1>Oders Manager</h1>
+        <h1>Orders Manager</h1>
     </div>
 
     <div class="section-body">
@@ -57,14 +57,7 @@
                                             }
                                             @foreach (var item in Model)
                                             {
-                                                if (Session["IsAdmin"].ToString() == "1")
-                                                {
-                                                    <option value="@item.Id" data-ShopName="@item.Name">@item.Name</option>
-                                                }
-                                                else if (item.Id == Session["ShopId"].ToString())
-                                                {
-                                                    <option value="@item.Id" data-ShopName="@item.Name">@item.Name</option>
-                                                }
+                                                <option value="@item.Id" data-ShopName="@item.Name">@item.Name</option>
                                             }
                                         </select>
                                     </div>
@@ -175,12 +168,16 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col">Image</th>
+                                                <th scope="col">Image2</th>
+                                                <th scope="col">Image3</th>
                                                 <th scope="col">Bill Number</th>
                                                 <th scope="col">Customer Name</th>
                                                 <th scope="col">Satus</th>
                                                 <th scope="col">Customer Mobile Number</th>
                                                 <th scope="col">Remaining Days</th>
                                                 <th scope="col">Amount</th>
+                                                <th scope="col">Paid Amount</th>
+                                                <th scope="col">Balance Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody class="OrdersTableView">

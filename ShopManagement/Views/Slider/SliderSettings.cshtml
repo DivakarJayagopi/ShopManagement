@@ -145,6 +145,7 @@
                             </div>
                         </div>
                     </div>
+                    <span class="SliderErrorMessage text-danger"></span>
                     <button class="btn btn-block btn-info" style="display:none;" id="SubmitSliderInfoForm">Submit</button>
                 </div>
             </div>
@@ -169,13 +170,9 @@
             OptionHTML += "<option value='No data'> Select</option>";
             OptionHTML += "<option value=''> My Slider </option>";
         }
-        else if (IsAdminUser == "2") {
-            OptionHTML += "<option value='No data'> Select</option>";
-            OptionHTML += "<option value='@Session["UserId"]'> My Slider </option>";
-        }
         else {
             OptionHTML += "<option value='No data'> Select</option>";
-            OptionHTML += "<option value='" + ShopId + "'>" + ShopName + "</option>";
+            OptionHTML += "<option value='@Session["UserId"]'> My Slider </option>";
         }
         $(".ShopsList").html(OptionHTML);
     });
@@ -252,13 +249,19 @@
         }
         if (ChoosedCount == SelectedImagesCount)
             $("#SubmitSliderInfoForm").show();
+        else
+            $("#SubmitSliderInfoForm").hide();
     });
 
 
     $("#SubmitSliderInfoForm").click(function () {
-        var SliderId = $(".SliderInfo").val();
-        var data = '{Id:"' + SliderId + '", ImageIds:"' + ImageGuids + '"}';
-        handleAjaxRequest(null, true, "/Method/UpdateSliderInfo", data, "CallBackUpdateSliderInfo");
+        if (ImageGuids.length <= 0) {
+            $(".SliderErrorMessage").text("Select");
+        } else {
+            var SliderId = $(".SliderInfo").val();
+            var data = '{Id:"' + SliderId + '", ImageIds:"' + ImageGuids + '"}';
+            handleAjaxRequest(null, true, "/Method/UpdateSliderInfo", data, "CallBackUpdateSliderInfo");
+        }        
     });
 
     function CallBackUpdateSliderInfo(responseData) {

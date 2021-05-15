@@ -128,6 +128,28 @@ namespace ShopManagement.Data
             }
             return dt;
         }
+        public DataTable GetUserConnectedShopsList(string UserId)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                SqlCommand cmd = new SqlCommand("SELECT * FROM ShopsInfo shp JOIN UserConnector uc ON shp.Id = uc.ShopId WHERE uc.UserId=@UserId");
+                cmd.Parameters.AddWithValue("@UserId", UserId);
+                con.Open();
+                cmd.Connection = con;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+                con.Close();
+            }
+            return dt;
+        }
 
         public DataTable GetAllShopsByStaus(bool IsActive)
         {

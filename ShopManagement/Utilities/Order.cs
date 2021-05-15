@@ -13,13 +13,13 @@ namespace ShopManagement.Utilities
     {
         Data.Order _orderData = new Data.Order();
 
-        public bool Add(string BillNumber,string CustomerName, string Image, string ShopId, int Amount, string CustomerMobileNumber, string Status, string Notes, DateTime StartDate, DateTime EndDate, Models.SafariInfo safariInfo, Models.PantInfo pantInfo, Models.ShirtInfo shirtInfo)
+        public bool Add(string BillNumber,string CustomerName, string Image, string Image2, string Image3, string ShopId, int Amount, int PaidAmount, int BalanceAmount, string CustomerMobileNumber, string Status, string Notes, DateTime StartDate, DateTime EndDate, Models.SafariInfo safariInfo, Models.PantInfo pantInfo, Models.ShirtInfo shirtInfo)
         {
             bool Result = false;
             try
             {
                 string Id = Guid.NewGuid().ToString();
-                Result = _orderData.Add(Id, BillNumber, CustomerName, Image, ShopId, Amount, CustomerMobileNumber, Status, Notes, StartDate, EndDate);
+                Result = _orderData.Add(Id, BillNumber, CustomerName, Image, Image2, Image3, ShopId, Amount, PaidAmount, BalanceAmount, CustomerMobileNumber, Status, Notes, StartDate, EndDate);
                 if (Result)
                 {
                     string Message = "Hi "+ CustomerName + ", Your Order has been Taken, Expected Delivery " + EndDate.ToString("dd/MMM/yyyy") + " and Total Amount is " + Amount;
@@ -60,7 +60,7 @@ namespace ShopManagement.Utilities
             return Result;
         }
 
-        public bool Update(string Id, string BillNumber, string CustomerName, string Image, string ShopId, int Amount, string CustomerMobileNumber, string Status, string Notes, DateTime StartDate, DateTime EndDate, Models.SafariInfo safariInfo, Models.PantInfo pantInfo, Models.ShirtInfo shirtInfo)
+        public bool Update(string Id, string BillNumber, string CustomerName, string Image, string Image2, string Image3, string ShopId, int Amount, int PaidAmount, int BalanceAmount, string CustomerMobileNumber, string Status, string Notes, DateTime StartDate, DateTime EndDate, Models.SafariInfo safariInfo, Models.PantInfo pantInfo, Models.ShirtInfo shirtInfo)
         {
             bool Result = false;
             try
@@ -74,7 +74,7 @@ namespace ShopManagement.Utilities
                         sendSMS(CustomerMobileNumber, Message);
                     }
                 }
-                Result = _orderData.Update(Id, BillNumber, CustomerName, Image, ShopId, Amount, CustomerMobileNumber, Status, Notes, StartDate, EndDate);
+                Result = _orderData.Update(Id, BillNumber, CustomerName, Image, Image2, Image3, ShopId, Amount, PaidAmount, BalanceAmount, CustomerMobileNumber, Status, Notes, StartDate, EndDate);
                 if (Result)
                 {
                     if (safariInfo != null)
@@ -205,13 +205,13 @@ namespace ShopManagement.Utilities
             return OrdersList;
         }
 
-        public List<Models.Order> GetAllOrdersByShopId(string ShopId)
+        public List<Models.Order> GetAllOrdersByShopIds(List<string> ShopIds)
         {
             DataTable dt = new DataTable();
             List<Models.Order> OrdersList = new List<Models.Order>();
             try
             {
-                dt = _orderData.GetAllOrdersByShopId(ShopId);
+                dt = _orderData.GetAllOrdersByShopId(ShopIds);
                 foreach (DataRow record in dt.Rows)
                 {
                     Models.Order OrderInfo = new Models.Order();
@@ -287,7 +287,7 @@ namespace ShopManagement.Utilities
             return OrdersCount;
         }
 
-        public List<Models.Order> GetOrdersByCompletedDate(string ShopId, string FilterDate)
+        public List<Models.Order> GetOrdersByCompletedDate(List<string> ShopId, string FilterDate)
         {
             DataTable dt = new DataTable();
             List<Models.Order> OrdersList = new List<Models.Order>();
@@ -312,14 +312,19 @@ namespace ShopManagement.Utilities
         {
             Models.Order OrderInfo = new Models.Order();
             Utilities.Shop shopUtilities = new Shop();
+            DateTime CurrentDate = DateTime.UtcNow.Date;
             try
             {
                 OrderInfo.Id = record["Id"].ToString();
                 OrderInfo.BillNumber = record["BillNumber"].ToString();
                 OrderInfo.CustomerName = record["CustomerName"].ToString();
                 OrderInfo.Image = record["Image"].ToString();
+                OrderInfo.Image2 = record["Image2"].ToString();
+                OrderInfo.Image3 = record["Image3"].ToString();
                 OrderInfo.ShopId = record["ShopId"].ToString();
                 OrderInfo.Amount = (int)record["Amount"];
+                OrderInfo.PaidAmount = (int)record["PaidAmount"];
+                OrderInfo.BalanceAmount = (int)record["BalanceAmount"];
                 OrderInfo.CustomerMobileNumber = record["CustomerMobileNumber"].ToString(); ;
                 OrderInfo.Status = record["Status"].ToString();
                 OrderInfo.Notes = record["Notes"].ToString();
@@ -330,7 +335,7 @@ namespace ShopManagement.Utilities
                 OrderInfo.SafariInfo = GetSafariInfoByOrderId(record["Id"].ToString());
                 OrderInfo.PantInfo = GetPantiInfoByOrderId(record["Id"].ToString());
                 OrderInfo.ShirtInfo = GetShirtiInfoByOrderId(record["Id"].ToString());
-                var days = ((TimeSpan)(OrderInfo.EndDate - OrderInfo.StartDate)).Days;
+                var days = ((TimeSpan)(OrderInfo.EndDate - CurrentDate)).Days;
                 OrderInfo.DaysRemaining = days > 0 ? days.ToString() : "0";
                 OrderInfo.ShopName = shopUtilities.GetShopById(record["ShopId"].ToString()).Name;
                 OrderInfo.StartDateInString = OrderInfo.StartDate.ToString("yyyy-MM-dd");

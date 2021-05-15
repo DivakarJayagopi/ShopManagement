@@ -11,8 +11,12 @@ namespace ShopManagement.Models
         public string BillNumber { get; set; }
         public string CustomerName { get; set; }
         public string Image { get; set; }
+        public string Image2 { get; set; }
+        public string Image3 { get; set; }
         public string ShopId { get; set; }
         public int Amount { get; set; }
+        public int PaidAmount { get; set; }
+        public int BalanceAmount { get; set; }
         public string CustomerMobileNumber { get; set; }
         public string Status { get; set; }
         public string Notes { get; set; }

@@ -55,14 +55,7 @@
                                 <select class="form-control select2" id="SelctedShopId">
                                     @foreach (var item in Model)
                                     {
-                                        if (Session["IsAdmin"].ToString() == "1" || Session["IsAdmin"].ToString() == "2")
-                                        {
-                                            <option value="@item.Id" data-addedCount="@item.TodaysOderCount" data-maxCount="@item.MaxOrderCount" data-remainingCount="@item.MaxOrderCount-@item.TodaysOderCount">@item.Name</option>
-                                        }
-                                        else if (item.Id == Session["ShopId"].ToString())
-                                        {
-                                            <option value="@item.Id" data-addedCount="@item.TodaysOderCount" data-maxCount="@item.MaxOrderCount" data-remainingCount="@item.MaxOrderCount-@item.TodaysOderCount">@item.Name</option>
-                                        }
+                                        <option value="@item.Id" data-addedCount="@item.TodaysOderCount" data-maxCount="@item.MaxOrderCount" data-remainingCount="@item.MaxOrderCount-@item.TodaysOderCount">@item.Name</option>
                                     }
                                 </select>
                             </div>
@@ -71,8 +64,8 @@
                                 <input type="number" class="form-control" id="OrderAmount">
                             </div>
                             <div class="form-group">
-                                <label>Advance Amount</label>
-                                <input type="number" class="form-control" id="AdvanceAmount">
+                                <label>Paid Amount</label>
+                                <input type="number" class="form-control" id="PaidAmount">
                             </div>
                             <div class="form-group">
                                 <label>Balance Amount</label>

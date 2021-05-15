@@ -34,7 +34,7 @@ namespace ShopManagement.Utilities
             {
                 string Id = Guid.NewGuid().ToString();
                 Result = _userData.AddUser(Id, Name, EmailId, Password, Image, Status, Area, Notes, MobileNumber, IsAdmin);
-                if(IsAdmin == 2)
+                //if(IsAdmin == 2)
                 {
                     Utilities.Slider _sliderData = new Utilities.Slider();
                     Result = _sliderData.Add("Slider One", Id);

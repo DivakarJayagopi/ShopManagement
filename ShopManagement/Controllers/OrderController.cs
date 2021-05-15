@@ -15,7 +15,16 @@ namespace ShopManagement.Controllers
                 return RedirectToAction("Login", "Account");
             Utilities.Shop _ShopUtility = new Utilities.Shop();
             List<Models.Shop> Shopslist = new List<Models.Shop>();
-            Shopslist = _ShopUtility.GetAllShops();
+            if (Session["IsAdmin"].ToString() == "1")
+            {
+                Shopslist = _ShopUtility.GetAllShops();
+            }
+            else
+            {
+                string UserId = Session["UserId"].ToString();
+                Shopslist = _ShopUtility.GetUserConnectedShopsList(UserId);
+            }
+            
             return View(Shopslist);
         }
 
@@ -31,8 +40,11 @@ namespace ShopManagement.Controllers
             }
             else
             {
-                var ShopId = Session["ShopId"].ToString();
-                OrdersList = _orderUtility.GetAllOrdersByShopId(ShopId);
+                Utilities.Shop _ShopUtility = new Utilities.Shop();
+                string UserId = Session["UserId"].ToString();
+                var Shopslist = _ShopUtility.GetUserConnectedShopsList(UserId);
+                var ShopIds = Shopslist.Select(x => x.Id).ToList();
+                OrdersList = _orderUtility.GetAllOrdersByShopIds(ShopIds);
             }
             return View(OrdersList);
         }
@@ -47,7 +59,15 @@ namespace ShopManagement.Controllers
 
             Utilities.Shop _ShopUtility = new Utilities.Shop();
             List<Models.Shop> Shopslist = new List<Models.Shop>();
-            Shopslist = _ShopUtility.GetAllShops();
+            if (Session["IsAdmin"].ToString() == "1")
+            {
+                Shopslist = _ShopUtility.GetAllShops();
+            }
+            else
+            {
+                string UserId = Session["UserId"].ToString();
+                Shopslist = _ShopUtility.GetUserConnectedShopsList(UserId);
+            }
             return View(Shopslist);
         }
     }

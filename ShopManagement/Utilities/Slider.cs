@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 
@@ -84,18 +85,18 @@ namespace ShopManagement.Utilities
             return Result;
         }
 
-        public bool DeleteImages(string[] Ids)
+        public string DeleteImages(string Id)
         {
-            bool Result = false;
+            string Result = "";
             try
             {
-                Result = _sliderData.DeleteImages(Ids);
-                if(Result && Ids != null && Ids.Length > 0)
+                if (!string.IsNullOrEmpty(Id))
                 {
-                    foreach (string id in Ids)
-                    {
-                        DeleteSliderConnectorByImageId(id);
-                    }                        
+                    string[] Ids = { Id };
+                    var ImageInfo = _sliderData.GetImageById(Id);
+                    Result = ImageInfo.Rows[0]["Image"].ToString();
+                    DeleteSliderConnectorByImageId(Id);
+                    _sliderData.DeleteImages(Ids);
                 }
             }
             catch (Exception)

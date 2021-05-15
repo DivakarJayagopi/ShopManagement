@@ -6,27 +6,27 @@ $(".ViewUserInfo").click(function () {
     $("#UserInfo").modal("show");
 });
 
-$(".ViewShopInfo").click(function () {
-    var ShopId = $(this).attr("data-id");
-    var data = '{Id:"' + ShopId + '"}';
-    handleAjaxRequest(null, true, "/Method/GetShopInfoById", data, "CallBackGetShopInfoByIdInUsersList");
+//$(".ViewShopInfo").click(function () {
+//    var ShopId = $(this).attr("data-id");
+//    var data = '{Id:"' + ShopId + '"}';
+//    handleAjaxRequest(null, true, "/Method/GetShopInfoById", data, "CallBackGetShopInfoByIdInUsersList");
     
-});
+//});
 
-function CallBackGetShopInfoByIdInUsersList(responseData) {
-    if (responseData.message.status == "success") {
-        var ShopInfo = responseData.message.shopInfo;
+//function CallBackGetShopInfoByIdInUsersList(responseData) {
+//    if (responseData.message.status == "success") {
+//        var ShopInfo = responseData.message.shopInfo;
 
-        $(".ShopName").text(ShopInfo.Name);
-        $(".ShopMobileNumber").text(ShopInfo.MobileNumber);
-        $(".ShopArea").text(ShopInfo.ShopArea);
-        $(".MaxOrderCountForShop").text(ShopInfo.MaxOrderCount);
+//        $(".ShopName").text(ShopInfo.Name);
+//        $(".ShopMobileNumber").text(ShopInfo.MobileNumber);
+//        $(".ShopArea").text(ShopInfo.ShopArea);
+//        $(".MaxOrderCountForShop").text(ShopInfo.MaxOrderCount);
 
-        $("#ShopImage").attr("src", ShopInfo.Image);
+//        $("#ShopImage").attr("src", ShopInfo.Image);
 
-        $("#ViewShopInfo").modal("show");
-    }
-}
+//        $("#ViewShopInfo").modal("show");
+//    }
+//}
 
 
 $(".DeleteUser").click(function () {
@@ -164,6 +164,11 @@ function CallBackAddNewUser(responseData) {
 }
 
 $(".EditUserInfo").click(function () {
+    $("input[type=\"text\"]").removeClass("form-error");
+    $("input[type=\"password\"]").removeClass("form-error");
+    $("input[type=\"number\"]").removeClass("form-error");
+    $("input[type=\"email\"]").removeClass("form-error");
+    $(".customErrorMessageAddUser").text("");
     var UserId = $(this).attr("data-id");
     var data = '{Id:"' + UserId + '"}';
     handleAjaxRequest(null, true, "/Method/GetUserById", data, "CallBackGetUserInfoById");
@@ -464,6 +469,42 @@ function IsMobileNmberExists(MobileNumber) {
                     return true;
                 }
             }
+        }
+    }
+}
+
+$(".GetUserConnectedShopsList").click(function () {
+    var UserId = $(this).attr("data-id");
+    var data = '{UserId:"' + UserId + '"}';
+    handleAjaxRequest(null, true, "/Method/GetUserConnectedShopsList", data, "CallBackGetUserConnectedShopsList", UserId);   
+});
+
+function CallBackGetUserConnectedShopsList(responseData, UserId) {
+    if (responseData.message.status == "success") {
+        var ShopsList = responseData.message.ShopsList;
+        var ListHTML = "<ol>";
+        $.each(ShopsList, function (key, val) {
+            ListHTML += "<li class='UserConnectedShopName'> <img alt=\"image\" src='" + val.Image + "' class=\"img-fluid ShopImage\">&nbsp;&nbsp;&nbsp;" + val.Name + " </li>";
+        });
+        ListHTML += "</ol>";
+        $(".ShopList").html(ListHTML);
+        $("#ViewShopInfo").modal("show");
+    }
+}
+
+$(document).on('click', '.RemoveUserFromShop', function () {
+    var UserId = $(this).attr("data-UserId");
+    var ShopId = $(this).attr("data-ShopId");
+    var data = '{ShopId:"' + ShopId + '",UserId:"' + UserId + '"}';
+    handleAjaxRequest(null, true, "/Method/DeleteUserConnectorByUserAndShopId", data, "CallBackDeleteUserConnectorByUserAndShopId", $(this));
+});
+
+function CallBackDeleteUserConnectorByUserAndShopId(responseData, $this) {
+    if (responseData.message.status == "success") {
+        $this.parent().remove();
+        var UsersListLength = $(".UserConnectedShopName").length;
+        if (UsersListLength == 1) {
+            $(".RemoveUserFromShop").hide();
         }
     }
 }

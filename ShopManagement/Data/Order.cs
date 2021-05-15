@@ -12,18 +12,22 @@ namespace ShopManagement.Data
     {
         public SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["connString"].ConnectionString);
 
-        public bool Add(string Id, string BillNumber, string CustomerName, string Image, string ShopId, int Amount, string CustomerMobileNumber,string Status, string Notes, DateTime StartDate, DateTime EndDate)
+        public bool Add(string Id, string BillNumber, string CustomerName, string Image, string Image2, string Image3, string ShopId, int Amount, int PaidAmount, int BalanceAmount, string CustomerMobileNumber,string Status, string Notes, DateTime StartDate, DateTime EndDate)
         {
             bool Result = false;
             try
             {
-                SqlCommand cmd = new SqlCommand("INSERT INTO OrderInfo VALUES(@Id,@BillNumber,@CustomerName,@Image,@ShopId,@Amount,@CustomerMobileNumber,@Status,@Notes,@StartDate,@EndDate,@CreatedDate,@ModifiedDate)");
+                SqlCommand cmd = new SqlCommand("INSERT INTO OrderInfo VALUES(@Id,@BillNumber,@CustomerName,@Image,@Image2,@Image3,@ShopId,@Amount,@PaidAmount,@BalanceAmount,@CustomerMobileNumber,@Status,@Notes,@StartDate,@EndDate,@CreatedDate,@ModifiedDate)");
                 cmd.Parameters.AddWithValue("@Id", Id);
                 cmd.Parameters.AddWithValue("@BillNumber", BillNumber);
                 cmd.Parameters.AddWithValue("@CustomerName", CustomerName);
                 cmd.Parameters.AddWithValue("@Image", Image);
+                cmd.Parameters.AddWithValue("@Image2", Image2);
+                cmd.Parameters.AddWithValue("@Image3", Image3);
                 cmd.Parameters.AddWithValue("@ShopId", ShopId);
                 cmd.Parameters.AddWithValue("@Amount", Amount);
+                cmd.Parameters.AddWithValue("@PaidAmount", PaidAmount);
+                cmd.Parameters.AddWithValue("@BalanceAmount", BalanceAmount);
                 cmd.Parameters.AddWithValue("@CustomerMobileNumber", CustomerMobileNumber);
                 cmd.Parameters.AddWithValue("@Status", Status);
                 cmd.Parameters.AddWithValue("@Notes", Notes);
@@ -187,18 +191,22 @@ namespace ShopManagement.Data
             return Result;
         }
 
-        public bool Update(string Id,string BillNumber, string CustomerName, string Image, string ShopId, int Amount, string CustomerMobileNumber,string Status, string Notes, DateTime StartDate, DateTime EndDate)
+        public bool Update(string Id,string BillNumber, string CustomerName, string Image, string Image2, string Image3, string ShopId, int Amount, int PaidAmount, int BalanceAmount, string CustomerMobileNumber,string Status, string Notes, DateTime StartDate, DateTime EndDate)
         {
             bool Result = false;
             try
             {
-                SqlCommand cmd = new SqlCommand("UPDATE OrderInfo SET BillNumber=@BillNumber, CustomerName=@CustomerName, Image=@Image, ShopId=@ShopId, Amount=@Amount, CustomerMobileNumber=@CustomerMobileNumber, Status=@Status, Notes=@Notes, StartDate=@StartDate, EndDate=@EndDate, ModifiedDate=@ModifiedDate WHERE Id=@Id");
+                SqlCommand cmd = new SqlCommand("UPDATE OrderInfo SET BillNumber=@BillNumber, CustomerName=@CustomerName, Image=@Image, Image2=@Image2, Image3=@Image3, ShopId=@ShopId, Amount=@Amount, PaidAmount=@PaidAmount, BalanceAmount=@BalanceAmount, CustomerMobileNumber=@CustomerMobileNumber, Status=@Status, Notes=@Notes, StartDate=@StartDate, EndDate=@EndDate, ModifiedDate=@ModifiedDate WHERE Id=@Id");
                 cmd.Parameters.AddWithValue("@Id", Id);
                 cmd.Parameters.AddWithValue("@BillNumber", BillNumber);
                 cmd.Parameters.AddWithValue("@CustomerName", CustomerName);
                 cmd.Parameters.AddWithValue("@Image", Image);
+                cmd.Parameters.AddWithValue("@Image2", Image2);
+                cmd.Parameters.AddWithValue("@Image3", Image3);
                 cmd.Parameters.AddWithValue("@ShopId", ShopId);
                 cmd.Parameters.AddWithValue("@Amount", Amount);
+                cmd.Parameters.AddWithValue("@PaidAmount", PaidAmount);
+                cmd.Parameters.AddWithValue("@BalanceAmount", BalanceAmount);
                 cmd.Parameters.AddWithValue("@CustomerMobileNumber", CustomerMobileNumber);
                 cmd.Parameters.AddWithValue("@Status", Status);
                 cmd.Parameters.AddWithValue("@Notes", Notes);
@@ -550,13 +558,21 @@ namespace ShopManagement.Data
             return dt;
         }
 
-        public DataTable GetAllOrdersByShopId(string ShopId)
+        public DataTable GetAllOrdersByShopId(List<string> ShopIds)
         {
             DataTable dt = new DataTable();
+            string valueParam = "";
             try
             {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM OrderInfo WHERE ShopId=@ShopId");
-                cmd.Parameters.AddWithValue("@ShopId", ShopId);
+                SqlCommand cmd;
+                if (ShopIds != null && ShopIds.Count > 0)
+                {
+                    foreach (string val in ShopIds)
+                    {
+                        valueParam += "'" + val + "',";
+                    }
+                }
+                cmd = new SqlCommand("SELECT * FROM OrderInfo WHERE ShopId IN(" + valueParam.TrimEnd(',') + ")");
                 con.Open();
                 cmd.Connection = con;
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
@@ -629,16 +645,20 @@ namespace ShopManagement.Data
             return dt;
         }
 
-        public DataTable GetOrdersByCompletedDate(string ShopId, string FilterDate)
+        public DataTable GetOrdersByCompletedDate(List<string> ShopIds, string FilterDate)
         {
             DataTable dt = new DataTable();
             try
             {
                 SqlCommand cmd;
-                if (!string.IsNullOrEmpty(ShopId))
+                if (ShopIds != null && ShopIds.Count > 0)
                 {
-                    cmd = new SqlCommand("SELECT * FROM OrderInfo WHERE DATEPART(MONTH,EndDate)=DATEPART(MONTH,@FilterDate) and DATEPART(YEAR,EndDate)=DATEPART(YEAR,@FilterDate)and DATEPART(DAY,EndDate)=DATEPART(DAY,@FilterDate) and ShopId=@ShopId");
-                    cmd.Parameters.AddWithValue("@ShopId", ShopId);
+                    string valueParam = "";
+                    foreach (string val in ShopIds)
+                    {
+                        valueParam += "'" + val + "',";
+                    }
+                    cmd = new SqlCommand("SELECT * FROM OrderInfo WHERE DATEPART(MONTH,EndDate)=DATEPART(MONTH,@FilterDate) and DATEPART(YEAR,EndDate)=DATEPART(YEAR,@FilterDate)and DATEPART(DAY,EndDate)=DATEPART(DAY,@FilterDate) and ShopId IN(" + valueParam.TrimEnd(',') + ")");
                     cmd.Parameters.AddWithValue("@FilterDate", FilterDate);
                 }
                 else

@@ -609,7 +609,7 @@ namespace ShopManagement.Controllers
             }
             return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult AddOrderInfo(string BillNumber,string CustomerName, string Image, string ShopId, int Amount, string CustomerMobileNumber, string Status, string Notes, string StartDate, string EndDate, Models.SafariInfo safariInfo, Models.PantInfo pantInfo, Models.ShirtInfo shirtInfo)
+        public ActionResult AddOrderInfo(string BillNumber,string CustomerName, string Image, string Image2, string Image3, string ShopId, int Amount, int PaidAmount, int BalanceAmount, string CustomerMobileNumber, string Status, string Notes, string StartDate, string EndDate, Models.SafariInfo safariInfo, Models.PantInfo pantInfo, Models.ShirtInfo shirtInfo)
         {
             Dictionary<string, object> returnObject = new Dictionary<string, object>();
             try
@@ -617,6 +617,31 @@ namespace ShopManagement.Controllers
                 bool Result = false;
                 DateTime StartDateVal = DateTime.Parse(StartDate);
                 DateTime EndDateVal = DateTime.Parse(EndDate);
+                Image = BuildOrderImage(Image);
+                Image2 = BuildOrderImage(Image2);
+                Image3 = BuildOrderImage(Image3);
+                Result = _orderUtility.Add(BillNumber, CustomerName, Image, Image2, Image3, ShopId, Amount, PaidAmount, BalanceAmount, CustomerMobileNumber, Status, Notes, StartDateVal, EndDateVal, safariInfo, pantInfo, shirtInfo);
+                if (Result == true)
+                {
+
+                    returnObject.Add("status", "success");
+                }
+                else
+                {
+                    returnObject.Add("status", "fail");
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
+        }
+
+        public string BuildOrderImage(string Image)
+        {
+            try
+            {
                 if (string.IsNullOrEmpty(Image))
                 {
                     Image = Globals.Default_orderImage;
@@ -643,24 +668,14 @@ namespace ShopManagement.Controllers
                     System.IO.File.WriteAllBytes(imgPath, imageBytes);
                     Image = Globals.Default_OrderImagePath + "/" + imageName;
                 }
-                Result = _orderUtility.Add(BillNumber, CustomerName, Image, ShopId, Amount, CustomerMobileNumber, Status, Notes, StartDateVal, EndDateVal, safariInfo, pantInfo, shirtInfo);
-                if (Result == true)
-                {
-
-                    returnObject.Add("status", "success");
-                }
-                else
-                {
-                    returnObject.Add("status", "fail");
-                }
             }
             catch (Exception)
             {
-
+                Image = "";
             }
-            return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
+            return Image;
         }
-        public ActionResult UpdateOrderInfo(string Id,string BillNumber, string CustomerName, string Image, string ShopId, int Amount, string CustomerMobileNumber, string Status, string Notes, string StartDate, string EndDate, Models.SafariInfo safariInfo, Models.PantInfo pantInfo, Models.ShirtInfo shirtInfo)
+        public ActionResult UpdateOrderInfo(string Id,string BillNumber, string CustomerName, string Image, string Image2, string Image3, string ShopId, int Amount, int PaidAmount, int BalanceAmount, string CustomerMobileNumber, string Status, string Notes, string StartDate, string EndDate, Models.SafariInfo safariInfo, Models.PantInfo pantInfo, Models.ShirtInfo shirtInfo)
         {
             Dictionary<string, object> returnObject = new Dictionary<string, object>();
             try
@@ -669,33 +684,19 @@ namespace ShopManagement.Controllers
                 DateTime StartDateVal = DateTime.Parse(StartDate);
                 DateTime EndDateVal = DateTime.Parse(EndDate);
                 var OrderInfo = _orderUtility.GetOrderInfoById(Id);
-                if (string.IsNullOrEmpty(Image))
+                if(!string.IsNullOrEmpty(Image) && !Image.Contains("/ImageStorage/OrderImage/"))
                 {
-                    Image = OrderInfo.Image;
+                    Image = BuildOrderImage(Image);
                 }
-                else
+                if (!string.IsNullOrEmpty(Image2) && !Image2.Contains("/ImageStorage/OrderImage/"))
                 {
-                    string path = Server.MapPath("~" + Globals.Default_OrderImagePath); //Path
-
-                    //Check if directory exist
-                    if (!System.IO.Directory.Exists(path))
-                    {
-                        System.IO.Directory.CreateDirectory(path); //Create directory if it doesn't exist
-                    }
-
-                    string imageName = Guid.NewGuid().ToString() + ".jpg";
-
-                    //set the image path
-                    string imgPath = Path.Combine(path, imageName);
-                    var splitedValue = Image.Split(',');
-                    var ReplaceValue = splitedValue[0] + ',';
-                    Image = Image.Replace(ReplaceValue, "");
-                    var imageBytes = Convert.FromBase64String(Image);
-
-                    System.IO.File.WriteAllBytes(imgPath, imageBytes);
-                    Image = Globals.Default_OrderImagePath + "/" + imageName;
+                    Image2 = BuildOrderImage(Image2);
                 }
-                Result = _orderUtility.Update(Id, BillNumber, CustomerName, Image, ShopId, Amount, CustomerMobileNumber, Status, Notes, StartDateVal, EndDateVal, safariInfo, pantInfo, shirtInfo);
+                if (!string.IsNullOrEmpty(Image3) && !Image3.Contains("/ImageStorage/OrderImage/"))
+                {
+                    Image3 = BuildOrderImage(Image3);
+                }
+                Result = _orderUtility.Update(Id, BillNumber, CustomerName, Image, Image2, Image3, ShopId, Amount, PaidAmount, BalanceAmount, CustomerMobileNumber, Status, Notes, StartDateVal, EndDateVal, safariInfo, pantInfo, shirtInfo);
                 if (Result == true)
                 {
                     returnObject.Add("status", "success");
@@ -779,13 +780,13 @@ namespace ShopManagement.Controllers
             }
             return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult GetAllOrdersByShopId(string ShopId)
+        public ActionResult GetAllOrdersByShopIds(List<string> ShopIds)
         {
             Dictionary<string, object> returnObject = new Dictionary<string, object>();
             try
             {
                 List<Models.Order> OrderList = new List<Models.Order>();
-                OrderList = _orderUtility.GetAllOrdersByShopId(ShopId);
+                OrderList = _orderUtility.GetAllOrdersByShopIds(ShopIds);
                 if (OrderList != null)
                 {
                     returnObject.Add("OrderList", OrderList);
@@ -849,7 +850,7 @@ namespace ShopManagement.Controllers
                             TotalAmout = _totalAmount.Take(_totalAmount.Count).Sum();
                         }
 
-                        List<int> _receivedAmount = OrderList.Where(x => x.Status == "completed").Select(x => x.Amount).ToList();
+                        List<int> _receivedAmount = OrderList.Select(x => x.PaidAmount).ToList();
                         int ReceivedAmout = 0;
 
                         if (_receivedAmount != null && _receivedAmount.Count > 0)
@@ -893,7 +894,7 @@ namespace ShopManagement.Controllers
                                     TotalAmout = _totalAmount.Take(_totalAmount.Count).Sum();
                                 }
 
-                                List<int> _receivedAmount = SingleShopOrderList.Where(x => x.Status == "completed").Select(x => x.Amount).ToList();
+                                List<int> _receivedAmount = SingleShopOrderList.Select(x => x.PaidAmount).ToList();
                                 int ReceivedAmout = 0;
 
                                 if (_receivedAmount != null && _receivedAmount.Count > 0)
@@ -1051,9 +1052,18 @@ namespace ShopManagement.Controllers
             Dictionary<string, object> returnObject = new Dictionary<string, object>();
             try
             {
-                bool Result = false;
+                bool Result = true;
                 var ids = ImageIds.Split(',');
-                Result = _sliderUtility.DeleteImages(ids);
+                foreach (string id in ids)
+                {
+                    var _Result = _sliderUtility.DeleteImages(id);
+                    var filePath = Server.MapPath("~" + _Result);
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        System.IO.File.Delete(filePath);
+                    }
+                }
+                    
                 if (Result == true)
                 {
                     returnObject.Add("status", "success");
@@ -1293,6 +1303,25 @@ namespace ShopManagement.Controllers
                 {
                     returnObject.Add("status", "fail");
                 }                
+            }
+            catch (Exception)
+            {
+                returnObject.Add("status", "fail");
+            }
+            return Json(new { message = returnObject }, JsonRequestBehavior.AllowGet);
+        }
+        
+        public ActionResult GetUserConnectedShopsList(string UserId)
+        {
+            Dictionary<string, object> returnObject = new Dictionary<string, object>();
+            try
+            {
+                var ShopsList = _shopData.GetUserConnectedShopsList(UserId);
+                if (ShopsList != null && ShopsList.Count > 0)
+                {
+                    returnObject.Add("ShopsList", ShopsList);
+                }
+                returnObject.Add("status", "success");
             }
             catch (Exception)
             {

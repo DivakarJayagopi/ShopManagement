@@ -75,6 +75,9 @@ function CallBackAddShopInfo(responseData) {
 }
 
 $(".ShopEdit").click(function () {
+    $("input[type=\"text\"]").removeClass("form-error");
+    $("input[type=\"number\"]").removeClass("form-error");
+    $(".customErrorMessageAddShop").text("");
     var ShopId = $(this).attr("data-id");
     var data = '{Id:"' + ShopId + '"}';
     handleAjaxRequest(null, true, "/Method/GetShopInfoById", data, "CallBackGetShopInfoById");    
@@ -221,7 +224,7 @@ function CallBackGetShopConnectedUsersList(responseData, ShopId) {
         var ListHTML = "<ol>";
         if (UsersList.length == 1) {
             $.each(UsersList, function (key, val) {
-                ListHTML += "<li class='ShopManagerName'> <img alt=\"image\" src='" + val.Image + "' class=\"img-fluid ShopManagerImage\">&nbsp;&nbsp;&nbsp;" + val.Name + "<i class=\"fas fa-trash-alt text-danger\" style='float:right;' data-ShopId='" + ShopId + "' data-UserId='" + val.Id + "'></i> </li>";
+                ListHTML += "<li class='ShopManagerName'> <img alt=\"image\" src='" + val.Image + "' class=\"img-fluid ShopManagerImage\">&nbsp;&nbsp;&nbsp;" + val.Name + " </li>";
             });
         } else {
             $.each(UsersList, function (key, val) {
@@ -247,7 +250,7 @@ function CallBackDeleteUserConnectorByUserAndShopId(responseData,$this) {
         $this.parent().remove();
         var UsersListLength = $(".ShopManagerName").length;
         if (UsersListLength == 1) {
-            $(".RemoveUserFromShop").removeClass("RemoveUserFromShop");
+            $(".RemoveUserFromShop").hide();
         }
     }
 }

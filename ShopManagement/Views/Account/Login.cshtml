@@ -106,14 +106,12 @@
         $("#LoginFormSubmit").click(function () {
             var MobileNumber = $(".MobileNumber").val();
             var Password = $(".Password").val();
-            $("#LoginFormSubmit").addClass("btn-progress");
             ValidateLogin(MobileNumber, Password, false);
         });
 
         $("#LoginForm").submit(function () {
             var MobileNumber = $(".MobileNumber").val();
             var Password = $(".Password").val();
-            $("#LoginFormSubmit").addClass("btn-progress");
             ValidateLogin(MobileNumber, Password, false);
         });
 

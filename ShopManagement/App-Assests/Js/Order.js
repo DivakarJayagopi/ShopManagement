@@ -109,6 +109,10 @@ function CallBackViewOrderInfoById(responseData) {
 }
 
 $(".EditOrderInfo").click(function () {
+    $("input[type=\"text\"]").removeClass("form-error");
+    $("input[type=\"number\"]").removeClass("form-error");
+    $("input[type=\"date\"]").removeClass("form-error");
+    $(".customErrorMessageAddOrder").text("");
     var OrderId = $(this).attr("data-id");
     var data = '{Id:"' + OrderId + '"}';
     handleAjaxRequest(null, true, "/Method/GetOrderInfoById", data, "CallBackGetOrderInfoById");
@@ -127,10 +131,15 @@ function CallBackGetOrderInfoById(responseData) {
         $("#CustomerMobileNumber").val(OrderInfo.CustomerMobileNumber);
         $("#SelctedShopId").val(OrderInfo.ShopId);
         $("#OrderAmount").val(OrderInfo.Amount);
+        $("#PaidAmount").val(OrderInfo.PaidAmount);
+        $("#BalanceAmount").val(OrderInfo.BalanceAmount);
         $("#OrderNotes").val(OrderInfo.Notes);
-        $("#OrderStartDate").attr("value", OrderInfo.StartDateInString);
-        $("#OrderEndDate").attr("value", OrderInfo.EndDateInString);
+        $("#OrderStartDate").val(OrderInfo.StartDateInString);
+        $("#OrderEndDate").val(OrderInfo.EndDateInString);
         Global_OrderStatus = OrderInfo.Status;
+        Global_OrderImage = OrderInfo.Image;
+        Global_OrderImage2 = OrderInfo.Image2;
+        Global_OrderImage3 = OrderInfo.Image3;
         switch (OrderInfo.Status) {
             case "awaiting":
                 $(".awaiting.OrderStatus").trigger("click");
@@ -145,7 +154,7 @@ function CallBackGetOrderInfoById(responseData) {
                 $(".dropped.OrderStatus").trigger("click");
                 break;
         }
-
+        $('#OrderStartDate, #OrderEndDate').attr('min', OrderInfo.StartDateInString);
         var SafariInfo = OrderInfo.SafariInfo;
         var PantInfo = OrderInfo.PantInfo;
         var ShirtInfo = OrderInfo.ShirtInfo;
@@ -235,8 +244,12 @@ $("#UpdateOrderFromSubmit").click(function () {
 
     var CustomerName = $("#CustomerName").val();
     var Image = Global_OrderImage;
+    var Image2 = Global_OrderImage2;
+    var Image3 = Global_OrderImage3;
     var ShopId = $("#SelctedShopId").val();
     var Amount = $("#OrderAmount").val();
+    var PaidAmount = $("#PaidAmount").val();
+    var BalanceAmount = $("#BalanceAmount").val();
     var CustomerMobileNumber = $("#CustomerMobileNumber").val();
     var Status = Global_OrderStatus;
     var Notes = $("#OrderNotes").val();
@@ -244,7 +257,7 @@ $("#UpdateOrderFromSubmit").click(function () {
     var EndDate = $("#OrderEndDate").val();
 
 
-    if ((CustomerName == "" || CustomerMobileNumber == "" || Amount == "" || StartDate == "" || EndDate == "")) {
+    if ((CustomerName == "" || CustomerMobileNumber == "" || Amount == "" || PaidAmount == "" || BalanceAmount == "" || StartDate == "" || EndDate == "")) {
         if (CustomerName == "") $("#CustomerName").addClass("form-error");
         else $("#CustomerName").removeClass("form-error");
 
@@ -253,6 +266,12 @@ $("#UpdateOrderFromSubmit").click(function () {
 
         if (Amount == "") $("#OrderAmount").addClass("form-error");
         else $("#OrderAmount").removeClass("form-error");
+
+        if (PaidAmount == "") $("#PaidAmount").addClass("form-error");
+        else $("#PaidAmount").removeClass("form-error");
+
+        if (BalanceAmount == "") $("#BalanceAmount").addClass("form-error");
+        else $("#BalanceAmount").removeClass("form-error");
 
         if (StartDate == "") $("#OrderStartDate").addClass("form-error");
         else $("#OrderStartDate").removeClass("form-error");
@@ -293,7 +312,7 @@ $("#UpdateOrderFromSubmit").click(function () {
                 Global_ShirtInfo = null;
             }
 
-            var data = '{Id:"' + OrderId + '",BillNumber:"' + BillNumber + '" , CustomerName:"' + CustomerName + '",Image:"' + Image + '",ShopId:"' + ShopId + '",Amount:' + Amount + ',CustomerMobileNumber:"' + CustomerMobileNumber + '",Status:"' + Status + '",Notes:"' + Notes + '",StartDate:"' + StartDate + '",EndDate:"' + EndDate + '",safariInfo:' + Global_SafariInfo + ',pantInfo:' + Global_PantInfo + ',shirtInfo:' + Global_ShirtInfo + '}';
+            var data = '{Id:"' + OrderId + '",BillNumber:"' + BillNumber + '" , CustomerName:"' + CustomerName + '",Image:"' + Image + '",Image2:"' + Image2 + '",Image3:"' + Image3 + '",ShopId:"' + ShopId + '",Amount:' + Amount + ',PaidAmount:' + PaidAmount + ',BalanceAmount:' + BalanceAmount + ',CustomerMobileNumber:"' + CustomerMobileNumber + '",Status:"' + Status + '",Notes:"' + Notes + '",StartDate:"' + StartDate + '",EndDate:"' + EndDate + '",safariInfo:' + Global_SafariInfo + ',pantInfo:' + Global_PantInfo + ',shirtInfo:' + Global_ShirtInfo + '}';
             handleAjaxRequest(null, true, "/Method/UpdateOrderInfo", data, "CallBackUpdateOrderInfo");
         }
     }
@@ -329,6 +348,8 @@ function CallBackDeleteOrderById(responseData) {
 
 var Global_OrderStatus = "awaiting";
 var Global_OrderImage = "";
+var Global_OrderImage2 = "";
+var Global_OrderImage3 = "";
 var Global_SafariInfo = "";
 var Global_ShirtInfo = "";
 var Global_PantInfo = "";
@@ -352,14 +373,19 @@ $(".dropped.OrderStatus").click(function () {
 $("#OrderStartDate").change(function () {
     var maxDate = $(this).val();
     $('#OrderEndDate').attr('min', maxDate);
+    $('#OrderEndDate').val('');
 });
 
 $("#OrderInfoFromSubmit").click(function () {
     var BillNumber = $("#BillNumber").val();
     var CustomerName = $("#CustomerName").val();
     var Image = Global_OrderImage;
+    var Image2 = Global_OrderImage2;
+    var Image3 = Global_OrderImage3;
     var ShopId = $("#SelctedShopId").val();
     var Amount = $("#OrderAmount").val();
+    var PaidAmount = $("#PaidAmount").val();
+    var BalanceAmount = $("#BalanceAmount").val();
     var CustomerMobileNumber = $("#CustomerMobileNumber").val();
     var Status = Global_OrderStatus;
     var Notes = $("#OrderNotes").val();
@@ -367,7 +393,7 @@ $("#OrderInfoFromSubmit").click(function () {
     var EndDate = $("#OrderEndDate").val();
 
 
-    if ((BillNumber == "" || CustomerName == "" || CustomerMobileNumber == "" || Amount == "" || StartDate == "" || EndDate == "")) {
+    if ((BillNumber == "" || CustomerName == "" || CustomerMobileNumber == "" || Amount == "" || PaidAmount == "" || BalanceAmount == "" || StartDate == "" || EndDate == "")) {
 
         if (CustomerName == "") $("#BillNumber").addClass("form-error");
         else $("#BillNumber").removeClass("form-error");
@@ -380,6 +406,12 @@ $("#OrderInfoFromSubmit").click(function () {
 
         if (Amount == "") $("#OrderAmount").addClass("form-error");
         else $("#OrderAmount").removeClass("form-error");
+
+        if (PaidAmount == "") $("#PaidAmount").addClass("form-error");
+        else $("#PaidAmount").removeClass("form-error");
+
+        if (BalanceAmount == "") $("#BalanceAmount").addClass("form-error");
+        else $("#BalanceAmount").removeClass("form-error");
 
         if (StartDate == "") $("#OrderStartDate").addClass("form-error");
         else $("#OrderStartDate").removeClass("form-error");
@@ -422,7 +454,11 @@ $("#OrderInfoFromSubmit").click(function () {
                 IsSuccess = false;
             }
         }
-        IsSuccess = IsBillNumberExists(BillNumber);
+
+        if (IsSuccess) {
+            IsSuccess = IsBillNumberExists(BillNumber);
+        }
+        
         if (IsSuccess) {
 
             $("#OrderInfoFromSubmit").addClass("btn-progress");
@@ -439,7 +475,7 @@ $("#OrderInfoFromSubmit").click(function () {
                 Global_ShirtInfo = null;
             }
 
-            var data = '{BillNumber:"' + BillNumber + '", CustomerName:"' + CustomerName + '",Image:"' + Image + '",ShopId:"' + ShopId + '",Amount:' + Amount + ',CustomerMobileNumber:"' + CustomerMobileNumber + '",Status:"' + Status + '",Notes:"' + Notes + '",StartDate:"' + StartDate + '",EndDate:"' + EndDate + '",safariInfo:' + Global_SafariInfo + ',pantInfo:' + Global_PantInfo + ',shirtInfo:' + Global_ShirtInfo + '}';
+            var data = '{BillNumber:"' + BillNumber + '", CustomerName:"' + CustomerName + '",Image:"' + Image + '",Image2:"' + Image2 + '",Image3:"' + Image3 + '",ShopId:"' + ShopId + '",Amount:' + Amount + ',PaidAmount:' + PaidAmount + ',BalanceAmount:' + BalanceAmount + ',CustomerMobileNumber:"' + CustomerMobileNumber + '",Status:"' + Status + '",Notes:"' + Notes + '",StartDate:"' + StartDate + '",EndDate:"' + EndDate + '",safariInfo:' + Global_SafariInfo + ',pantInfo:' + Global_PantInfo + ',shirtInfo:' + Global_ShirtInfo + '}';
             handleAjaxRequest(null, true, "/Method/AddOrderInfo", data, "CallBackAddOrderInfo");
         }
     }
@@ -837,12 +873,16 @@ function CallBackGetAllOrdersDates(responseData, AdditionalInfo) {
             $.each(OrderList, function (key, val) {
                 OrdersListHTML += "<tr>";
                 OrdersListHTML += '<td> <img src="' + val.Image + '" style="height:30px;width:30px" class="img img-responsive"/>  </td>';
+                OrdersListHTML += '<td> <img src="' + val.Image2 + '" style="height:30px;width:30px" class="img img-responsive"/>  </td>';
+                OrdersListHTML += '<td> <img src="' + val.Image3 + '" style="height:30px;width:30px" class="img img-responsive"/>  </td>';
                 OrdersListHTML += "<td>" + val.BillNumber + "</td>";
                 OrdersListHTML += "<td>" + val.CustomerName + "</td>";
                 OrdersListHTML += "<td>" + val.Status + "</td>";
                 OrdersListHTML += "<td>" + val.CustomerMobileNumber + "</td>";
                 OrdersListHTML += "<td>" + val.DaysRemaining + "</td>";
                 OrdersListHTML += "<td>" + val.Amount + "</td>";
+                OrdersListHTML += "<td>" + val.PaidAmount + "</td>";
+                OrdersListHTML += "<td>" + val.BalanceAmount + "</td>";
                 OrdersListHTML += "</tr>";
             });
 
@@ -1131,9 +1171,9 @@ $(document).on('focusout', '#BillNumber', function () {
     if (typeof (BillNumber) != "undefined" && BillNumber != null && BillNumber != "")
         IsBillNumberExists(BillNumber);
 });
-$(document).on('focusout', '#AdvanceAmount,#OrderAmount', function () {
+$(document).on('focusout', '#PaidAmount,#OrderAmount', function () {
     var TotalAmout = $("#OrderAmount").val();
-    var PaidAmount = $("#AdvanceAmount").val();
+    var PaidAmount = $("#PaidAmount").val();
     if (typeof (TotalAmout) != "undefined" && TotalAmout != null && TotalAmout != "" && typeof (PaidAmount) != "undefined" && PaidAmount != null && PaidAmount != "") {
         var BalanceAmount = parseInt(TotalAmout) - parseInt(PaidAmount);
         $("#BalanceAmount").val(BalanceAmount);
@@ -1186,7 +1226,7 @@ function CallBackGetShopInfoByIdInOderManagement(responseData) {
     }
 }
 
-function readFile() {
+$("#OrderImage").change(function () {
     if (this.files && this.files[0]) {
         var FR = new FileReader();
         FR.addEventListener("load", function (e) {
@@ -1194,5 +1234,22 @@ function readFile() {
         });
         FR.readAsDataURL(this.files[0]);
     }
-}
-document.getElementById("OrderImage").addEventListener("change", readFile);
+});
+$("#OrderImage2").change(function () {
+    if (this.files && this.files[0]) {
+        var FR = new FileReader();
+        FR.addEventListener("load", function (e) {
+            Global_OrderImage2 = e.target.result;
+        });
+        FR.readAsDataURL(this.files[0]);
+    }
+});
+$("#OrderImage3").change(function () {
+    if (this.files && this.files[0]) {
+        var FR = new FileReader();
+        FR.addEventListener("load", function (e) {
+            Global_OrderImage3 = e.target.result;
+        });
+        FR.readAsDataURL(this.files[0]);
+    }
+});

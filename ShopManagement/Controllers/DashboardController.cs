@@ -13,29 +13,34 @@ namespace ShopManagement.Controllers
         {
             if (Session["UserId"] == null)
                 return RedirectToAction("Login", "Account");
-            string ShopId = "";
-            if(Session["IsAdmin"].ToString() == "0")
+            string UserId = "";
+            if (Session["IsAdmin"].ToString() != "1")
             {
-                ShopId = Session["ShopId"].ToString();
-            }
-            else if (Session["IsAdmin"].ToString() == "2")
-            {
-                ShopId = Session["UserId"].ToString();
+                UserId = Session["UserId"].ToString();
             }
             Utilities.Slider _sliderUtility = new Utilities.Slider();
             Utilities.Order _orderUtility = new Utilities.Order();
-            List<Models.Slider> sliderslist = _sliderUtility.GetSliderInfoByShopId(ShopId);
+            List<Models.Slider> sliderslist = _sliderUtility.GetSliderInfoByShopId(UserId);
             string Today = DateTime.Now.ToString("yyyy-MM-dd");
             string Tomorrow = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");
             string _3Day = DateTime.Now.AddDays(2).ToString("yyyy-MM-dd");
             string _4Day = DateTime.Now.AddDays(3).ToString("yyyy-MM-dd");
             string _5Day = DateTime.Now.AddDays(4).ToString("yyyy-MM-dd");
 
-            List<Models.Order> TodayCompletingOrders = _orderUtility.GetOrdersByCompletedDate(ShopId, Today);
-            List<Models.Order> TomorrowCompletingOrders = _orderUtility.GetOrdersByCompletedDate(ShopId, Tomorrow);
-            List<Models.Order> OrderCompletingIn3Days = _orderUtility.GetOrdersByCompletedDate(ShopId, _3Day);
-            List<Models.Order> OrderCompletingIn4Days = _orderUtility.GetOrdersByCompletedDate(ShopId, _4Day);
-            List<Models.Order> OrderCompletingIn5Days = _orderUtility.GetOrdersByCompletedDate(ShopId, _5Day);
+            List<string> Shopids = null;
+            if (Session["IsAdmin"].ToString() == "0")
+            {
+                Utilities.Shop _ShopUtility = new Utilities.Shop();
+                List<Models.Shop> Shopslist = new List<Models.Shop>();
+                Shopslist = _ShopUtility.GetUserConnectedShopsList(UserId);
+                Shopids = Shopslist.Select(x => x.Id).ToList();
+            }
+
+            List<Models.Order> TodayCompletingOrders = _orderUtility.GetOrdersByCompletedDate(Shopids, Today);
+            List<Models.Order> TomorrowCompletingOrders = _orderUtility.GetOrdersByCompletedDate(Shopids, Tomorrow);
+            List<Models.Order> OrderCompletingIn3Days = _orderUtility.GetOrdersByCompletedDate(Shopids, _3Day);
+            List<Models.Order> OrderCompletingIn4Days = _orderUtility.GetOrdersByCompletedDate(Shopids, _4Day);
+            List<Models.Order> OrderCompletingIn5Days = _orderUtility.GetOrdersByCompletedDate(Shopids, _5Day);
             Models.DashBoardCustomClass dashBoardCustomClass = new Models.DashBoardCustomClass();
             dashBoardCustomClass.Sliders = sliderslist;
             dashBoardCustomClass.TodayCompletingOrders = TodayCompletingOrders;
@@ -43,16 +48,6 @@ namespace ShopManagement.Controllers
             dashBoardCustomClass.OrderCompletingIn3Days = OrderCompletingIn3Days;
             dashBoardCustomClass.OrderCompletingIn4Days = OrderCompletingIn4Days;
             dashBoardCustomClass.OrderCompletingIn5Days = OrderCompletingIn5Days;
-            if (Session["IsAdmin"].ToString() == "1" || Session["IsAdmin"].ToString() == "2")
-            {
-                ViewBag.ShopName = "All Shop";
-            }                
-            else
-            {
-                Utilities.Shop _shopUtility = new Utilities.Shop();
-                var ShopInfo = _shopUtility.GetShopById(ShopId);
-                ViewBag.ShopName = ShopInfo.Name;
-            }
             ViewBag.TodayOrderCount = TodayCompletingOrders.Count;
             ViewBag.TomorrowOrderCount = TomorrowCompletingOrders.Count;
             ViewBag._3DaysOrderCount = OrderCompletingIn3Days.Count;
